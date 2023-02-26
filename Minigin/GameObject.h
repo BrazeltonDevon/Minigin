@@ -2,94 +2,91 @@
 #include "Component.h"
 #include "Transform.h"
 #include <vector>
+#include <string>
 
 namespace dae
 {
-	//class Texture2D;
+	class Texture2D;
 
-	class GameObject
+	class GameObject final
 	{
 	public:
-		void Update();
-		void FixedUpdate();
-		void Render() const;
+		// Rule of five
+		GameObject(std::string tag, const std::vector<Component*>& pComponents = {});
 
-		template <typename T> T* GetComponent() const
-		{
-			T* result = nullptr;
-			const auto count = m_Components.size();
-			for (int i = 0; i < count && !result; ++i)
-			{
-				result = dynamic_cast<T*>(m_Components[i]);
-			}
-			return result;
-		}
-
-		template <typename T> void RemoveComponent()
-		{
-			T* result = nullptr;
-			const auto count = m_Components.size();
-
-			auto i = m_Components.begin();
-			for (; i != m_Components.end() && !result; ++i)
-			{
-				result = dynamic_cast<T*>(m_Components[i]);
-			}
-			if (result && i != m_Components.end())
-			{
-				// if exists type in vector, delete it from the components
-				m_Components.erase(i);
-			}
-		};
-
-		//template <typename... Args>
-		template <typename T, typename...Args>
-		T* AddComponent(Args... args)
-		{
-			T* result = nullptr;
-			const auto count = m_Components.size();
-			for (int i = 0; i < count && !result; ++i)
-			{
-				result = dynamic_cast<T*>(m_Components[i]);
-			}
-			if (!result)
-			{
-				m_Components.push_back(new T(args...));
-				//m_Components.back()->SetOwner(std::make_shared<dae::GameObject>(this));
-				return dynamic_cast<T*>(m_Components.back());
-			}
-
-			return result;
-		};
-
-		void SetPosition(float x, float y);
-
-		GameObject() = default;
 		~GameObject();
 		GameObject(const GameObject& other) = delete;
 		GameObject(GameObject&& other) = delete;
 		GameObject& operator=(const GameObject& other) = delete;
 		GameObject& operator=(GameObject&& other) = delete;
 
-		// Parent-child Functions
+		void Update();
+		void FixedUpdate();
+		void Render() const;
+
+		std::string GetTag() { return m_Tag; }
+
+		void SetPosition(float x, float y);
+
+		//Template component funtions
+		template<typename Component>
+		Component* GetComponent() const;
+		template<typename Component>
+		Component* AddComponent(Component* pComponent);
+		template<typename Component>
+		void RemoveComponent(Component* pComponent);
+
 		void SetParent(GameObject* parent);
 		GameObject* GetParent() const;
 
 		size_t GetChildCount() const;
 		GameObject* GetChildAt(int index) const;
-		std::vector<GameObject*>& GetChildren() { return m_Children; };
-		void RemoveChild(int index);
-		void AddChild(GameObject* object);
-
 	private:
 		Transform m_Transform;
 
+		std::string m_Tag{};
+
 		// Parent-child variables
-		GameObject* m_Parent{ nullptr };
-		std::vector<GameObject*>m_Children{};
+		GameObject* m_pParent{ nullptr };
+		std::vector<GameObject*>m_pChildren{};
 
 		// Components
-		std::vector<Component*>m_Components{};
+		std::vector<Component*>m_pComponents{};
+
+		void RemoveChild(GameObject* obj);
+		void AddChild(GameObject* obj);
+
+		int GetChildIndex(const GameObject* obj) const;
 	};
+
+	// Template component function definitions
+	template<typename Component>
+	inline Component* GameObject::GetComponent() const
+	{
+		for (auto* component : m_pComponents)
+		{
+			Component* curr = dynamic_cast<Component*>(component);
+			if (curr)
+			{
+				return curr;
+			}
+		}
+		return nullptr;
+	}
+
+	template<typename Component>
+	inline Component* GameObject::AddComponent(Component* component)
+	{
+		m_pComponents.push_back(component);
+		return component;
+	}
+
+	template <typename Component>
+	inline void GameObject::RemoveComponent(Component* pComponent)
+	{
+		// remove if dynamic cast to Component succeeds, otherwise don't
+		std::remove_if(m_pComponents.begin, m_pComponents.end(), []<bool>(auto * component) { dynamic_cast<Component*>(component) != nullptr; });
+	}
+
 }
 
