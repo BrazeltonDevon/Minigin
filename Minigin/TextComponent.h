@@ -8,17 +8,18 @@ namespace dae
 {
 	class Font;
 	class Texture2D;
-	class TextObject final : public Component
+	class TextComponent final : public Component
 	{
 	public:
-		TextObject(GameObject* pOwner, const std::string& text, std::shared_ptr<Font> font);
-		virtual ~TextObject() = default;
-		TextObject(const TextObject& other) = delete;
-		TextObject(TextObject&& other) = delete;
-		TextObject& operator=(const TextObject& other) = delete;
-		TextObject& operator=(TextObject&& other) = delete;
+		TextComponent(GameObject* pOwner, const std::string& text, std::shared_ptr<Font> font);
+		virtual ~TextComponent() = default;
+		TextComponent(const TextComponent& other) = delete;
+		TextComponent(TextComponent&& other) = delete;
+		TextComponent& operator=(const TextComponent& other) = delete;
+		TextComponent& operator=(TextComponent&& other) = delete;
 
 		void Update() override;
+		void FixedUpdate() override;
 		void Render() const override;
 
 		void SetText(const std::string& text);
