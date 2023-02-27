@@ -20,7 +20,7 @@ void dae::FPSComponent::Update()
 {
 	if (!m_pText)
 	{
-		m_pText = m_pGameObject->GetComponent<TextComponent>();
+		m_pText = GetOwner()->GetComponent<TextComponent>();
 	}
 
 	m_ElapsedSec = Time::GetInstance().GetDeltaTime();

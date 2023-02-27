@@ -30,6 +30,9 @@ void dae::RenderComponent::Render() const
 		const auto& pos = m_Transform.GetPosition();
 		dae::Renderer::GetInstance().RenderTexture(*m_Texture, pos.x, pos.y);
 	}
+
+	// TODO: Add RenderObjectComponent or something and use inheritance
+	// that way you won't have to type check in the future
 }
 
 void dae::RenderComponent::Update()

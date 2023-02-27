@@ -44,6 +44,11 @@ void dae::TextComponent::Render() const
 {
 	if (m_textTexture != nullptr)
 	{
+		// TODO: make transform component and set it to the gameobject
+		// don't make it something in the text component!
+		// text follows transform component
+		// also use a render component
+
 		const auto& pos = m_transform.GetPosition();
 		Renderer::GetInstance().RenderTexture(*m_textTexture, pos.x, pos.y);
 	}

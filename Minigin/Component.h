@@ -25,7 +25,7 @@ public:
 	const dae::GameObject* GetOwner() const { return m_pGameObject; }
 	//std::weak_ptr<dae::GameObject> GetOwner() const { return m_pGameObject; };
 	//void SetOwner(std::shared_ptr<dae::GameObject> go);
-protected:
+private:
 	//std::weak_ptr<dae::GameObject> m_pGameObject;
 	dae::GameObject* m_pGameObject;
 };

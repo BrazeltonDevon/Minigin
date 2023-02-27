@@ -51,6 +51,12 @@ namespace dae
 		std::vector<GameObject*>m_pChildren{};
 
 		// Components
+		// 
+		// TODO: change from regular pointer to unique_ptr
+		// std::vector<std::unique_ptr<Component>> m_pComponents{};
+		// ALSO TODO:
+		// Set mark for delete system
+
 		std::vector<Component*>m_pComponents{};
 
 		void RemoveChild(GameObject* obj);
