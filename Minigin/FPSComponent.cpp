@@ -25,6 +25,7 @@ void dae::FPSComponent::Update()
 
 	m_ElapsedSec = Time::GetInstance().GetDeltaTime();
 	m_FPS = static_cast<int>(1.f / m_ElapsedSec);
+
 	m_UpdateTimer += m_ElapsedSec;
 	if (m_UpdateTimer >= m_UpdateInterval)
 	{
