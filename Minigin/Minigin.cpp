@@ -12,6 +12,13 @@
 #include <ctime>
 #include "Time.h"
 
+//**************************************
+// DEFINE FIXED UPDATE USE
+// IF NEEDED FOR PHYSICS &|| NETWORKING
+//**************************************
+
+//#define USE_FIXED_UPDATE
+
 SDL_Window* g_window{};
 
 void PrintSDLVersion()
@@ -89,29 +96,28 @@ void dae::Minigin::Run(const std::function<void()>& load)
 
 
 	bool doContinue = true;
-	float lag = 0.0f;
 
+#ifdef USE_FIXED_UPDATE
+	float lag = 0.0f;
+#endif //USE_FIXED_UPDATE
 
 	while (doContinue)
 	{
-	
-
 		time.Update();
 
 		const auto currentTime = std::chrono::high_resolution_clock::now();
-		lag += time.GetDeltaTime();
-
 		doContinue = input.ProcessInput();
-		sceneManager.Update();
+		
 
-
+#ifdef USE_FIXED_UPDATE
+		lag += time.GetDeltaTime();
 
 		while (lag >= Minigin::MsPerFrame)
 		{
 			sceneManager.FixedUpdate();
 			lag -= Minigin::MsPerFrame;
 		}
-
+#endif //USE_FIXED_UPDATE
 
 		sceneManager.Update();
 		renderer.Render();
