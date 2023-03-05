@@ -1,118 +1,80 @@
+#include <string>
 #include "GameObject.h"
-#include <algorithm>
-#include "ResourceManager.h"
 #include "Renderer.h"
+#include "RenderComponent.h"
+#include "TransformComponent.h"
+#include "Texture2D.h"
+#include <algorithm>
+#include "Component.h"
 
 
-dae::GameObject::GameObject(std::string tag, const std::vector<Component*>& pComponents)
-	: m_pComponents{pComponents},
-	m_Transform{}
-{
-
-}
-
-dae::GameObject::~GameObject()
-{
-	for (auto& elem : m_pChildren)
-	{
-		delete elem;
-		elem = nullptr;
-	}
-
-	for (auto& elem : m_pComponents)
-	{
-		delete elem;
-		elem = nullptr;
-	}
-}
+dae::GameObject::~GameObject() = default;
 
 void dae::GameObject::Update()
 {
-	for (auto& comp : m_pComponents)
+	for (auto& component : m_pComponents)
 	{
-		// for each component update
-		comp->Update();
+		component->Update();
 	}
 }
 
 void dae::GameObject::FixedUpdate()
 {
-	for (auto& comp : m_pComponents)
+	for (auto& component : m_pComponents)
 	{
-		// for each component do a fixed update
-		comp->FixedUpdate();
+		component->FixedUpdate();
 	}
 }
 
 void dae::GameObject::Render() const
 {
-	for (auto& comp : m_pComponents)
+
+	for (auto& component : m_pComponents)
 	{
-		comp->Render();
+		component->Render();
 	}
 }
 
-void dae::GameObject::SetPosition(float x, float y)
-{
-	m_Transform.SetPosition(x, y, 0.0f);
-}
-
-void dae::GameObject::SetParent(GameObject* parent)
-{
-	m_pParent = parent;
-	parent->AddChild(this);
-}
-
-dae::GameObject* dae::GameObject::GetParent() const
-{
-	return m_pParent;
-}
-
-size_t dae::GameObject::GetChildCount() const
-{
-	return m_pChildren.size();
-}
-
-dae::GameObject* dae::GameObject::GetChildAt(int index) const
-{
-	return m_pChildren.at(index);
-}
-
-void dae::GameObject::RemoveChild(GameObject* obj)
-{
-	// get fetus number
-	const int idx{ GetChildIndex(obj) };
-	if (idx != -1)
-	{
-		// fetus deletus
-		m_pChildren.erase(m_pChildren.begin() + idx);
-		// remove parent from deletus del fetus
-		obj->SetParent(nullptr);
-	}
-
-}
-
-void dae::GameObject::AddChild(GameObject* obj)
+void dae::GameObject::SetParent(GameObject* parent, bool keepWorldPosition)
 {
 	if (m_pParent)
 	{
-		m_pParent->RemoveChild(this);
-	}
-	m_pChildren.push_back(obj);
-
-}
-
-int dae::GameObject::GetChildIndex(const GameObject* obj) const
-{
-	// loop through all children
-	for (size_t it = 0; it < m_pChildren.size(); ++it)
-	{
-		if (m_pChildren[it] == obj)
+		auto it = std::find(m_pParent->m_pChildren.begin(), m_pParent->m_pChildren.end(), this);
+		if (it != m_pParent->m_pChildren.end())
 		{
-			return static_cast<int>(it);
+			m_pChildren.erase(it);
+		}
+
+	}
+	m_pParent = parent;
+
+	if (m_pParent)
+	{
+		m_pParent->m_pChildren.emplace_back(this);
+	}
+
+	// if has a transform component,...
+	auto transform = GetComponent<TransformComponent>();
+	if (transform == nullptr)
+	{
+		return;
+	}
+	if (m_pParent == nullptr)
+	{
+		transform->SetLocalPosition(transform->GetWorldPosition());
+	}
+	else
+	{
+		auto transformParent = parent->GetComponent<TransformComponent>();
+		if (keepWorldPosition && transformParent != nullptr)
+		{
+			transform->SetLocalPosition(transform->GetLocalPosition() - transformParent->GetWorldPosition());
+		}
+		if (transform)
+		{
+			transform->SetPositionDirty();
 		}
 	}
 
-	// if not in m_pChildren, return invalid index aka failure
-	return -1;
+
 }

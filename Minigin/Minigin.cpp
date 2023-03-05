@@ -94,7 +94,6 @@ void dae::Minigin::Run(const std::function<void()>& load)
 	auto& input = InputManager::GetInstance();
 	auto& time = Time::GetInstance();
 
-
 	bool doContinue = true;
 
 #ifdef USE_FIXED_UPDATE
@@ -107,7 +106,6 @@ void dae::Minigin::Run(const std::function<void()>& load)
 
 		const auto currentTime = std::chrono::high_resolution_clock::now();
 		doContinue = input.ProcessInput();
-		
 
 #ifdef USE_FIXED_UPDATE
 		lag += time.GetDeltaTime();

@@ -22,10 +22,9 @@ public:
 	virtual void FixedUpdate() {};
 	virtual void Render() const {};
 
-	const dae::GameObject* GetOwner() const { return m_pGameObject; }
-	//std::weak_ptr<dae::GameObject> GetOwner() const { return m_pGameObject; };
-	//void SetOwner(std::shared_ptr<dae::GameObject> go);
+	explicit Component(dae::GameObject* owner) : m_pOwner{ owner } {};
+	const dae::GameObject* GetOwner() const { return m_pOwner; }
+
 private:
-	//std::weak_ptr<dae::GameObject> m_pGameObject;
-	dae::GameObject* m_pGameObject;
+	dae::GameObject* m_pOwner;
 };
