@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <memory>
+#include <SDL_ttf.h>
 #include "GameObject.h"
 #include "TransformComponent.h"
 #include "Component.h"
@@ -8,7 +9,6 @@
 namespace dae
 {
 	class Font;
-	class Texture2D;
 	class RenderComponent;
 
 	class TextComponent final : public Component
