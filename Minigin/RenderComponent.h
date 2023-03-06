@@ -1,6 +1,6 @@
 #pragma once
 #include "Component.h"
-#include "Transform.h"
+#include "TransformComponent.h"
 #include <string>
 
 namespace dae
@@ -12,6 +12,9 @@ namespace dae
 	public:
 		// Params: std::shared_ptr<GameObject> pOwner, std::shared_ptr<Texture2D> tex
 		RenderComponent(GameObject* pOwner);
+		RenderComponent(GameObject* pOwner, std::shared_ptr<Texture2D>texture);
+		RenderComponent(GameObject* pOwner, const std::string& filename);
+
 		~RenderComponent() override;
 
 		RenderComponent(const RenderComponent& other) = delete;
@@ -22,14 +25,11 @@ namespace dae
 		virtual void SetTexture(const std::string& filename);
 		virtual void SetTexture(const std::shared_ptr<Texture2D> tex) { m_Texture = tex; };
 		void SetPosition(float x, float y);
-
+		std::shared_ptr<Texture2D> GetTexture() const { return m_Texture; }
 		void Render() const override;
-		void Update() override;
+		void Update() override {};
 
 	protected:
-		dae::Transform m_Transform{};
 		std::shared_ptr<Texture2D> m_Texture{};
-		bool m_NeedsUpdate{ false };
-		std::string m_filePath{};
 	};
 }

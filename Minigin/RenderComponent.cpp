@@ -3,10 +3,22 @@
 #include "Renderer.h"
 #include "Texture2D.h"
 #include "Time.h"
+#include "GameObject.h"
+#include "TransformComponent.h"
 
 dae::RenderComponent::RenderComponent(GameObject* pOwner)
 	: Component(pOwner)
 {
+}
+
+dae::RenderComponent::RenderComponent(GameObject* owner, const std::string& filename) : Component(owner)
+{
+	SetTexture(filename);
+}
+
+dae::RenderComponent::RenderComponent(GameObject* owner, std::shared_ptr<Texture2D> texture) : Component{ owner }
+{
+	m_Texture = texture;
 }
 
 dae::RenderComponent::~RenderComponent()
@@ -14,34 +26,40 @@ dae::RenderComponent::~RenderComponent()
 
 void dae::RenderComponent::SetTexture(const std::string& filename)
 {
-	m_filePath = filename;
-	m_NeedsUpdate = true;
+	m_Texture = ResourceManager::GetInstance().LoadTexture(filename);
 }
 
 void dae::RenderComponent::SetPosition(float x, float y)
 {
-	m_Transform.SetPosition(x, y, 0.0f);
+	const auto owner = GetOwner();
+	if (owner == nullptr)
+	{
+		return;
+	}
+	auto transform = owner->GetComponent<TransformComponent>();
+	if (transform == nullptr)
+	{
+		return;
+	}
+
+	glm::vec3 pos{ x,y,0.f };
+	transform->SetLocalPosition(pos);
 }
 
 void dae::RenderComponent::Render() const
 {
-	if (m_Texture != nullptr)
+	auto owner = GetOwner();
+	if (owner == nullptr)
 	{
-		const auto& pos = m_Transform.GetPosition();
-		dae::Renderer::GetInstance().RenderTexture(*m_Texture, pos.x, pos.y);
+		return;
 	}
-
-	// TODO: Add RenderObjectComponent or something and use inheritance
-	// that way you won't have to type check in the future
-}
-
-void dae::RenderComponent::Update()
-{
-	if (m_NeedsUpdate)
+	auto transform = owner->GetComponent<TransformComponent>();
+	if (transform == nullptr)
 	{
-		m_Texture = dae::ResourceManager::GetInstance().LoadTexture(m_filePath);
-		m_NeedsUpdate = false;
+		return;
 	}
+	glm::vec3 pos = transform->GetWorldPosition();
+	dae::Renderer::GetInstance().RenderTexture(*m_Texture, pos.x, pos.y);
 }
 
 

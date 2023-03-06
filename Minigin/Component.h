@@ -10,7 +10,6 @@ class Component
 {
 public:
 	//Component(std::shared_ptr<dae::GameObject> pOwner);
-	Component(dae::GameObject* pOwner);
 	virtual ~Component() = default;
 
 	Component(const Component& other) = delete;
