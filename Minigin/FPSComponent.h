@@ -9,7 +9,7 @@ namespace dae
 	class FPSComponent final : public Component
 	{
 	public:
-		FPSComponent(GameObject* pOwner);
+		FPSComponent(std::shared_ptr<GameObject> pOwner);
 		virtual ~FPSComponent() override;
 
 		uint32_t GetFPS() const;

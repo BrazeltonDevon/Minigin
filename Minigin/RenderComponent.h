@@ -11,9 +11,9 @@ namespace dae
 	{
 	public:
 		// Params: std::shared_ptr<GameObject> pOwner, std::shared_ptr<Texture2D> tex
-		RenderComponent(GameObject* pOwner);
-		RenderComponent(GameObject* pOwner, std::shared_ptr<Texture2D>texture);
-		RenderComponent(GameObject* pOwner, const std::string& filename);
+		RenderComponent(std::shared_ptr<GameObject> pOwner);
+		RenderComponent(std::shared_ptr<GameObject> pOwner, std::shared_ptr<Texture2D>texture);
+		RenderComponent(std::shared_ptr<GameObject> pOwner, const std::string& filename);
 
 		~RenderComponent() override;
 

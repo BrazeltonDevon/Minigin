@@ -2,7 +2,7 @@
 #include "TextComponent.h"
 #include "Time.h"
 
-dae::FPSComponent::FPSComponent(GameObject* pOwner)
+dae::FPSComponent::FPSComponent(std::shared_ptr<GameObject> pOwner)
 	: Component{pOwner}
 {
 }
@@ -20,7 +20,7 @@ void dae::FPSComponent::Update()
 {
 	if (!m_pText)
 	{
-		m_pText = GetOwner()->GetComponent<TextComponent>();
+		m_pText = GetOwner().lock()->GetComponent<TextComponent>();
 	}
 
 	m_ElapsedSec = Time::GetInstance().GetDeltaTime();

@@ -6,17 +6,17 @@
 #include "GameObject.h"
 #include "TransformComponent.h"
 
-dae::RenderComponent::RenderComponent(GameObject* pOwner)
+dae::RenderComponent::RenderComponent(std::shared_ptr<GameObject> pOwner)
 	: Component(pOwner)
 {
 }
 
-dae::RenderComponent::RenderComponent(GameObject* owner, const std::string& filename) : Component(owner)
+dae::RenderComponent::RenderComponent(std::shared_ptr<GameObject> pOwner, const std::string& filename) : Component(pOwner)
 {
 	SetTexture(filename);
 }
 
-dae::RenderComponent::RenderComponent(GameObject* owner, std::shared_ptr<Texture2D> texture) : Component{ owner }
+dae::RenderComponent::RenderComponent(std::shared_ptr<GameObject> pOwner, std::shared_ptr<Texture2D> texture) : Component{ pOwner }
 {
 	m_Texture = texture;
 }
@@ -31,12 +31,12 @@ void dae::RenderComponent::SetTexture(const std::string& filename)
 
 void dae::RenderComponent::SetPosition(float x, float y)
 {
-	const auto owner = GetOwner();
-	if (owner == nullptr)
+	auto owner = GetOwner();
+	if (owner.expired())
 	{
 		return;
 	}
-	auto transform = owner->GetComponent<TransformComponent>();
+	auto transform = owner.lock()->GetComponent<TransformComponent>();
 	if (transform == nullptr)
 	{
 		return;
@@ -49,11 +49,11 @@ void dae::RenderComponent::SetPosition(float x, float y)
 void dae::RenderComponent::Render() const
 {
 	auto owner = GetOwner();
-	if (owner == nullptr)
+	if (owner.expired())
 	{
 		return;
 	}
-	auto transform = owner->GetComponent<TransformComponent>();
+	auto transform = owner.lock()->GetComponent<TransformComponent>();
 	if (transform == nullptr)
 	{
 		return;

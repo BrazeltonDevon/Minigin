@@ -9,7 +9,10 @@ namespace dae
 class Component
 {
 public:
-	//Component(std::shared_ptr<dae::GameObject> pOwner);
+	//explicit Component(std::shared_ptr<dae::GameObject> pOwner) : m_pOwner{ std::move(pOwner) };
+	//explicit Component(dae::GameObject* pOwner) : m_pOwner{ pOwner } {};
+	Component(std::shared_ptr<dae::GameObject> pOwner);
+	
 	virtual ~Component() = default;
 
 	Component(const Component& other) = delete;
@@ -21,9 +24,12 @@ public:
 	virtual void FixedUpdate() {};
 	virtual void Render() const {};
 
-	explicit Component(dae::GameObject* owner) : m_pOwner{ owner } {};
-	const dae::GameObject* GetOwner() const { return m_pOwner; }
+	const std::weak_ptr<dae::GameObject> GetOwner() const { return m_pOwner; };
+	//const dae::GameObject* GetOwner() const { return m_pOwner; }
+	//const std::shared_ptr<dae::GameObject*> GetOwner() const { return m_pOwner; }
 
 private:
-	dae::GameObject* m_pOwner;
+	//std::shared_ptr<dae::GameObject*> m_pOwner;
+	//dae::GameObject* m_pOwner;
+	std::weak_ptr<dae::GameObject> m_pOwner;
 };

@@ -9,7 +9,7 @@ namespace dae {
 	class RotationComponent : public Component
 	{
 	public:
-		RotationComponent(GameObject* owner, float radius, float rotSpeed);
+		RotationComponent(std::shared_ptr<GameObject> pOwner, float radius, float rotSpeed);
 		virtual void Render() const override;
 		virtual void Update() override;
 

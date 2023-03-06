@@ -3,7 +3,7 @@
 
 #include "Time.h"
 
-dae::RotationComponent::RotationComponent(GameObject* owner, float radius, float speedInRad) : Component(owner), m_Radius{ radius }, m_RotSpeed{ speedInRad }
+dae::RotationComponent::RotationComponent(std::shared_ptr<dae::GameObject> owner, float radius, float speedInRad) : Component(owner), m_Radius{ radius }, m_RotSpeed{ speedInRad }
 {
 	if (owner)
 	{
