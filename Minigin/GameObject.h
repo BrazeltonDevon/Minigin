@@ -20,7 +20,7 @@ namespace dae
 		GameObject& operator=(GameObject&& other) = delete;
 
 		void Update();
-		void FixedUpdate();
+		//void FixedUpdate();
 		void Render() const;
 
 		//Template component funtions

@@ -9,7 +9,7 @@ namespace dae {
 	class RotationComponent : public Component
 	{
 	public:
-		RotationComponent(std::shared_ptr<GameObject> pOwner, float radius, float rotSpeed);
+		RotationComponent(GameObject* pOwner, float radius, float rotSpeed);
 		virtual void Render() const override;
 		virtual void Update() override;
 
@@ -19,6 +19,7 @@ namespace dae {
 		void SetRadius(float radius) { m_Radius = radius; }
 		float GetRadius() const { return m_Radius; }
 	private:
+
 		glm::vec3 m_Center{};
 		float m_RotSpeed{};
 		float m_Radius{};

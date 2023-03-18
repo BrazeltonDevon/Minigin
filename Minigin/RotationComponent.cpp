@@ -3,11 +3,11 @@
 
 #include "Time.h"
 
-dae::RotationComponent::RotationComponent(std::shared_ptr<dae::GameObject> owner, float radius, float speedInRad) : Component(owner), m_Radius{ radius }, m_RotSpeed{ speedInRad }
+dae::RotationComponent::RotationComponent(GameObject* pOwner, float radius, float speedInRad) : Component(pOwner), m_Radius{radius}, m_RotSpeed{speedInRad}
 {
-	if (owner)
+	if (pOwner)
 	{
-		m_Transform = owner->GetComponent<TransformComponent>();
+		m_Transform = pOwner->GetComponent<TransformComponent>();
 		if (m_Transform)
 		{
 			m_Center = m_Transform->GetLocalPosition();
