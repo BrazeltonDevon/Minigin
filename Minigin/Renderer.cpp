@@ -161,43 +161,54 @@ void RenderData(const std::vector<float>& times, int vals, ImU32& color, int cou
 {
 	auto minIt = std::min_element(times.begin(), times.end());
 	auto maxIt = std::max_element(times.begin(), times.end());
+
 	float min = *minIt;
 	float max = *maxIt;
 
 	const float* dataFl[]{ {&times[0]} };
 	ImU32 colors[1]{ {color} };
 
-	ImGui::PlotConfig conf;
-	conf.values.ys_list = dataFl;
-	conf.values.ys_count = count;
-	conf.values.count = vals;
-	conf.line_thickness = 2.f;
-	conf.values.colors = colors;
-	conf.scale.min = min;
-	conf.scale.max = max;
-	conf.tooltip.show = true;
-	conf.frame_size = ImVec2(250, 100.f);
-	conf.line_thickness = 2.f;
+	ImGui::PlotConfig config;
+	config.values.ys_list = dataFl;
+	config.values.ys_count = count;
 
-	ImGui::Plot("plot", conf);
+	config.values.count = vals;
+	config.line_thickness = 2.f;
+
+	config.values.colors = colors;
+
+	config.scale.min = min;
+	config.scale.max = max;
+	
+	config.tooltip.show = true;
+
+	config.frame_size = ImVec2(250, 100.f);
+	config.line_thickness = 2.f;
+
+	ImGui::Plot("plot", config);
 }
 
 void RenderData(float min, float max, const float** data, int values, ImU32* colors, int count = 1)
 {
 	// Draw first plot with multiple sources
-	ImGui::PlotConfig conf;
-	conf.values.ys_list = data;
-	conf.values.ys_count = count;
-	conf.values.count = values;
-	conf.line_thickness = 2.f;
-	conf.values.colors = colors;
-	conf.scale.min = min;
-	conf.scale.max = max;
-	conf.tooltip.show = true;
-	conf.frame_size = ImVec2(250, 100.f);
-	conf.line_thickness = 2.f;
+	ImGui::PlotConfig config;
+	config.values.ys_list = data;
+	config.values.ys_count = count;
 
-	ImGui::Plot("plot", conf);
+	config.values.count = values;
+	config.line_thickness = 2.f;
+
+	config.values.colors = colors;
+
+	config.scale.min = min;
+	config.scale.max = max;
+
+	config.tooltip.show = true;
+
+	config.frame_size = ImVec2(250, 100.f);
+	config.line_thickness = 2.f;
+
+	ImGui::Plot("plot", config);
 }
 
 void dae::Renderer::DrawPlotEx1()
