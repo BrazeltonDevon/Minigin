@@ -18,17 +18,16 @@ void dae::GameObject::Update()
 	}
 }
 
-void dae::GameObject::FixedUpdate()
-{
-	for (auto& component : m_pComponents)
-	{
-		component->FixedUpdate();
-	}
-}
+//void dae::GameObject::FixedUpdate()
+//{
+//	for (auto& component : m_pComponents)
+//	{
+//		component->FixedUpdate();
+//	}
+//}
 
 void dae::GameObject::Render() const
 {
-
 	for (auto& component : m_pComponents)
 	{
 		component->Render();

@@ -2,7 +2,6 @@
 #include <string>
 #include <memory>
 #include <SDL_ttf.h>
-#include "GameObject.h"
 #include "TransformComponent.h"
 #include "Component.h"
 
@@ -14,7 +13,7 @@ namespace dae
 	class TextComponent final : public Component
 	{
 	public:
-		TextComponent(std::shared_ptr<GameObject> pOwner, const std::string& text, std::shared_ptr<Font> font, SDL_Color& color);
+		TextComponent(GameObject* pOwner, const std::string& text, std::shared_ptr<Font> font, SDL_Color& color);
 		virtual ~TextComponent() = default;
 		TextComponent(const TextComponent& other) = delete;
 		TextComponent(TextComponent&& other) = delete;

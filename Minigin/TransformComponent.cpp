@@ -21,12 +21,12 @@ void dae::TransformComponent::UpdateWorldPosition()
 	if (m_PosIsDirty)
 	{
 		auto owner = GetOwner();
-		if (owner.expired())
+		if (owner)
 		{
 			return;
 		}
 
-		auto parent{ owner.lock()->GetParent()};
+		auto parent{ owner->GetParent()};
 		if (parent == nullptr)
 		{
 			m_WorldPos = m_LocalPos;

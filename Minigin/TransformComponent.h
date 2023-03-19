@@ -7,7 +7,7 @@ namespace dae
 	class TransformComponent : public Component
 	{
 	public:
-		TransformComponent(std::shared_ptr<GameObject> pOwner) : Component(pOwner) {};
+		TransformComponent(GameObject* pOwner) : Component(pOwner) {};
 		const glm::vec3 GetLocalPosition() const { return m_LocalPos; }
 		const glm::vec3& GetWorldPosition();
 		void UpdateWorldPosition();

@@ -32,13 +32,13 @@ void Scene::Update()
 	}
 }
 
-void dae::Scene::FixedUpdate()
-{
-	for (auto& object : m_objects)
-	{
-		object->FixedUpdate();
-	}
-}
+//void dae::Scene::FixedUpdate()
+//{
+//	for (auto& object : m_objects)
+//	{
+//		object->FixedUpdate();
+//	}
+//}
 
 void Scene::Render() const
 {
