@@ -14,7 +14,7 @@ void dae::MoveCommand::Execute()
 	Execute(m_Dir);
 }
 
-void dae::MoveCommand::Execute(glm::vec3& dir)
+void dae::MoveCommand::Execute(glm::vec3 dir)
 {
 	GameObject* pOwner = GetOwner();
 	if (!pOwner)
