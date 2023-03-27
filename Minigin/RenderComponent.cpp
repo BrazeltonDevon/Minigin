@@ -4,22 +4,8 @@
 #include "Texture2D.h"
 #include "Time.h"
 #include "GameObject.h"
-#include "TransformComponent.h"
+#include "Transform.h"
 
-//dae::RenderComponent::RenderComponent(std::shared_ptr<GameObject> pOwner)
-//	: Component(pOwner)
-//{
-//}
-//
-//dae::RenderComponent::RenderComponent(std::shared_ptr<GameObject> pOwner, const std::string& filename) : Component(pOwner)
-//{
-//	SetTexture(filename);
-//}
-//
-//dae::RenderComponent::RenderComponent(std::shared_ptr<GameObject> pOwner, std::shared_ptr<Texture2D> texture) : Component{ pOwner }
-//{
-//	m_Texture = texture;
-//}
 
 dae::RenderComponent::RenderComponent(GameObject* pOwner, const std::string& filename) : Component(pOwner)
 {
@@ -31,8 +17,7 @@ dae::RenderComponent::RenderComponent(GameObject* pOwner, std::shared_ptr<Textur
 	m_Texture = texture;
 }
 
-dae::RenderComponent::~RenderComponent()
-= default;
+dae::RenderComponent::~RenderComponent() = default;
 
 void dae::RenderComponent::SetTexture(const std::string& filename)
 {
@@ -46,7 +31,7 @@ void dae::RenderComponent::SetPosition(float x, float y)
 	{
 		return;
 	}
-	auto transform = owner->GetComponent<TransformComponent>();
+	auto transform = owner->GetComponent<Transform>();
 	if (transform == nullptr)
 	{
 		return;
@@ -58,25 +43,12 @@ void dae::RenderComponent::SetPosition(float x, float y)
 
 void dae::RenderComponent::Render() const
 {
-	//auto owner = GetOwner();
-	//if (owner.expired())
-	//{
-	//	return;
-	//}
-	//auto transform = owner.lock()->GetComponent<TransformComponent>();
-	//if (transform == nullptr)
-	//{
-	//	return;
-	//}
-	//glm::vec3 pos = transform->GetWorldPosition();
-	//dae::Renderer::GetInstance().RenderTexture(*m_Texture, pos.x, pos.y);
-
 	auto owner = GetOwner();
 	if (owner == nullptr)
 	{
 		return;
 	}
-	auto transform = owner->GetComponent<TransformComponent>();
+	auto transform = owner->GetComponent<Transform>();
 	if (transform == nullptr)
 	{
 		return;

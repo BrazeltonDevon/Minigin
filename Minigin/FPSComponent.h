@@ -1,6 +1,6 @@
 #pragma once
 #include "Component.h"
-#include "TransformComponent.h"
+#include "Transform.h"
 #include <memory>
 #include <string>
 

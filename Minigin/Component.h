@@ -21,7 +21,7 @@ namespace dae
 		GameObject* GetOwner() const { return m_pOwner; }
 		explicit Component(GameObject* owner) : m_pOwner{ owner } {};
 	private:
-		GameObject* m_pOwner;
+		GameObject* m_pOwner = nullptr;
 	};
 }
 

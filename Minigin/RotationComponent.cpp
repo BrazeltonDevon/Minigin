@@ -5,14 +5,10 @@
 
 dae::RotationComponent::RotationComponent(GameObject* pOwner, float radius, float speedInRad) : Component(pOwner), m_Radius{radius}, m_RotSpeed{speedInRad}
 {
-	if (pOwner)
+	/*if (pOwner)
 	{
-		m_Transform = pOwner->GetComponent<TransformComponent>();
-		if (m_Transform)
-		{
-			m_Center = m_Transform->GetLocalPosition();
-		}
-	}
+		m_CurrentRadians = pOwner->GetRotation();
+	}*/
 }
 
 void dae::RotationComponent::Render() const
@@ -21,11 +17,6 @@ void dae::RotationComponent::Render() const
 
 void dae::RotationComponent::Update()
 {
-	if (!m_Transform)
-	{
-		return;
-	}
-
 	m_CurrentRadians += m_RotSpeed * Time::GetInstance().GetDeltaTime();
 
 	const float x_pos_rot{ sinf(m_CurrentRadians) * m_Radius };
@@ -33,5 +24,5 @@ void dae::RotationComponent::Update()
 
 	glm::vec3 newPos{ y_pos_rot + m_Center.x, x_pos_rot + m_Center.y, 0 };
 
-	m_Transform->SetLocalPosition(newPos);
+	//GetOwner()->SetPosition(newPos.x, newPos.y);
 }

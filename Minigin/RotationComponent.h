@@ -1,6 +1,6 @@
 #pragma once
 #include "Component.h"
-#include "TransformComponent.h"
+#include "Transform.h"
 
 namespace dae {
 	class GameObject;
@@ -26,7 +26,6 @@ namespace dae {
 
 		float m_CurrentRadians{};
 
-		TransformComponent* m_Transform{ nullptr };
 	};
 
 }
