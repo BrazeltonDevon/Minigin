@@ -44,13 +44,13 @@ namespace dae
 
 		int AddPlayer();
 
-		bool IsPressed(Xbox360Controller::Button button, int playerNr) const;
-		bool IsDownThisFrame(Xbox360Controller::Button button, int playerNr) const;
-		bool IsUpThisFrame(Xbox360Controller::Button button, int playerNr) const;
+		bool IsPressed(Xbox360Controller::Button button, int playerIdx) const;
+		bool IsDownThisFrame(Xbox360Controller::Button button, int playeIdx) const;
+		bool IsUpThisFrame(Xbox360Controller::Button button, int playerIdx) const;
 		glm::ivec2 GetMousePos()const { return m_MousePos; };
 		bool IsMousePressed() const { return m_isMousePressed; };
 
-		void AddCommand(Xbox360Controller::Button button, SDL_Scancode keyboardButton, std::shared_ptr<Command> command, int playerNr, KeyState state = KeyState::Down);
+		void AddCommand(Xbox360Controller::Button button, SDL_Scancode keyboardButton, std::shared_ptr<Command> command, int playerIdx, KeyState state = KeyState::Down);
 
 	private:
 
