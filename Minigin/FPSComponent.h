@@ -8,28 +8,21 @@ namespace dae
 {
 	class GameObject;
 	class TextComponent;
-	//class 2DTexture;
 
 	class FPSComponent final : public Component
 	{
 	public:
-		FPSComponent(GameObject* pOwner);
-		virtual ~FPSComponent() override;
-
-		uint32_t GetFPS() const;
+		FPSComponent(GameObject* object);
+		void Init();
+		void Render() const override;
 		void Update() override;
 	private:
-		float m_ElapsedSec{};
-		uint32_t m_FPS{};
-		//std::string m_FPSValue{ "0" };
-
-		float m_AccumulatedTime{0.1f};
-		float m_Seconds{ 0.1f };
-
-		float m_UpdateTimer{};
-		const float m_UpdateInterval{ 0.5f };
-		TextComponent* m_pText = nullptr;
-		bool m_NeedsUpdate{};
+		bool m_NeedsUpdate;
+		int m_FPSCount{};
+		float m_AccumulatedTime{};
+		float sec{ 1.0f };
+		std::string m_FPSValue{ "0 FPS" };
+		TextComponent* m_TextRenderComp{ nullptr };
 	};
 }
 

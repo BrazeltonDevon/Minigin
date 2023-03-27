@@ -1,50 +1,52 @@
 #include "FPSComponent.h"
-#include "TextComponent.h"
-#include "GameObject.h"
 #include <stdexcept>
 #include <SDL_ttf.h>
 #include <glm/glm.hpp>
+#include "Renderer.h"
+#include "TextComponent.h"
+#include "GameObject.h"
 #include "Texture2D.h"
 #include "Time.h"
 
-dae::FPSComponent::FPSComponent(GameObject* pOwner)
-	: Component{pOwner}
+dae::FPSComponent::FPSComponent(GameObject* object) : Component{ object }, m_NeedsUpdate{ true }
 {
 }
 
-dae::FPSComponent::~FPSComponent()
-{
-}
-
-uint32_t dae::FPSComponent::GetFPS() const
-{
-	return m_FPS;
-}
 
 void dae::FPSComponent::Update()
 {
-	m_ElapsedSec = Time::GetInstance().GetDeltaTime();
-	m_FPS = static_cast<int>(1.f / m_ElapsedSec);
-
-	m_UpdateTimer += m_ElapsedSec;
-	if (m_UpdateTimer >= m_UpdateInterval)
+	m_AccumulatedTime += Time::GetInstance().GetDeltaTime();
+	++m_FPSCount;
+	if (m_AccumulatedTime > sec)
 	{
+		m_AccumulatedTime -= sec;
+		m_FPSValue = std::to_string(m_FPSCount) + " FPS";
+		m_FPSCount = 0;
 		m_NeedsUpdate = true;
-		m_UpdateTimer = 0.f;
 	}
 
-	if (m_pText)
+	if (m_TextRenderComp)
 	{
 		if (m_NeedsUpdate)
 		{
-			m_pText->SetText("FPS: " + std::to_string(m_FPS));
+			m_TextRenderComp->SetText(m_FPSValue);
+			m_NeedsUpdate = false;
 		}
-
-		m_pText->Update();
-		m_NeedsUpdate = false;
+		m_TextRenderComp->Update();
 	}
-
 }
 
+void dae::FPSComponent::Init()
+{
+	auto owner = GetOwner();
+	m_TextRenderComp = owner->GetComponent<dae::TextComponent>();
+}
 
+void dae::FPSComponent::Render() const
+{
+	if (m_TextRenderComp != nullptr)
+	{
+		m_TextRenderComp->Render();
 
+	}
+}

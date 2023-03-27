@@ -10,11 +10,6 @@ namespace dae
 	class RenderComponent : public Component
 	{
 	public:
-		// Params: std::shared_ptr<GameObject> pOwner, std::shared_ptr<Texture2D> tex
-		//RenderComponent(std::shared_ptr<GameObject> pOwner);
-		//RenderComponent(std::shared_ptr<GameObject> pOwner, std::shared_ptr<Texture2D>texture);
-		//RenderComponent(std::shared_ptr<GameObject> pOwner, const std::string& filename);
-
 		RenderComponent(GameObject* pOwner) : Component(pOwner) {};
 		RenderComponent(GameObject* pOwner, std::shared_ptr<Texture2D>texture);
 		RenderComponent(GameObject* pOwner, const std::string& filename);
@@ -27,13 +22,17 @@ namespace dae
 		RenderComponent& operator=(RenderComponent&& other) = delete;
 
 		virtual void SetTexture(const std::string& filename);
-		virtual void SetTexture(const std::shared_ptr<Texture2D> tex) { m_Texture = tex; };
+		virtual void SetTexture(const std::shared_ptr<Texture2D> tex);
+
 		void SetPosition(float x, float y);
+		void SetWidthHeight(float w, float h);
 		std::shared_ptr<Texture2D> GetTexture() const { return m_Texture; }
+
 		void Render() const override;
 		void Update() override {};
-
-	protected:
+	private:
 		std::shared_ptr<Texture2D> m_Texture{};
+		float m_Width{};
+		float m_Height{};
 	};
 }

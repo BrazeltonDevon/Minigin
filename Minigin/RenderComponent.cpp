@@ -1,10 +1,10 @@
 #include "RenderComponent.h"
-#include "ResourceManager.h"
 #include "Renderer.h"
 #include "Texture2D.h"
-#include "Time.h"
+#include "ResourceManager.h"
+#include <string>
+#include "Texture2D.h"
 #include "GameObject.h"
-#include "Transform.h"
 
 
 dae::RenderComponent::RenderComponent(GameObject* pOwner, const std::string& filename) : Component(pOwner)
@@ -21,7 +21,15 @@ dae::RenderComponent::~RenderComponent() = default;
 
 void dae::RenderComponent::SetTexture(const std::string& filename)
 {
-	m_Texture = ResourceManager::GetInstance().LoadTexture(filename);
+	auto pTexture = ResourceManager::GetInstance().LoadTexture(filename);
+	SetTexture(pTexture);
+}
+
+void dae::RenderComponent::SetTexture(const std::shared_ptr<Texture2D> tex)
+{
+	m_Texture = tex;
+	glm::ivec2 size = m_Texture->GetSize();
+	SetWidthHeight(static_cast<float>(size.x), static_cast<float>(size.y));
 }
 
 void dae::RenderComponent::SetPosition(float x, float y)
@@ -41,6 +49,12 @@ void dae::RenderComponent::SetPosition(float x, float y)
 	transform->SetLocalPosition(pos);
 }
 
+void dae::RenderComponent::SetWidthHeight(float w, float h)
+{
+	m_Width = w;
+	m_Height = h;
+}
+
 void dae::RenderComponent::Render() const
 {
 	auto owner = GetOwner();
@@ -54,7 +68,7 @@ void dae::RenderComponent::Render() const
 		return;
 	}
 	glm::vec3 pos = transform->GetWorldPosition();
-	dae::Renderer::GetInstance().RenderTexture(*m_Texture, pos.x, pos.y);
+	dae::Renderer::GetInstance().RenderTexture(*m_Texture,pos.x,pos.y,m_Width,m_Height);
 }
 
 

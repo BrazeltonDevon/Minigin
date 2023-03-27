@@ -19,9 +19,6 @@
     <Filter Include="Singletons">
       <UniqueIdentifier>{1ad43b50-a0e7-484c-b74d-30a4e6b788c5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="imgui">
-      <UniqueIdentifier>{e2fef754-6bc7-4b7d-a43a-cd9fd50ad632}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Input">
       <UniqueIdentifier>{d92a9937-81e0-411d-9e36-70ec19aad66d}</UniqueIdentifier>
     </Filter>

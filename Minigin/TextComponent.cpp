@@ -22,7 +22,12 @@ void dae::TextComponent::Init()
 	auto owner = GetOwner();
 	if (owner)
 	{
-		m_RenderComponent = owner->GetComponent<dae::RenderComponent>();
+		m_pRenderComponent = owner->GetComponent<dae::RenderComponent>();
+
+		if (m_pRenderComponent == nullptr)
+		{
+			throw std::runtime_error(std::string("Render component missing, text component failed"));
+		}
 	}
 }
 
@@ -31,7 +36,6 @@ void dae::TextComponent::Update()
 {
 	if (m_NeedsUpdate)
 	{
-		//const SDL_Color color = { 255,255,255 }; // only white text is supported now
 		const auto surf = TTF_RenderText_Blended(m_Font->GetFont(), m_Text.c_str(), m_Color);
 		if (surf == nullptr) 
 		{
@@ -43,9 +47,9 @@ void dae::TextComponent::Update()
 			throw std::runtime_error(std::string("Create text texture from surface failed: ") + SDL_GetError());
 		}
 		SDL_FreeSurface(surf);
-		if (m_RenderComponent)
+		if (m_pRenderComponent)
 		{
-			m_RenderComponent->SetTexture(std::make_shared<Texture2D>(texture));
+			m_pRenderComponent->SetTexture(std::make_shared<Texture2D>(texture));
 		}
 
 		m_NeedsUpdate = false;
@@ -62,7 +66,7 @@ void dae::TextComponent::SetText(const std::string& text)
 
 void dae::TextComponent::SetPosition(const float x, const float y)
 {
-	m_RenderComponent->SetPosition(x, y);
+	m_pRenderComponent->SetPosition(x, y);
 }
 
 

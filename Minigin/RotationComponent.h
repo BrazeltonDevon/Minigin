@@ -4,7 +4,7 @@
 
 namespace dae {
 	class GameObject;
-	// TransformComponent;
+	class TransformComponent;
 
 	class RotationComponent : public Component
 	{
@@ -25,7 +25,7 @@ namespace dae {
 		float m_Radius{};
 
 		float m_CurrentRadians{};
-
+		Transform* m_Transform{ nullptr };
 	};
 
 }

@@ -21,6 +21,9 @@ namespace dae
 		const glm::vec3& GetLocalPosition() const;
 
 		//void SetWorldPosition(const glm::vec3& pos) { m_WorldPos = pos; }
+
+		virtual void Render() const override {};
+		virtual void Update() override {};
 		
 		// public so can be called in GameObject for SetParent
 		void SetPositionDirty(bool val);
