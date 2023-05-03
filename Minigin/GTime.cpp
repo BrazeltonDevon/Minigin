@@ -1,6 +1,6 @@
-#include "Time.h"
+#include "GTime.h"
 
-void dae::Time::Reset()
+void dae::GTime::Reset()
 {
 	std::chrono::steady_clock::time_point currTime{ std::chrono::steady_clock::now() };
 	m_BaseTime = currTime;
@@ -11,7 +11,7 @@ void dae::Time::Reset()
 	m_IsStopped = false;
 }
 
-void dae::Time::Update()
+void dae::GTime::Update()
 {
 	//
 	if (m_IsStopped)
@@ -69,7 +69,7 @@ void dae::Time::Update()
 	}
 }
 
-void dae::Time::Start()
+void dae::GTime::Start()
 {
 	if (m_IsStopped)
 	{
@@ -82,7 +82,7 @@ void dae::Time::Start()
 	}
 }
 
-void dae::Time::Stop()
+void dae::GTime::Stop()
 {
 	if (!m_IsStopped)
 	{

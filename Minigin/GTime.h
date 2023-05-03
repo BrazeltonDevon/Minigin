@@ -5,16 +5,16 @@
 
 namespace dae
 {
-	class Time final : public Singleton<Time>
+	class GTime final : public Singleton<GTime>
 	{
 	public:
-		Time() = default;
-		~Time() override = default;
+		GTime() = default;
+		~GTime() override = default;
 
-		Time(const Time& other) = delete;
-		Time(Time&& other) noexcept = delete;
-		Time& operator=(const Time& other) = delete;
-		Time& operator=(Time&& other) noexcept = delete;
+		GTime(const GTime& other) = delete;
+		GTime(GTime&& other) noexcept = delete;
+		GTime& operator=(const GTime& other) = delete;
+		GTime& operator=(GTime&& other) noexcept = delete;
 
 		// resets the clock
 		void Reset();

@@ -2,6 +2,14 @@
 #include "Component.h"
 #include <vector>
 #include <string>
+<<<<<<< Updated upstream
+=======
+#include "Transform.h"
+#include <typeindex>
+#include <unordered_map>
+#include <memory>
+>>>>>>> Stashed changes
+
 
 namespace dae
 {
@@ -25,6 +33,7 @@ namespace dae
 
 		//Template component funtions
 		template<typename Component>
+<<<<<<< Updated upstream
 		Component* GetComponent() const;
 		template<typename Component>
 		Component* AddComponent(Component* pComponent);
@@ -34,6 +43,13 @@ namespace dae
 		void SetParent(GameObject* parent, bool keepWorldPosition);
 		GameObject* GetParent() const { return m_pParent; };
 
+=======
+		bool IsComponentAdded() const
+		{
+			const std::type_index typeIndex = std::type_index(typeid(Component));
+			return m_pComponents.contains(typeIndex);
+		}
+>>>>>>> Stashed changes
 	private:
 		// Parent-child variables
 		GameObject* m_pParent{ nullptr };

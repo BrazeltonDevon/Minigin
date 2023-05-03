@@ -1,6 +1,12 @@
 #include "FPSComponent.h"
 #include "TextComponent.h"
+<<<<<<< Updated upstream
 #include "Time.h"
+=======
+#include "GameObject.h"
+#include "Texture2D.h"
+#include "GTime.h"
+>>>>>>> Stashed changes
 
 dae::FPSComponent::FPSComponent(std::shared_ptr<GameObject> pOwner)
 	: Component{pOwner}
@@ -18,7 +24,13 @@ uint32_t dae::FPSComponent::GetFPS() const
 
 void dae::FPSComponent::Update()
 {
+<<<<<<< Updated upstream
 	if (!m_pText)
+=======
+	m_AccumulatedTime += GTime::GetInstance().GetDeltaTime();
+	++m_FPSCount;
+	if (m_AccumulatedTime > sec)
+>>>>>>> Stashed changes
 	{
 		m_pText = GetOwner().lock()->GetComponent<TextComponent>();
 	}
