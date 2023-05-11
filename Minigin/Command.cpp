@@ -1,7 +1,7 @@
 #include "Command.h"
 #include "GameObject.h"
 #include <glm/fwd.hpp>
-#include "Time.h"
+#include "GTime.h"
 
 dae::Command::Command(GameObject* actor) :
 	m_pOwner{ actor }
@@ -27,7 +27,7 @@ void dae::MoveCommand::Execute(glm::vec3 dir)
 		return;
 	}
 
-	auto deltaTime = Time::GetInstance().GetDeltaTime();
+	auto deltaTime = GTime::GetInstance().GetDeltaTime();
 
 	glm::vec3 pos = pTransform->GetLocalPosition();
 	pos.x += (dir.x * m_Speed) * deltaTime;

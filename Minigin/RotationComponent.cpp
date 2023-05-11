@@ -1,7 +1,7 @@
 #include "RotationComponent.h"
 #include "GameObject.h"
 
-#include "Time.h"
+#include "GTime.h"
 
 dae::RotationComponent::RotationComponent(GameObject* pOwner, float radius, float speedInRad) : Component(pOwner), m_Radius{radius}, m_RotSpeed{speedInRad}
 {
@@ -21,7 +21,7 @@ void dae::RotationComponent::Render() const
 
 void dae::RotationComponent::Update()
 {
-	m_CurrentRadians += m_RotSpeed * Time::GetInstance().GetDeltaTime();
+	m_CurrentRadians += m_RotSpeed * GTime::GetInstance().GetDeltaTime();
 
 	const float x_pos_rot{ sinf(m_CurrentRadians) * m_Radius };
 	const float y_pos_rot{ cosf(m_CurrentRadians) * m_Radius };

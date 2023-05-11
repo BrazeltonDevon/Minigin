@@ -10,7 +10,8 @@
 #include "Renderer.h"
 #include "ResourceManager.h"
 #include <ctime>
-#include "Time.h"
+#include <thread>
+#include "GTime.h"
 
 //**************************************
 // DEFINE FIXED UPDATE USE
@@ -72,7 +73,7 @@ dae::Minigin::Minigin(const std::string &dataPath)
 	}
 
 	Renderer::GetInstance().Init(g_window);
-	Time::GetInstance().Start();
+	GTime::GetInstance().Start();
 	ResourceManager::GetInstance().Init(dataPath);
 }
 
@@ -92,7 +93,7 @@ void dae::Minigin::Run(const std::function<void()>& load)
 	auto& renderer = Renderer::GetInstance();
 	auto& sceneManager = SceneManager::GetInstance();
 	auto& input = InputManager::GetInstance();
-	auto& time = Time::GetInstance();
+	auto& time = GTime::GetInstance();
 
 	bool doContinue = true;
 

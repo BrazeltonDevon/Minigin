@@ -6,7 +6,7 @@
 #include "TextComponent.h"
 #include "GameObject.h"
 #include "Texture2D.h"
-#include "Time.h"
+#include "GTime.h"
 
 dae::FPSComponent::FPSComponent(GameObject* object) : Component{ object }, m_NeedsUpdate{ true }
 {
@@ -15,7 +15,7 @@ dae::FPSComponent::FPSComponent(GameObject* object) : Component{ object }, m_Nee
 
 void dae::FPSComponent::Update()
 {
-	m_AccumulatedTime += Time::GetInstance().GetDeltaTime();
+	m_AccumulatedTime += GTime::GetInstance().GetDeltaTime();
 	++m_FPSCount;
 	if (m_AccumulatedTime > sec)
 	{

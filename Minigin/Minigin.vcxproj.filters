@@ -63,7 +63,7 @@
     <ClInclude Include="RenderComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
-    <ClInclude Include="Time.h">
+    <ClInclude Include="GTime.h">
       <Filter>Singletons</Filter>
     </ClInclude>
     <ClInclude Include="RotationComponent.h">
@@ -107,9 +107,6 @@
     <ClCompile Include="Font.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Minigin.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -122,7 +119,7 @@
     <ClCompile Include="RenderComponent.cpp">
       <Filter>Components</Filter>
     </ClCompile>
-    <ClCompile Include="Time.cpp">
+    <ClCompile Include="GTime.cpp">
       <Filter>Singletons</Filter>
     </ClCompile>
     <ClCompile Include="RotationComponent.cpp">

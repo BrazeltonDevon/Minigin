@@ -1,11 +1,7 @@
 #include <stdexcept>
 #include "Renderer.h"
-#include <stdexcept>
-#include "Renderer.h"
 #include "SceneManager.h"
 #include "Texture2D.h"
-#include <chrono>
-#include <iostream>
 
 
 int GetOpenGLDriverIndex()
