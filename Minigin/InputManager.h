@@ -1,12 +1,13 @@
 #pragma once
+#define WIN32_LEAN_AND_MEAN
+#include <windows.h>
+
 #include <XInput.h>
 #include "Singleton.h"
 #include <map>
 #include <memory>
-
 #include "Command.h"
 #include "Xbox360Controller.h"
-
 
 namespace dae
 {

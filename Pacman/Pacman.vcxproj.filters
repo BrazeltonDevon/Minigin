@@ -13,10 +13,30 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Components">
+      <UniqueIdentifier>{465f9689-8ce1-4340-b2c4-0228943c230a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Pacman.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="LivesDisplayComponent.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerComponent.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="LivesDisplayComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Enums.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

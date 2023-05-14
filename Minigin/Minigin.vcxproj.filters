@@ -22,6 +22,9 @@
     <Filter Include="Input">
       <UniqueIdentifier>{d92a9937-81e0-411d-9e36-70ec19aad66d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Observer">
+      <UniqueIdentifier>{355cbaa5-7d42-4679-9534-2865ec896f9e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Singleton.h">
@@ -84,6 +87,12 @@
     <ClInclude Include="InputManager.h">
       <Filter>Input</Filter>
     </ClInclude>
+    <ClInclude Include="Observer.h">
+      <Filter>Observer</Filter>
+    </ClInclude>
+    <ClInclude Include="Subject.h">
+      <Filter>Observer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ResourceManager.cpp">
@@ -136,6 +145,9 @@
     </ClCompile>
     <ClCompile Include="InputManager.cpp">
       <Filter>Input</Filter>
+    </ClCompile>
+    <ClCompile Include="Subject.cpp">
+      <Filter>Observer</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
