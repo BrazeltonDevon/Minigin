@@ -23,6 +23,7 @@ namespace dae
 		bool IsGhost() { return m_IsGhost; }
 		void AddObserver(Observer* obs);
 
+		void Start();
 		void Die();
 
 	private:

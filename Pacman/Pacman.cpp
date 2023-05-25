@@ -209,21 +209,26 @@ void LivesScene(dae::Scene& scene)
 {
 	using namespace dae;
 
+	// Movement directions
+	glm::vec3 up = { 0.f,-1.f,0.f };
+	glm::vec3 down = { 0.f,1.f,0.f };
+	glm::vec3 right = { 1.f,0.f,0.f };
+	glm::vec3 left = { -1.f,0.f,0.f };
+
 	SDL_Color textColor{ 255,255,255 };
-
-	auto livesdisplay = std::make_shared<GameObject>();
-
 	auto font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
+
+
+	// LIVES
+	auto livesdisplay = std::make_shared<GameObject>();
 	auto transform = livesdisplay->AddComponent<Transform>();
 	transform->SetLocalPosition({ 80.f, 0.f, 0.f });
 
 	// Make sure to add the render component before the text component!
 	auto renderer = livesdisplay->AddComponent<RenderComponent>();
-
 	auto text_comp = livesdisplay->AddComponent<TextComponent>("Lives: ", font, textColor);
 	text_comp->Init();
 	livesdisplay->AddComponent<LivesDisplayComponent>();
-
 	scene.Add(livesdisplay);
 
 	InputManager::GetInstance().AddPlayer();
@@ -233,7 +238,31 @@ void LivesScene(dae::Scene& scene)
 	transform->SetLocalPosition({ 350.f, 350.f, 0.f });
 	auto pacRender = pacman_go->AddComponent<RenderComponent>();
 	pacRender->SetTexture("pacman.png");
-	auto playerComponent = pacman_go->AddComponent<PlayerComponent>(false, 1);
+	auto playerComponent = pacman_go->AddComponent<PlayerComponent>(false, 0);
+
+	playerComponent->AddObserver(livesdisplay->GetComponent<LivesDisplayComponent>());
+	playerComponent->Start();
+
+
+	float moveSpeed = 100.f;
+	auto moveUp = std::make_shared<MoveCommand>(pacman_go.get(), up, moveSpeed);
+	auto moveDown = std::make_shared<MoveCommand>(pacman_go.get(), down, moveSpeed);
+	auto moveLeft = std::make_shared<MoveCommand>(pacman_go.get(), left, moveSpeed);
+	auto moveRight = std::make_shared<MoveCommand>(pacman_go.get(), right, moveSpeed);
+
+	auto dieCommand = std::make_shared<DieCommand>(pacman_go.get());
+
+	// UP
+	InputManager::GetInstance().AddCommand(Xbox360Controller::Button::DPADUp, SDL_SCANCODE_W, moveUp, 0, InputManager::KeyState::Pressed);
+	// DOWN
+	InputManager::GetInstance().AddCommand(Xbox360Controller::Button::DPADDown, SDL_SCANCODE_S, moveDown, 0, InputManager::KeyState::Pressed);
+	// RIGHT
+	InputManager::GetInstance().AddCommand(Xbox360Controller::Button::DPADRight, SDL_SCANCODE_D, moveRight, 0, InputManager::KeyState::Pressed);
+	// LEFT
+	InputManager::GetInstance().AddCommand(Xbox360Controller::Button::DPADLeft, SDL_SCANCODE_A, moveLeft, 0, InputManager::KeyState::Pressed);
+
+	// DIE
+	InputManager::GetInstance().AddCommand(Xbox360Controller::Button::ButtonA, SDL_SCANCODE_E, dieCommand, 0, InputManager::KeyState::Down);
 
 	scene.Add(pacman_go);
 

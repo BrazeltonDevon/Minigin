@@ -67,15 +67,15 @@ bool dae::InputManager::ProcessInput()
 		case KeyState::Down:
 			if (IsDownThisFrame(controller->controllerButton, controller->playerIdx))
 				controller->command->Execute();
-			//break;
+			break;
 		case KeyState::Pressed:
 			if (IsPressed(controller->controllerButton, controller->playerIdx))
 				controller->command->Execute();
-			//break;
+			break;
 		case KeyState::Up:
 			if (IsUpThisFrame(controller->controllerButton, controller->playerIdx))
 				controller->command->Execute();
-			//break;
+			break;
 		default:
 			break;
 		}
