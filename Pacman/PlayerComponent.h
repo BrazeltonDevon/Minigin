@@ -10,16 +10,20 @@ namespace dae
 	class PlayerComponent : public Component
 	{
 	public:
-		PlayerComponent(bool isGhost, int playerNr, GameObject* owner);
+		PlayerComponent(GameObject* owner, bool isGhost, int playerNr);
 		~PlayerComponent();
 
 		void Update() override;
+		void Initialize();
 		void SetDirection(Direction direction);
 
 		//bool GhostCollision(glm::vec3 pos);
 		bool IsPoweredUp() { return m_IsPoweredUp; }
 		int GetLives() { return m_Lives; }
 		bool IsGhost() { return m_IsGhost; }
+		void AddObserver(Observer* obs);
+
+		void Die();
 
 	private:
 		//void UpdateMovement(float deltaTime);

@@ -26,12 +26,16 @@
 #include "RotationComponent.h"
 #include "InputManager.h"
 #include "Transform.h"
+#include "GameCommands.h"
+#include "LivesDisplayComponent.h"
+#include "PlayerComponent.h"
 
 using namespace dae;
 
 void LoadBackground(dae::Scene& scene);
 void RotationComponentScene(dae::Scene& scene);
 void CommandsScene(dae::Scene& scene);
+void LivesScene(dae::Scene& scene);
 
 void load()
 {
@@ -41,7 +45,8 @@ void load()
 
 	LoadBackground(scene);
 	//RotationComponentScene(scene);
-	CommandsScene(scene);
+	//CommandsScene(scene);
+	LivesScene(scene);
 }
 
 int main(int, char* []) {
@@ -66,7 +71,6 @@ void RotationComponentScene(dae::Scene& scene)
 	pacman_go->AddComponent<RotationComponent>(radius_pacman, rotSpeedPacman);
 	scene.Add(pacman_go);
 
-
 	const float radius_ghost{ 20.f };
 	const float rotSpeedGhost{ 9.f };
 
@@ -81,7 +85,6 @@ void RotationComponentScene(dae::Scene& scene)
 
 	ghost_go->SetParent(pacman_go.get(), false);
 	scene.Add(ghost_go);
-
 }
 
 void LoadBackground(dae::Scene& scene)
@@ -161,8 +164,6 @@ void CommandsScene(dae::Scene& scene)
 	auto moveLeft = std::make_shared<MoveCommand>(pacman_go.get(), left, moveSpeed);
 	auto moveRight = std::make_shared<MoveCommand>(pacman_go.get(), right, moveSpeed);
 
-
-
 	// UP
 	InputManager::GetInstance().AddCommand(Xbox360Controller::Button::DPADUp, SDL_SCANCODE_W, moveUp, 0, InputManager::KeyState::Down);
 	// DOWN
@@ -204,3 +205,43 @@ void CommandsScene(dae::Scene& scene)
 
 }
 
+void LivesScene(dae::Scene& scene)
+{
+	using namespace dae;
+
+	SDL_Color textColor{ 255,255,255 };
+
+	auto livesdisplay = std::make_shared<GameObject>();
+
+	auto font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
+	auto transform = livesdisplay->AddComponent<Transform>();
+	transform->SetLocalPosition({ 80.f, 0.f, 0.f });
+
+	// Make sure to add the render component before the text component!
+	auto renderer = livesdisplay->AddComponent<RenderComponent>();
+
+	auto text_comp = livesdisplay->AddComponent<TextComponent>("Lives: ", font, textColor);
+	text_comp->Init();
+	livesdisplay->AddComponent<LivesDisplayComponent>();
+
+	scene.Add(livesdisplay);
+
+	InputManager::GetInstance().AddPlayer();
+
+	auto pacman_go = std::make_shared<GameObject>();
+	transform = pacman_go->AddComponent<Transform>();
+	transform->SetLocalPosition({ 350.f, 350.f, 0.f });
+	auto pacRender = pacman_go->AddComponent<RenderComponent>();
+	pacRender->SetTexture("pacman.png");
+	auto playerComponent = pacman_go->AddComponent<PlayerComponent>(false, 1);
+
+	scene.Add(pacman_go);
+
+}
+
+//void MakePlayer1(dae::Scene& scene)
+//{
+//
+//
+//
+//}

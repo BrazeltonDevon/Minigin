@@ -6,7 +6,7 @@
 #include "GTime.h"
 #include "InputManager.h"
 
-dae::PlayerComponent::PlayerComponent(bool isGhost, int playerNr, GameObject* owner)
+dae::PlayerComponent::PlayerComponent(GameObject* owner, bool isGhost, int playerNr)
 	: Component{owner}, m_IsGhost{isGhost}
 {
 
@@ -19,10 +19,30 @@ dae::PlayerComponent::~PlayerComponent()
 
 void dae::PlayerComponent::Update()
 {
-	auto deltaTime = GTime::GetInstance().GetDeltaTime();
+	//auto deltaTime = GTime::GetInstance().GetDeltaTime();
+}
+
+void dae::PlayerComponent::Initialize()
+{
+	m_PlayerSubject->Notify(Event::PlayerStart, this->GetOwner());
 }
 
 void dae::PlayerComponent::SetDirection(Direction direction)
 {
+
+}
+
+void dae::PlayerComponent::AddObserver(Observer* obs)
+{
+	m_PlayerSubject->AddObserver(obs);
+}
+
+void dae::PlayerComponent::Die()
+{
+	if (m_Lives > 0)
+	{
+		--m_Lives;
+	}
+	m_PlayerSubject->Notify(Event::PlayerDied, this->GetOwner());
 
 }

@@ -16,6 +16,9 @@
     <Filter Include="Components">
       <UniqueIdentifier>{465f9689-8ce1-4340-b2c4-0228943c230a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Commands">
+      <UniqueIdentifier>{2a59608f-a441-464f-9960-57d09964f6e3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Pacman.cpp">
@@ -27,6 +30,9 @@
     <ClCompile Include="PlayerComponent.cpp">
       <Filter>Components</Filter>
     </ClCompile>
+    <ClCompile Include="GameCommands.cpp">
+      <Filter>Commands</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="LivesDisplayComponent.h">
@@ -37,6 +43,9 @@
     </ClInclude>
     <ClInclude Include="Enums.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GameCommands.h">
+      <Filter>Commands</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
