@@ -108,7 +108,7 @@ void LoadBackground(dae::Scene& scene)
 	auto to = std::make_shared<dae::GameObject>();
 	auto font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
 	transform = to->AddComponent<Transform>();
-	transform->SetLocalPosition({ 80.f, 50.f, 0.f });
+	transform->SetLocalPosition({ 80.f, 70.f, 0.f });
 
 	// Make sure to add the render component before the text component!
 	auto renderer = to->AddComponent<RenderComponent>();
@@ -217,16 +217,16 @@ void LivesScene(dae::Scene& scene)
 
 	SDL_Color textColor{ 255,255,255 };
 	auto font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
-
+	auto livesFont = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 25);
 
 	// LIVES
 	auto livesdisplay = std::make_shared<GameObject>();
 	auto transform = livesdisplay->AddComponent<Transform>();
-	transform->SetLocalPosition({ 80.f, 0.f, 0.f });
+	transform->SetLocalPosition({ 0.f, 20.f, 0.f });
 
 	// Make sure to add the render component before the text component!
 	auto renderer = livesdisplay->AddComponent<RenderComponent>();
-	auto text_comp = livesdisplay->AddComponent<TextComponent>("Lives: ", font, textColor);
+	auto text_comp = livesdisplay->AddComponent<TextComponent>("Lives: ", livesFont, textColor);
 	text_comp->Init();
 	livesdisplay->AddComponent<LivesDisplayComponent>();
 	scene.Add(livesdisplay);
@@ -242,7 +242,6 @@ void LivesScene(dae::Scene& scene)
 
 	playerComponent->AddObserver(livesdisplay->GetComponent<LivesDisplayComponent>());
 	playerComponent->Start();
-
 
 	float moveSpeed = 100.f;
 	auto moveUp = std::make_shared<MoveCommand>(pacman_go.get(), up, moveSpeed);
