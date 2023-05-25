@@ -30,6 +30,7 @@
 #include "LivesDisplayComponent.h"
 #include "PlayerComponent.h"
 
+
 using namespace dae;
 
 void LoadBackground(dae::Scene& scene);
