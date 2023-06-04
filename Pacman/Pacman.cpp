@@ -102,7 +102,6 @@ void LoadBackground(dae::Scene& scene)
 	transform->SetLocalPosition({ 216, 180,0 });
 	scene.Add(go);
 
-
 	// Prog 4 Text
 	SDL_Color textColor{ 255,255,255 };
 
@@ -127,7 +126,6 @@ void LoadBackground(dae::Scene& scene)
 
 	transform = fpsGo->AddComponent<Transform>();
 	transform->SetLocalPosition({ 0.f,0.f,0.f });
-
 
 	auto font2 = ResourceManager::GetInstance().LoadFont("Lingua.otf", 20);
 	auto text = fpsGo->AddComponent<TextComponent>("0 FPS", font2, textColor);
@@ -160,10 +158,10 @@ void CommandsScene(dae::Scene& scene)
 
 	float moveSpeed = 100.f;
 
-	auto moveUp = std::make_shared<MoveCommand>(pacman_go.get(), up, moveSpeed);
-	auto moveDown = std::make_shared<MoveCommand>(pacman_go.get(), down, moveSpeed);
-	auto moveLeft = std::make_shared<MoveCommand>(pacman_go.get(), left, moveSpeed);
-	auto moveRight = std::make_shared<MoveCommand>(pacman_go.get(), right, moveSpeed);
+	auto moveUp = std::make_shared<MoveCommandOld>(pacman_go.get(), up, moveSpeed);
+	auto moveDown = std::make_shared<MoveCommandOld>(pacman_go.get(), down, moveSpeed);
+	auto moveLeft = std::make_shared<MoveCommandOld>(pacman_go.get(), left, moveSpeed);
+	auto moveRight = std::make_shared<MoveCommandOld>(pacman_go.get(), right, moveSpeed);
 
 	// UP
 	InputManager::GetInstance().AddCommand(Xbox360Controller::Button::DPADUp, SDL_SCANCODE_W, moveUp, 0, InputManager::KeyState::Down);
@@ -186,10 +184,10 @@ void CommandsScene(dae::Scene& scene)
 
 	moveSpeed = 200.f;
 
-	auto moveUp2 = std::make_shared<MoveCommand>(mspacman_go.get(), up, moveSpeed);
-	auto moveDown2 = std::make_shared<MoveCommand>(mspacman_go.get(), down, moveSpeed);
-	auto moveLeft2 = std::make_shared<MoveCommand>(mspacman_go.get(), left, moveSpeed);
-	auto moveRight2 = std::make_shared<MoveCommand>(mspacman_go.get(), right, moveSpeed);
+	auto moveUp2 = std::make_shared<MoveCommandOld>(mspacman_go.get(), up, moveSpeed);
+	auto moveDown2 = std::make_shared<MoveCommandOld>(mspacman_go.get(), down, moveSpeed);
+	auto moveLeft2 = std::make_shared<MoveCommandOld>(mspacman_go.get(), left, moveSpeed);
+	auto moveRight2 = std::make_shared<MoveCommandOld>(mspacman_go.get(), right, moveSpeed);
 
 	// check if can set a keyboard or controller key to nullptr for optional!
 
@@ -244,22 +242,27 @@ void LivesScene(dae::Scene& scene)
 	playerComponent->AddObserver(livesdisplay->GetComponent<LivesDisplayComponent>());
 	playerComponent->Start();
 
-	float moveSpeed = 100.f;
-	auto moveUp = std::make_shared<MoveCommand>(pacman_go.get(), up, moveSpeed);
-	auto moveDown = std::make_shared<MoveCommand>(pacman_go.get(), down, moveSpeed);
-	auto moveLeft = std::make_shared<MoveCommand>(pacman_go.get(), left, moveSpeed);
-	auto moveRight = std::make_shared<MoveCommand>(pacman_go.get(), right, moveSpeed);
+	//float moveSpeed = 100.f;
+	//auto moveUp = std::make_shared<MoveCommandOld>(pacman_go.get(), up, moveSpeed);
+	//auto moveDown = std::make_shared<MoveCommandOld>(pacman_go.get(), down, moveSpeed);
+	//auto moveLeft = std::make_shared<MoveCommandOld>(pacman_go.get(), left, moveSpeed);
+	//auto moveRight = std::make_shared<MoveCommandOld>(pacman_go.get(), right, moveSpeed);
+
+	auto moveUp = std::make_shared<MoveCommand>(pacman_go.get(), Direction::UP);
+	auto moveDown = std::make_shared<MoveCommand>(pacman_go.get(), Direction::DOWN);
+	auto moveRight = std::make_shared<MoveCommand>(pacman_go.get(), Direction::RIGHT);
+	auto moveLeft = std::make_shared<MoveCommand>(pacman_go.get(), Direction::LEFT);
 
 	auto dieCommand = std::make_shared<DieCommand>(pacman_go.get());
 
 	// UP
-	InputManager::GetInstance().AddCommand(Xbox360Controller::Button::DPADUp, SDL_SCANCODE_W, moveUp, 0, InputManager::KeyState::Pressed);
+	InputManager::GetInstance().AddCommand(Xbox360Controller::Button::DPADUp, SDL_SCANCODE_W, moveUp, 0, InputManager::KeyState::Down);
 	// DOWN
-	InputManager::GetInstance().AddCommand(Xbox360Controller::Button::DPADDown, SDL_SCANCODE_S, moveDown, 0, InputManager::KeyState::Pressed);
+	InputManager::GetInstance().AddCommand(Xbox360Controller::Button::DPADDown, SDL_SCANCODE_S, moveDown, 0, InputManager::KeyState::Down);
 	// RIGHT
-	InputManager::GetInstance().AddCommand(Xbox360Controller::Button::DPADRight, SDL_SCANCODE_D, moveRight, 0, InputManager::KeyState::Pressed);
+	InputManager::GetInstance().AddCommand(Xbox360Controller::Button::DPADRight, SDL_SCANCODE_D, moveRight, 0, InputManager::KeyState::Down);
 	// LEFT
-	InputManager::GetInstance().AddCommand(Xbox360Controller::Button::DPADLeft, SDL_SCANCODE_A, moveLeft, 0, InputManager::KeyState::Pressed);
+	InputManager::GetInstance().AddCommand(Xbox360Controller::Button::DPADLeft, SDL_SCANCODE_A, moveLeft, 0, InputManager::KeyState::Down);
 
 	// DIE
 	InputManager::GetInstance().AddCommand(Xbox360Controller::Button::ButtonA, SDL_SCANCODE_E, dieCommand, 0, InputManager::KeyState::Down);

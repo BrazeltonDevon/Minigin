@@ -27,8 +27,8 @@ namespace dae
 		void Die();
 
 	private:
-		//void UpdateMovement(float deltaTime);
-		//void Respawn();
+		void UpdateMovement(float deltaTime);
+		void Respawn();
 
 		Direction m_Direction = Direction::RIGHT;
 		Direction m_TargetDirection = Direction::RIGHT;
@@ -41,10 +41,12 @@ namespace dae
 		float m_PowerupTimer = 0;
 
 		glm::vec3 m_StartPosition = glm::vec3(-50, -50, -50);
+
 		int m_Lives = 3;
 		std::vector <std::shared_ptr<dae::GameObject>>  m_LivesArr;
 
 		float m_RespawnTimer = 2;
+		float m_MovementSpeed = 50.f;
 
 		std::unique_ptr<Subject> m_PlayerSubject;
 

@@ -3,14 +3,18 @@
 #include <glm/fwd.hpp>
 #include "GTime.h"
 #include "PlayerComponent.h"
+#include <iostream>
 
-void dae::MoveCommand::Execute()
+
+void dae::MoveCommandOld::Execute()
 {
 	Execute(m_Dir);
 }
 
-void dae::MoveCommand::Execute(glm::vec3 dir)
+// set the direction of pacman instead of moving in this code
+void dae::MoveCommandOld::Execute(glm::vec3 dir)
 {
+
 	GameObject* pOwner = GetOwner();
 	if (!pOwner)
 	{
@@ -46,5 +50,19 @@ void dae::DieCommand::Execute()
 	}
 
 	pPlayer->Die();
+
+}
+
+void dae::MoveCommand::Execute()
+{
+
+	PlayerComponent* myPlayer = GetOwner()->GetComponent<PlayerComponent>();
+
+	if (!myPlayer)
+	{
+		return;
+	}
+
+	myPlayer->SetDirection(m_Dir);
 
 }
