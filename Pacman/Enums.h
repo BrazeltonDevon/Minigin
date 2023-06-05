@@ -13,5 +13,5 @@ enum class TileType
 	EMPTY,
 	PICKUP,
 	POWERUP,
-	DOUBLE_PICKUP,
+	FRUIT,
 };

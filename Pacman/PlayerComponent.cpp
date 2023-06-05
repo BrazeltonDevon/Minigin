@@ -51,9 +51,6 @@ void dae::PlayerComponent::AddObserver(Observer* obs)
 	m_PlayerSubject->AddObserver(obs);
 }
 
-
-
-
 void dae::PlayerComponent::UpdateMovement(float deltaTime)
 {
 	// get current position of the PlayerComponent's GameObject aka owner

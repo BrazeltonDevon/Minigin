@@ -1,6 +1,5 @@
 #include <iostream>
 #include <vector>
-
 #include <SDL.h>
 #include "InputManager.h"
 #include "Scene.h"
@@ -92,12 +91,26 @@ void dae::InputManager::Update()
 	}
 }
 
+// returns size of m_pControllers aka the last added player what
+// their number is
 int dae::InputManager::AddPlayer()
 {
 	int idx = static_cast<int>(m_pControllers.size());
 	m_pControllers.push_back(std::make_unique<Xbox360Controller>(idx));
 	return idx;
 }
+
+// returns a player, if the idx is out-of-range it takes the last added player
+dae::Xbox360Controller& dae::InputManager::GetPlayer(int idx)
+{
+	if (idx <= m_pControllers.size())
+	{
+		return *m_pControllers.at(idx);
+	}
+	else return *m_pControllers.back();
+
+}
+
 
 bool dae::InputManager::IsPressed(Xbox360Controller::Button button, int  playerIdx) const
 {
@@ -118,7 +131,7 @@ void dae::InputManager::AddCommand(Xbox360Controller::Button controllerButton, S
 {
 	if (playerIdx > m_pControllers.size())
 	{
-		std::cout << "No Player" << std::endl;
+		std::cout << "Player not found, cannot add command\n" << std::endl;
 		return;
 	}
 	KeyAction* action = new KeyAction();
@@ -129,5 +142,6 @@ void dae::InputManager::AddCommand(Xbox360Controller::Button controllerButton, S
 	action->key = keyboardButton;
 	m_KeyCommands.emplace_back(action);
 }
+
 
 

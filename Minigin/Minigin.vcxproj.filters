@@ -108,6 +108,9 @@
     <ClInclude Include="Transform.h">
       <Filter>Components</Filter>
     </ClInclude>
+    <ClInclude Include="ColliderComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ResourceManager.cpp">
@@ -171,6 +174,9 @@
       <Filter>Sound</Filter>
     </ClCompile>
     <ClCompile Include="Transform.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="ColliderComponent.cpp">
       <Filter>Components</Filter>
     </ClCompile>
   </ItemGroup>

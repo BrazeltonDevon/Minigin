@@ -198,6 +198,7 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="ColliderComponent.h" />
     <ClInclude Include="Controller.h" />
     <ClInclude Include="Command.h" />
     <ClInclude Include="Component.h" />
@@ -226,6 +227,7 @@
     <ClInclude Include="Xbox360Controller.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ColliderComponent.cpp" />
     <ClCompile Include="Command.cpp" />
     <ClCompile Include="Font.cpp" />
     <ClCompile Include="FPSComponent.cpp" />

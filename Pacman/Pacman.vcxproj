@@ -152,6 +152,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="GameCommands.cpp" />
+    <ClCompile Include="HelperStructs.h" />
     <ClCompile Include="LivesDisplayComponent.cpp" />
     <ClCompile Include="Pacman.cpp" />
     <ClCompile Include="PlayerComponent.cpp" />
@@ -159,6 +160,7 @@
   <ItemGroup>
     <ClInclude Include="Enums.h" />
     <ClInclude Include="GameCommands.h" />
+    <ClInclude Include="json.hpp" />
     <ClInclude Include="LivesDisplayComponent.h" />
     <ClInclude Include="PlayerComponent.h" />
   </ItemGroup>
