@@ -30,8 +30,8 @@ namespace dae
 		void UpdateMovement(float deltaTime);
 		void Respawn();
 
-		Direction m_Direction = Direction::RIGHT;
-		Direction m_TargetDirection = Direction::RIGHT;
+		Direction m_Direction = Direction::NONE;
+		Direction m_TargetDirection = Direction::NONE;
 
 		//score
 		int m_Score = 0;

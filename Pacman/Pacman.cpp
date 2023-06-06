@@ -242,12 +242,6 @@ void LivesScene(dae::Scene& scene)
 	playerComponent->AddObserver(livesdisplay->GetComponent<LivesDisplayComponent>());
 	playerComponent->Start();
 
-	//float moveSpeed = 100.f;
-	//auto moveUp = std::make_shared<MoveCommandOld>(pacman_go.get(), up, moveSpeed);
-	//auto moveDown = std::make_shared<MoveCommandOld>(pacman_go.get(), down, moveSpeed);
-	//auto moveLeft = std::make_shared<MoveCommandOld>(pacman_go.get(), left, moveSpeed);
-	//auto moveRight = std::make_shared<MoveCommandOld>(pacman_go.get(), right, moveSpeed);
-
 	auto moveUp = std::make_shared<MoveCommand>(pacman_go.get(), Direction::UP);
 	auto moveDown = std::make_shared<MoveCommand>(pacman_go.get(), Direction::DOWN);
 	auto moveRight = std::make_shared<MoveCommand>(pacman_go.get(), Direction::RIGHT);

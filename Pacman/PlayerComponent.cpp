@@ -33,6 +33,11 @@ void dae::PlayerComponent::Update()
 
 	UpdateMovement(deltaTime);
 
+	// put code for collisions after the movement update
+	// so the engine knows where the player is going to be next
+	// before checking if colliding with something
+
+
 
 }
 
@@ -85,7 +90,6 @@ void dae::PlayerComponent::UpdateMovement(float deltaTime)
 		newPos.y -= moveSpeedDeltaTime;
 		pTransform->SetLocalPosition(newPos);
 		break;
-
 	default:
 		break;
 	}

@@ -6,6 +6,7 @@ enum class Direction
 	DOWN,
 	LEFT,
 	UP,
+	NONE
 };
 
 enum class TileType

@@ -16,7 +16,6 @@ dae::InputManager::~InputManager()
 
 bool dae::InputManager::ProcessInput()
 {
-
 	SDL_Event e;
 	while (SDL_PollEvent(&e)) {
 		SDL_GetMouseState(&m_MousePos.x, &m_MousePos.y);
