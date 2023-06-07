@@ -11,6 +11,11 @@ dae::ColliderComponent::ColliderComponent(GameObject* go)
 
 bool dae::ColliderComponent::IsColliding(ColliderComponent* otherCollider)
 {
+	// if has the same tag, do not compare! ignore collision
+	std::string otherTag = otherCollider->GetTag();
+	if (m_Tag == otherTag)
+		return false;
+
 	float xMax = m_ColliderBox.xMin + m_ColliderBox.width;
 	float yMax = m_ColliderBox.yMin + m_ColliderBox.height;
 	
@@ -29,6 +34,7 @@ bool dae::ColliderComponent::IsColliding(ColliderComponent* otherCollider)
 
 void dae::ColliderComponent::Update()
 {
+	const auto myPosition = GetOwner()->GetComponent<Transform>()->GetLocalPosition();
 
 }
 

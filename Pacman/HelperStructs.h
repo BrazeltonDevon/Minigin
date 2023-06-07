@@ -3,7 +3,10 @@
 
 struct LevelData
 {
-	int levelHeight;
-	int levelWidth;
-	std::vector<std::vector<int>> levelLayout;
+	//int levelHeight;
+	//int levelWidth;
+	int tileSize;
+	int nrRows;
+	int nrCols;
+	std::vector<int> levelLayout;
 };

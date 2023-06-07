@@ -2,6 +2,7 @@
 #include "Component.h"
 #include "Observer.h"
 #include "Subject.h"
+#include <string>
 
 namespace dae
 {
@@ -19,10 +20,11 @@ namespace dae
 		void Update() override;
 		void SetDimensions(float xMin, float yMin, float width, float height);
 		Collider GetColliderBox() { return m_ColliderBox; }
-
+		std::string GetTag() { return m_Tag; };
 	private:
 		Collider m_ColliderBox{};
 		Subject m_CollisionSubject{};
+		std::string m_Tag{ "ALL" };
 	};
 }
 
