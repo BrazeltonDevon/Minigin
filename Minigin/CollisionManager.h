@@ -12,11 +12,13 @@ namespace dae
 
 	class CollisionManager final: public Singleton<CollisionManager>
 	{
+	public:
 		CollisionManager();
 		~CollisionManager() = default;
 		void AddCollider(ColliderComponent* collider);
 		void RemoveCollider(ColliderComponent* collider);
 		const std::vector<ColliderComponent*>& GetColliders() const;
+
 	private:
 		std::vector<ColliderComponent*> m_pColliders;
 	};

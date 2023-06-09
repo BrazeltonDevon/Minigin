@@ -1,9 +1,12 @@
 #include "ColliderComponent.h"
+#include "CollisionManager.h"
+#include <iostream>
 
-dae::ColliderComponent::ColliderComponent(GameObject* go)
-	: Component(go)
+dae::ColliderComponent::ColliderComponent(GameObject* go, std::string tag)
+	: Component(go), m_Tag{tag}
 {
-
+	CollisionManager::GetInstance().AddCollider(this);
+	//std::cout << "Added collider to manager!\n";
 }
 
 // Checks for overlapping collider
@@ -21,20 +24,41 @@ bool dae::ColliderComponent::IsColliding(ColliderComponent* otherCollider)
 	
 	Collider otherBox = otherCollider->m_ColliderBox;
 
-	if (m_ColliderBox.xMin <= otherBox.xMin + otherBox.width && xMax >= m_ColliderBox.xMin)
+	if ( xMax < otherBox.xMin || (otherBox.xMin + otherBox.width) < m_ColliderBox.xMin)
 	{
-		if (m_ColliderBox.yMin <= otherBox.yMin + otherBox.height && yMax >= otherBox.yMin)
-		{
-			return false;
-		}
+		return false;
 	}
-		
+
+	if ( (m_ColliderBox.yMin > otherBox.yMin + otherBox.height) || otherBox.yMin > yMax)
+	{
+		return false;
+	}
+
 	return true;
 }
 
 void dae::ColliderComponent::Update()
 {
 	const auto myPosition = GetOwner()->GetComponent<Transform>()->GetLocalPosition();
+
+	m_ColliderBox.xMin = myPosition.x;
+	m_ColliderBox.yMin = myPosition.y;
+
+	//auto collisions = CollisionManager::GetInstance().GetColliders();
+
+	//for (auto collision : collisions)
+	//{
+	//	//skipping same collision
+	//	if (collision == this)
+	//		continue;
+
+	//	if (IsColliding(collision))
+	//	{
+	//		m_Info->gameObject = collision->GetGameObject();
+	//		OnTrigger(m_Info);
+	//	}
+
+	//}
 
 }
 
@@ -46,4 +70,10 @@ void dae::ColliderComponent::SetDimensions(float xMin, float yMin, float width, 
 	m_ColliderBox.yMin = yMin;
 	m_ColliderBox.width = width;
 	m_ColliderBox.height = height;
+}
+
+void dae::ColliderComponent::SetPosition(float xPos, float yPos)
+{
+	m_ColliderBox.xMin = xPos;
+	m_ColliderBox.yMin = yPos;
 }

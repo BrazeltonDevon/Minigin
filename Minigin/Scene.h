@@ -1,5 +1,6 @@
 #pragma once
 #include "SceneManager.h"
+#include <string>
 
 namespace dae
 {
@@ -16,6 +17,7 @@ namespace dae
 		//void FixedUpdate();
 		void Render() const;
 
+		std::string GetName() const { return m_Name; };
 
 		~Scene();
 		Scene(const Scene& other) = delete;
@@ -26,8 +28,8 @@ namespace dae
 	private: 
 		explicit Scene(const std::string& name);
 
-		std::string m_name;
-		std::vector < std::shared_ptr<GameObject>> m_objects{};
+		std::string m_Name;
+		std::vector <std::shared_ptr<GameObject>> m_Objects{};
 
 	};
 

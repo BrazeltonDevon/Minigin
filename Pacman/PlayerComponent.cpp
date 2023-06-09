@@ -5,6 +5,8 @@
 #include "RenderComponent.h"
 #include "GTime.h"
 #include "InputManager.h"
+#include "CollisionManager.h"
+#include "ColliderComponent.h"
 
 dae::PlayerComponent::PlayerComponent(GameObject* owner, bool isGhost, int playerNr)
 	: Component{owner}, m_IsGhost{isGhost}
@@ -31,12 +33,70 @@ void dae::PlayerComponent::Update()
 		m_Direction = m_TargetDirection;
 	}
 
-	UpdateMovement(deltaTime);
+	auto pTransform = GetOwner()->GetComponent<Transform>();
+	glm::vec3 curPos = pTransform->GetLocalPosition();
+	glm::vec3 newPos = curPos;
 
-	// put code for collisions after the movement update
-	// so the engine knows where the player is going to be next
-	// before checking if colliding with something
+	// the amount the player should move independent of framerate aka multiplied
+	// by deltaTime
+	float moveSpeedDeltaTime = m_MovementSpeed * deltaTime;
 
+	switch (m_Direction)
+	{
+		// move to the right
+	case Direction::RIGHT:
+		newPos.x += moveSpeedDeltaTime;
+		//pTransform->SetLocalPosition(newPos);
+		break;
+		// move to the left
+	case Direction::LEFT:
+		newPos.x -= moveSpeedDeltaTime;
+		//pTransform->SetLocalPosition(newPos);
+		break;
+		// move down
+	case Direction::DOWN:
+		newPos.y += moveSpeedDeltaTime;
+		//pTransform->SetLocalPosition(newPos);
+		break;
+		// move up
+	case Direction::UP:
+		newPos.y -= moveSpeedDeltaTime;
+		//pTransform->SetLocalPosition(newPos);
+		break;
+	default:
+		break;
+	}
+
+
+	auto collisions = CollisionManager::GetInstance().GetColliders();
+	auto myCollider = this->GetOwner()->GetComponent<ColliderComponent>();
+
+	myCollider->SetPosition(newPos.x, newPos.y);
+	
+	// if the movement should be updated
+	bool shouldUpdate = true;
+
+	for (auto collision : collisions)
+	{
+		//skipping same collision
+		if (collision == myCollider)
+			continue;
+	
+		if (myCollider->IsColliding(collision))
+		{
+			// if is colliding with something after an update, don't update movement!
+			//pTransform->SetLocalPosition(curPos);
+			m_TargetDirection = Direction::NONE;
+			myCollider->SetPosition(curPos.x, curPos.y);
+			shouldUpdate = false;
+		}
+	
+	}
+
+	if (shouldUpdate)
+	{
+		pTransform->SetLocalPosition(newPos);
+	}
 
 
 }
@@ -56,46 +116,6 @@ void dae::PlayerComponent::AddObserver(Observer* obs)
 	m_PlayerSubject->AddObserver(obs);
 }
 
-void dae::PlayerComponent::UpdateMovement(float deltaTime)
-{
-	// get current position of the PlayerComponent's GameObject aka owner
-	auto pTransform = GetOwner()->GetComponent<Transform>();
-
-	glm::vec3 curPos = pTransform->GetLocalPosition();
-	glm::vec3 newPos = curPos;
-
-	// the amount the player should move independent of framerate aka multiplied
-	// by deltaTime
-	float moveSpeedDeltaTime = m_MovementSpeed * deltaTime;
-
-	switch (m_Direction)
-	{
-		// move to the right
-	case Direction::RIGHT:
-		newPos.x += moveSpeedDeltaTime;
-		pTransform->SetLocalPosition(newPos);
-		break;
-		// move to the left
-	case Direction::LEFT:
-		newPos.x -= moveSpeedDeltaTime;
-		pTransform->SetLocalPosition(newPos);
-		break;
-		// move down
-	case Direction::DOWN:
-		newPos.y += moveSpeedDeltaTime;
-		pTransform->SetLocalPosition(newPos);
-		break;
-		// move up
-	case Direction::UP:
-		newPos.y -= moveSpeedDeltaTime;
-		pTransform->SetLocalPosition(newPos);
-		break;
-	default:
-		break;
-	}
-
-
-}
 
 void dae::PlayerComponent::Respawn()
 {

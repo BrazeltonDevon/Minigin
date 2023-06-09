@@ -29,6 +29,7 @@
 #include "GameCommands.h"
 #include "LivesDisplayComponent.h"
 #include "PlayerComponent.h"
+#include "ColliderComponent.h"
 
 
 using namespace dae;
@@ -37,6 +38,7 @@ void LoadBackground(dae::Scene& scene);
 void RotationComponentScene(dae::Scene& scene);
 void CommandsScene(dae::Scene& scene);
 void LivesScene(dae::Scene& scene);
+void MakePlayer1(dae::Scene& scene);
 
 void load()
 {
@@ -48,6 +50,7 @@ void load()
 	//RotationComponentScene(scene);
 	//CommandsScene(scene);
 	LivesScene(scene);
+	//MakePlayer1(scene);
 }
 
 int main(int, char* []) {
@@ -231,13 +234,14 @@ void LivesScene(dae::Scene& scene)
 	scene.Add(livesdisplay);
 
 	InputManager::GetInstance().AddPlayer();
-
 	auto pacman_go = std::make_shared<GameObject>();
 	transform = pacman_go->AddComponent<Transform>();
 	transform->SetLocalPosition({ 350.f, 350.f, 0.f });
 	auto pacRender = pacman_go->AddComponent<RenderComponent>();
 	pacRender->SetTexture("pacman.png");
 	auto playerComponent = pacman_go->AddComponent<PlayerComponent>(false, 0);
+	auto playerCollider = pacman_go->AddComponent<ColliderComponent>("PLAYER");
+	playerCollider->SetDimensions(350.f, 350.f, 16.f, 16.f);
 
 	playerComponent->AddObserver(livesdisplay->GetComponent<LivesDisplayComponent>());
 	playerComponent->Start();
@@ -263,11 +267,57 @@ void LivesScene(dae::Scene& scene)
 
 	scene.Add(pacman_go);
 
+	auto wall = std::make_shared<GameObject>();
+	auto wallTransform = wall->AddComponent<Transform>();
+	wallTransform->SetLocalPosition(300.f, 300.f, 0.f);
+	auto wallRenderer = wall->AddComponent<RenderComponent>();
+	wallRenderer->SetTexture("wall.png");
+	auto wallCollider = wall->AddComponent<ColliderComponent>("WALL");
+	wallCollider->SetDimensions(300.f, 300.f, 16.f, 16.f);
+	
+	scene.Add(wall);
+
 }
 
-//void MakePlayer1(dae::Scene& scene)
-//{
-//
-//
-//
-//}
+void MakePlayer1(dae::Scene& scene)
+{
+	using namespace dae;
+
+	// Movement directions
+	glm::vec3 up = { 0.f,-1.f,0.f };
+	glm::vec3 down = { 0.f,1.f,0.f };
+	glm::vec3 right = { 1.f,0.f,0.f };
+	glm::vec3 left = { -1.f,0.f,0.f };
+
+	InputManager::GetInstance().AddPlayer();
+	auto pacman_go = std::make_shared<GameObject>();
+	auto transform = pacman_go->AddComponent<Transform>();
+	transform->SetLocalPosition({ 350.f, 350.f, 0.f });
+	auto pacRender = pacman_go->AddComponent<RenderComponent>();
+	pacRender->SetTexture("pacman.png");
+	auto playerComponent = pacman_go->AddComponent<PlayerComponent>(false, 0);
+
+	playerComponent->Start();
+
+	auto moveUp = std::make_shared<MoveCommand>(pacman_go.get(), Direction::UP);
+	auto moveDown = std::make_shared<MoveCommand>(pacman_go.get(), Direction::DOWN);
+	auto moveRight = std::make_shared<MoveCommand>(pacman_go.get(), Direction::RIGHT);
+	auto moveLeft = std::make_shared<MoveCommand>(pacman_go.get(), Direction::LEFT);
+
+	auto dieCommand = std::make_shared<DieCommand>(pacman_go.get());
+
+	// UP
+	InputManager::GetInstance().AddCommand(Xbox360Controller::Button::DPADUp, SDL_SCANCODE_W, moveUp, 0, InputManager::KeyState::Down);
+	// DOWN
+	InputManager::GetInstance().AddCommand(Xbox360Controller::Button::DPADDown, SDL_SCANCODE_S, moveDown, 0, InputManager::KeyState::Down);
+	// RIGHT
+	InputManager::GetInstance().AddCommand(Xbox360Controller::Button::DPADRight, SDL_SCANCODE_D, moveRight, 0, InputManager::KeyState::Down);
+	// LEFT
+	InputManager::GetInstance().AddCommand(Xbox360Controller::Button::DPADLeft, SDL_SCANCODE_A, moveLeft, 0, InputManager::KeyState::Down);
+
+	// DIE
+	InputManager::GetInstance().AddCommand(Xbox360Controller::Button::ButtonA, SDL_SCANCODE_E, dieCommand, 0, InputManager::KeyState::Down);
+
+	scene.Add(pacman_go);
+
+}

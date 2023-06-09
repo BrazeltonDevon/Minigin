@@ -4,6 +4,7 @@
 #include <memory>
 #include "Singleton.h"
 
+
 namespace dae
 {
 	class Scene;
@@ -15,9 +16,14 @@ namespace dae
 		void Update();
 		//void FixedUpdate();
 		void Render();
+		std::vector<std::shared_ptr<Scene>> GetAllScenes() const { return m_Scenes; }
+
+		void SetCurrentScene(const std::string& name);
+
 	private:
 		friend class Singleton<SceneManager>;
 		SceneManager() = default;
+		std::shared_ptr<Scene> m_CurrentScene;
 		std::vector<std::shared_ptr<Scene>> m_Scenes;
 	};
 }

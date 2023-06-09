@@ -14,13 +14,15 @@ namespace dae
 	class ColliderComponent : public Component
 	{
 	public:
-		ColliderComponent(GameObject* go);
+		ColliderComponent(GameObject* go, std::string tag);
 
 		bool IsColliding(ColliderComponent* otherCollider);
 		void Update() override;
 		void SetDimensions(float xMin, float yMin, float width, float height);
+		void SetPosition(float xPos, float yPos);
 		Collider GetColliderBox() { return m_ColliderBox; }
 		std::string GetTag() { return m_Tag; };
+
 	private:
 		Collider m_ColliderBox{};
 		Subject m_CollisionSubject{};
