@@ -27,7 +27,6 @@ namespace dae
 		void Die();
 
 	private:
-		void UpdateMovement(float deltaTime);
 		void Respawn();
 
 		Direction m_Direction = Direction::NONE;

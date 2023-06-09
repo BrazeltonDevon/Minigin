@@ -10,6 +10,8 @@ namespace dae
 	{
 	public:
 		static bool CreateLevel(const std::wstring& filePath, Scene* scene);
+	private:
+		void CreateWall(Scene* scene, float xPos, float yPos);
 	};
 }
 

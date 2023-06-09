@@ -31,6 +31,8 @@
 #include "PlayerComponent.h"
 #include "ColliderComponent.h"
 
+#include "LevelCreator.h"
+
 
 using namespace dae;
 
@@ -46,7 +48,7 @@ void load()
 	auto& scene = dae::SceneManager::GetInstance().CreateScene("Demo");
 	scene;
 
-	LoadBackground(scene);
+	//LoadBackground(scene);
 	//RotationComponentScene(scene);
 	//CommandsScene(scene);
 	LivesScene(scene);
@@ -267,15 +269,18 @@ void LivesScene(dae::Scene& scene)
 
 	scene.Add(pacman_go);
 
-	auto wall = std::make_shared<GameObject>();
+
+	/*auto wall = std::make_shared<GameObject>();
 	auto wallTransform = wall->AddComponent<Transform>();
 	wallTransform->SetLocalPosition(300.f, 300.f, 0.f);
 	auto wallRenderer = wall->AddComponent<RenderComponent>();
 	wallRenderer->SetTexture("wall.png");
 	auto wallCollider = wall->AddComponent<ColliderComponent>("WALL");
-	wallCollider->SetDimensions(300.f, 300.f, 16.f, 16.f);
+	wallCollider->SetDimensions(300.f, 300.f, 16.f, 16.f);*/
 	
-	scene.Add(wall);
+	//scene.Add(wall);
+
+	LevelCreator::GetInstance().CreateLevel(L"../Data/level1.json", &scene);
 
 }
 
