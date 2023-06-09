@@ -28,6 +28,7 @@ namespace dae
 
 	private:
 		void Respawn();
+		bool CollidesInTargetDir();
 
 		Direction m_Direction = Direction::NONE;
 		Direction m_TargetDirection = Direction::NONE;

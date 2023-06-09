@@ -235,15 +235,16 @@ void LivesScene(dae::Scene& scene)
 	livesdisplay->AddComponent<LivesDisplayComponent>();
 	scene.Add(livesdisplay);
 
+	float playX{ 347.f }, playY{ 346.f };
 	InputManager::GetInstance().AddPlayer();
 	auto pacman_go = std::make_shared<GameObject>();
 	transform = pacman_go->AddComponent<Transform>();
-	transform->SetLocalPosition({ 350.f, 350.f, 0.f });
+	transform->SetLocalPosition({ playX, playY, 0.f });
 	auto pacRender = pacman_go->AddComponent<RenderComponent>();
 	pacRender->SetTexture("pacman.png");
 	auto playerComponent = pacman_go->AddComponent<PlayerComponent>(false, 0);
 	auto playerCollider = pacman_go->AddComponent<ColliderComponent>("PLAYER");
-	playerCollider->SetDimensions(350.f, 350.f, 16.f, 16.f);
+	playerCollider->SetDimensions(playX, playY, 15.2f, 15.2f);
 
 	playerComponent->AddObserver(livesdisplay->GetComponent<LivesDisplayComponent>());
 	playerComponent->Start();
