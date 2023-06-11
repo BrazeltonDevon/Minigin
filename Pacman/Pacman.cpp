@@ -246,7 +246,7 @@ void LivesScene(dae::Scene& scene)
 	scoreDisplay->AddComponent<ScoreDisplayComponent>();
 	scene.Add(scoreDisplay);
 
-	float playX{ 347.f }, playY{ 50.f };
+	float playX{ 347.f }, playY{ 60.f };
 	InputManager::GetInstance().AddPlayer();
 	auto pacman_go = std::make_shared<GameObject>();
 	transform = pacman_go->AddComponent<Transform>();

@@ -57,7 +57,7 @@ bool dae::LevelCreator::CreateLevel(const std::wstring& filePath, Scene* scene)
 	}
 
 	// starting position of the grid for the level
-	glm::vec3 startPos{90.f, 20.f, 0.f};
+	glm::vec3 startPos{90.f, 40.f, 0.f};
 	auto levelSize = levelLayOut.size();
 
 	int mapSize = nrRows * nrCols;
