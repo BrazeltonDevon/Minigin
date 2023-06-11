@@ -28,6 +28,7 @@
 #include "Transform.h"
 #include "GameCommands.h"
 #include "LivesDisplayComponent.h"
+#include "ScoreDisplayComponent.h"
 #include "PlayerComponent.h"
 #include "ColliderComponent.h"
 
@@ -226,7 +227,7 @@ void LivesScene(dae::Scene& scene)
 	// LIVES
 	auto livesdisplay = std::make_shared<GameObject>();
 	auto transform = livesdisplay->AddComponent<Transform>();
-	transform->SetLocalPosition({ 0.f, 20.f, 0.f });
+	transform->SetLocalPosition({ 0.f, 15.f, 0.f });
 
 	// Make sure to add the render component before the text component!
 	auto renderer = livesdisplay->AddComponent<RenderComponent>();
@@ -235,7 +236,17 @@ void LivesScene(dae::Scene& scene)
 	livesdisplay->AddComponent<LivesDisplayComponent>();
 	scene.Add(livesdisplay);
 
-	float playX{ 347.f }, playY{ 346.f };
+	auto scoreDisplay = std::make_shared<GameObject>();
+	transform = scoreDisplay->AddComponent<Transform>();
+	transform->SetLocalPosition({ 150.f, 15.f, 0.f });
+
+	renderer = scoreDisplay->AddComponent<RenderComponent>();
+	text_comp = scoreDisplay->AddComponent<TextComponent>("Score: ", livesFont, textColor);
+	text_comp->Init();
+	scoreDisplay->AddComponent<ScoreDisplayComponent>();
+	scene.Add(scoreDisplay);
+
+	float playX{ 347.f }, playY{ 50.f };
 	InputManager::GetInstance().AddPlayer();
 	auto pacman_go = std::make_shared<GameObject>();
 	transform = pacman_go->AddComponent<Transform>();
@@ -247,6 +258,7 @@ void LivesScene(dae::Scene& scene)
 	playerCollider->SetDimensions(playX, playY, 15.2f, 15.2f);
 
 	playerComponent->AddObserver(livesdisplay->GetComponent<LivesDisplayComponent>());
+	playerComponent->AddObserver(scoreDisplay->GetComponent<ScoreDisplayComponent>());
 	playerComponent->Start();
 
 	auto moveUp = std::make_shared<MoveCommand>(pacman_go.get(), Direction::UP);
@@ -269,17 +281,6 @@ void LivesScene(dae::Scene& scene)
 	InputManager::GetInstance().AddCommand(Xbox360Controller::Button::ButtonA, SDL_SCANCODE_E, dieCommand, 0, InputManager::KeyState::Down);
 
 	scene.Add(pacman_go);
-
-
-	/*auto wall = std::make_shared<GameObject>();
-	auto wallTransform = wall->AddComponent<Transform>();
-	wallTransform->SetLocalPosition(300.f, 300.f, 0.f);
-	auto wallRenderer = wall->AddComponent<RenderComponent>();
-	wallRenderer->SetTexture("wall.png");
-	auto wallCollider = wall->AddComponent<ColliderComponent>("WALL");
-	wallCollider->SetDimensions(300.f, 300.f, 16.f, 16.f);*/
-	
-	//scene.Add(wall);
 
 	LevelCreator::GetInstance().CreateLevel(L"../Data/level1.json", &scene);
 

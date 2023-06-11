@@ -74,6 +74,16 @@ void dae::PlayerComponent::Update()
 		//skipping same collision
 		if (collision == myCollider)
 			continue;
+
+		if (collision->GetTag() == "PICKUP")
+		{
+			// code for triggering pickups like dots or powerups
+			
+			auto dot = collision->GetOwner();
+			delete dot;
+
+			continue;
+		}
 	
 		if (myCollider->IsColliding(collision))
 		{
@@ -143,7 +153,6 @@ bool dae::PlayerComponent::CollidesInTargetDir()
 	default:
 		break;
 	}
-
 
 	auto collisions = CollisionManager::GetInstance().GetColliders();
 	auto myCollider = this->GetOwner()->GetComponent<ColliderComponent>();

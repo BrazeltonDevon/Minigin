@@ -20,8 +20,11 @@ namespace dae
 		//bool GhostCollision(glm::vec3 pos);
 		bool IsPoweredUp() { return m_IsPoweredUp; }
 		int GetLives() { return m_Lives; }
+		int GetScore() { return m_Score; }
 		bool IsGhost() { return m_IsGhost; }
 		void AddObserver(Observer* obs);
+
+		void AddScore(int amount) { m_Score += amount; };
 
 		void Start();
 		void Die();

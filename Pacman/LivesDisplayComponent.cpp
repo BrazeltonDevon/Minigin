@@ -27,11 +27,11 @@ void dae::LivesDisplayComponent::OnNotify(Event event, GameObject* go)
 	switch (event)
 	{
 	case dae::Event::PlayerStart:
-		m_Text = "Lives: " + std::to_string(go->GetComponent<dae::PlayerComponent>()->GetLives());
+		m_Text = "LIVES: " + std::to_string(go->GetComponent<dae::PlayerComponent>()->GetLives());
 		pTextComponent->SetText(m_Text);
 		break;
 	case dae::Event::PlayerDied:
-		m_Text = "Lives: " + std::to_string(go->GetComponent<dae::PlayerComponent>()->GetLives());
+		m_Text = "LIVES: " + std::to_string(go->GetComponent<dae::PlayerComponent>()->GetLives());
 		pTextComponent->SetText(m_Text);
 		break;
 	default:

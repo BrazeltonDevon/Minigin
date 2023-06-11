@@ -11,6 +11,7 @@
 #include "ColliderComponent.h"
 #include "Transform.h"
 #include "RenderComponent.h"
+#include "GameObject.h"
 
 using namespace std;
 using namespace rapidjson;

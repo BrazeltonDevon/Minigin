@@ -155,8 +155,10 @@
     <ClCompile Include="HelperStructs.h" />
     <ClCompile Include="LevelCreator.cpp" />
     <ClCompile Include="LivesDisplayComponent.cpp" />
+    <ClCompile Include="PacDotComponent.cpp" />
     <ClCompile Include="Pacman.cpp" />
     <ClCompile Include="PlayerComponent.cpp" />
+    <ClCompile Include="ScoreDisplayComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Enums.h" />
@@ -164,7 +166,9 @@
     <ClInclude Include="json.hpp" />
     <ClInclude Include="LevelCreator.h" />
     <ClInclude Include="LivesDisplayComponent.h" />
+    <ClInclude Include="PacDotComponent.h" />
     <ClInclude Include="PlayerComponent.h" />
+    <ClInclude Include="ScoreDisplayComponent.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
