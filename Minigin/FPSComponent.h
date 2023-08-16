@@ -12,7 +12,7 @@ namespace dae
 	class FPSComponent final : public Component
 	{
 	public:
-		FPSComponent(GameObject* object);
+		FPSComponent();
 		void Init();
 		void Render() const override;
 		void Update() override;

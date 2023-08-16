@@ -21,7 +21,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Pacman.cpp">
+    <ClCompile Include="BubbleBobble.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="LivesDisplayComponent.cpp">
@@ -38,9 +38,6 @@
     </ClCompile>
     <ClCompile Include="LevelCreator.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="PacDotComponent.cpp">
-      <Filter>Components</Filter>
     </ClCompile>
     <ClCompile Include="ScoreDisplayComponent.cpp">
       <Filter>Components</Filter>
@@ -64,9 +61,6 @@
     </ClInclude>
     <ClInclude Include="LevelCreator.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="PacDotComponent.h">
-      <Filter>Components</Filter>
     </ClInclude>
     <ClInclude Include="ScoreDisplayComponent.h">
       <Filter>Components</Filter>

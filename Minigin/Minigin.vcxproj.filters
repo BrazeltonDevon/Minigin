@@ -197,5 +197,8 @@
     <ClCompile Include="CollisionManager.cpp">
       <Filter>Singletons</Filter>
     </ClCompile>
+    <ClCompile Include="Component.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

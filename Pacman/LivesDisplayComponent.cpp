@@ -2,8 +2,8 @@
 #include "TextComponent.h"
 #include "PlayerComponent.h"
 
-dae::LivesDisplayComponent::LivesDisplayComponent(dae::GameObject* go)
-	: Component(go), pTextComponent{ GetOwner()->GetComponent<dae::TextComponent>()}, m_Text{ "Lives: " }
+dae::LivesDisplayComponent::LivesDisplayComponent()
+	: Component(), pTextComponent{ GetOwner()->GetComponent<dae::TextComponent>()}, m_Text{ "Lives: " }
 {
 }
 

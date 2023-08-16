@@ -3,51 +3,74 @@
 
 void dae::SceneManager::Update()
 {
-	/*for(auto& scene : m_Scenes)
+	if (m_ActiveSceneId >= 0)
 	{
-		scene->Update();
-	}*/
-
-	m_CurrentScene->Update();
+		m_Scenes[m_ActiveSceneId]->Update();
+	}
 }
 
-//void dae::SceneManager::FixedUpdate()
-//{
-//	for (auto& scene : m_scenes)
-//	{
-//		scene->FixedUpdate();
-//	}
-//}
+void dae::SceneManager::FixedUpdate()
+{
+	if (m_ActiveSceneId >= 0)
+	{
+		m_Scenes[m_ActiveSceneId]->FixedUpdate();
+	}
+}
 
 void dae::SceneManager::Render()
 {
-	//for (const auto& scene : m_Scenes)
-	//{
-	//	scene->Render();
-	//}
+	if (m_ActiveSceneId >= 0)
+	{
+		m_Scenes[m_ActiveSceneId]->Render();
+	}
 
-	m_CurrentScene->Render();
 }
 
 void dae::SceneManager::SetCurrentScene(const std::string& name)
 {
 	// find scene with given name and set active scene to it
-	for (auto& scene : m_Scenes)
+
+	for (size_t i = 0; i < m_Scenes.size(); ++i)
 	{
-		if (scene->GetName() == name)
+		if (m_Scenes[i]->GetName() == name)
 		{
-			m_CurrentScene = scene;
-			return;
+			m_ActiveSceneId = static_cast<int>(i);
 		}
 	}
 }
 
-dae::Scene& dae::SceneManager::CreateScene(const std::string& name)
+void dae::SceneManager::SetCurrentScene(const Scene* pScene)
 {
-	const auto& scene = std::shared_ptr<Scene>(new Scene(name));
+	for (size_t i = 0; i < m_Scenes.size(); ++i)
+	{
+		if (m_Scenes[i].get() == pScene)
+			m_ActiveSceneId = static_cast<int>(i);
+	}
+}
+
+dae::Scene* dae::SceneManager::GetCurrentScene() const
+{
+	if (m_Scenes.size() != 0 && m_ActiveSceneId != -1)
+	{
+		return m_Scenes[m_ActiveSceneId].get();
+	}
+	else
+	{
+		return nullptr;
+	}
+}
+
+void dae::SceneManager::CleanUpObjects()
+{
+	if (m_ActiveSceneId >= 0)
+	{
+		m_Scenes[m_ActiveSceneId]->CleanUpObjects();
+	}
+}
+
+dae::Scene* dae::SceneManager::CreateScene(const std::string& name)
+{
+	const auto scene = std::make_shared<Scene>(name);
 	m_Scenes.push_back(scene);
-
-	if (!m_CurrentScene)m_CurrentScene = scene;
-
-	return *scene;
+	return scene.get();
 }

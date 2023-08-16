@@ -7,33 +7,39 @@ namespace dae
 	class Transform : public Component
 	{
 	public:
-		Transform(GameObject* gameObject);
-		//~Transform();
+		Transform() = default;
+		~Transform() override = default;
 
 		Transform(const Transform& other) = delete;
 		Transform(Transform&& other) = delete;
 		Transform& operator=(const Transform& other) = delete;
 		Transform& operator=(Transform&& other) = delete;
 
-		const glm::vec3& GetWorldPosition();
-		void SetLocalPosition(const glm::vec3& pos);
-		void SetLocalPosition(float x, float y, float z);
-		const glm::vec3& GetLocalPosition() const;
+		const glm::vec2& GetWorldPosition();
+		void SetLocalPosition(const glm::vec2& pos);
+		void SetLocalPosition(float x, float y);
+		const glm::vec2& GetLocalPosition() const;
 
-		//void SetWorldPosition(const glm::vec3& pos) { m_WorldPos = pos; }
+		void SetWorldPosition(const glm::vec2& pos);
+		void SetWorldPosition(float x, float y);
+
+		void Translate(float x, float y);
+		void Translate(glm::vec2 vec);
+
+		bool GetIsFacingRight() const;
 
 		virtual void Render() const override {};
 		virtual void Update() override {};
 		
-		// public so can be called in GameObject for SetParent
-		void SetPositionDirty(bool val);
 	private:
 		void UpdateWorldPosition();
-
+		void SetPositionDirty();
 
 		bool m_IsPosDirty{ false };
 
-		glm::vec3 m_LocalPos{};
-		glm::vec3 m_WorldPos{};
+		glm::vec2 m_LocalPos{};
+		glm::vec2 m_WorldPos{};
+
+		bool m_IsFacingRight{ true };
 	};
 }

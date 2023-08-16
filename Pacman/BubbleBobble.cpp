@@ -69,8 +69,8 @@ void RotationComponentScene(dae::Scene& scene)
 
 	auto pacman_go = std::make_shared<dae::GameObject>();
 
-	auto transform = pacman_go->AddComponent<Transform>();
-	transform->SetLocalPosition({ 350.f, 350.f, 0.f });
+	auto transform = pacman_go->GetTransform();
+	transform->SetLocalPosition({ 350.f, 350.f});
 
 	auto pacRender = pacman_go->AddComponent<RenderComponent>();
 	pacRender->SetTexture("pacman.png");
@@ -90,7 +90,7 @@ void RotationComponentScene(dae::Scene& scene)
 
 	ghost_go->AddComponent<RotationComponent>(radius_ghost, rotSpeedGhost);
 
-	ghost_go->SetParent(pacman_go.get(), false);
+	ghost_go->SetParent(pacman_go.get());
 	scene.Add(ghost_go);
 }
 
@@ -99,13 +99,12 @@ void LoadBackground(dae::Scene& scene)
 
 	auto go = std::make_shared<dae::GameObject>();
 	go->AddComponent<dae::RenderComponent>("background.tga");
-	auto transform = go->AddComponent<dae::Transform>();
 	scene.Add(go);
 
 	go = std::make_shared<dae::GameObject>();
 	go->AddComponent<dae::RenderComponent>("logo.tga");
-	transform = go->AddComponent<dae::Transform>();
-	transform->SetLocalPosition({ 216, 180,0 });
+	auto transform = go->GetTransform();
+	transform->SetLocalPosition({ 216, 180 });
 	scene.Add(go);
 
 	// Prog 4 Text
@@ -113,8 +112,8 @@ void LoadBackground(dae::Scene& scene)
 
 	auto to = std::make_shared<dae::GameObject>();
 	auto font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
-	transform = to->AddComponent<Transform>();
-	transform->SetLocalPosition({ 80.f, 70.f, 0.f });
+	transform = to->GetTransform();
+	transform->SetLocalPosition({ 80.f, 70.f});
 
 	// Make sure to add the render component before the text component!
 	auto renderer = to->AddComponent<RenderComponent>();
@@ -130,8 +129,8 @@ void LoadBackground(dae::Scene& scene)
 	auto fpsGo = std::make_shared<dae::GameObject>();
 	renderer = fpsGo->AddComponent<RenderComponent>();
 
-	transform = fpsGo->AddComponent<Transform>();
-	transform->SetLocalPosition({ 0.f,0.f,0.f });
+	transform = fpsGo->GetTransform();
+	transform->SetLocalPosition({ 0.f,0.f });
 
 	auto font2 = ResourceManager::GetInstance().LoadFont("Lingua.otf", 20);
 	auto text = fpsGo->AddComponent<TextComponent>("0 FPS", font2, textColor);
@@ -157,8 +156,8 @@ void CommandsScene(dae::Scene& scene)
 	InputManager::GetInstance().AddPlayer();
 
 	auto pacman_go = std::make_shared<GameObject>();
-	auto transform = pacman_go->AddComponent<Transform>();
-	transform->SetLocalPosition({ 350.f, 350.f, 0.f });
+	auto transform = pacman_go->GetTransform();
+	transform->SetLocalPosition({ 350.f, 350.f });
 	auto pacRender = pacman_go->AddComponent<RenderComponent>();
 	pacRender->SetTexture("pacman.png");
 
@@ -183,8 +182,8 @@ void CommandsScene(dae::Scene& scene)
 	InputManager::GetInstance().AddPlayer();
 
 	auto mspacman_go = std::make_shared<GameObject>();
-	auto transform2 = mspacman_go->AddComponent<Transform>();
-	transform2->SetLocalPosition({ 450.f, 350.f, 0.f });
+	auto transform2 = mspacman_go->GetTransform();
+	transform2->SetLocalPosition({ 450.f, 350.f });
 	auto mspacRender = mspacman_go->AddComponent<RenderComponent>();
 	mspacRender->SetTexture("mspacman.png");
 
@@ -226,8 +225,8 @@ void LivesScene(dae::Scene& scene)
 
 	// LIVES
 	auto livesdisplay = std::make_shared<GameObject>();
-	auto transform = livesdisplay->AddComponent<Transform>();
-	transform->SetLocalPosition({ 0.f, 15.f, 0.f });
+	auto transform = livesdisplay->GetTransform();
+	transform->SetLocalPosition({ 0.f, 15.f });
 
 	// Make sure to add the render component before the text component!
 	auto renderer = livesdisplay->AddComponent<RenderComponent>();
@@ -237,8 +236,8 @@ void LivesScene(dae::Scene& scene)
 	scene.Add(livesdisplay);
 
 	auto scoreDisplay = std::make_shared<GameObject>();
-	transform = scoreDisplay->AddComponent<Transform>();
-	transform->SetLocalPosition({ 150.f, 15.f, 0.f });
+	transform = scoreDisplay->GetTransform();
+	transform->SetLocalPosition({ 150.f, 15.f });
 
 	renderer = scoreDisplay->AddComponent<RenderComponent>();
 	text_comp = scoreDisplay->AddComponent<TextComponent>("Score: ", livesFont, textColor);
@@ -249,8 +248,8 @@ void LivesScene(dae::Scene& scene)
 	float playX{ 347.f }, playY{ 60.f };
 	InputManager::GetInstance().AddPlayer();
 	auto pacman_go = std::make_shared<GameObject>();
-	transform = pacman_go->AddComponent<Transform>();
-	transform->SetLocalPosition({ playX, playY, 0.f });
+	transform = pacman_go->GetTransform();
+	transform->SetLocalPosition({ playX, playY });
 	auto pacRender = pacman_go->AddComponent<RenderComponent>();
 	pacRender->SetTexture("pacman.png");
 	auto playerComponent = pacman_go->AddComponent<PlayerComponent>(false, 0);
@@ -298,8 +297,8 @@ void MakePlayer1(dae::Scene& scene)
 
 	InputManager::GetInstance().AddPlayer();
 	auto pacman_go = std::make_shared<GameObject>();
-	auto transform = pacman_go->AddComponent<Transform>();
-	transform->SetLocalPosition({ 350.f, 350.f, 0.f });
+	auto transform = pacman_go->GetTransform();
+	transform->SetLocalPosition({ 350.f, 350.f });
 	auto pacRender = pacman_go->AddComponent<RenderComponent>();
 	pacRender->SetTexture("pacman.png");
 	auto playerComponent = pacman_go->AddComponent<PlayerComponent>(false, 0);

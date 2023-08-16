@@ -14,7 +14,6 @@ void dae::MoveCommandOld::Execute()
 // set the direction of pacman instead of moving in this code
 void dae::MoveCommandOld::Execute(glm::vec3 dir)
 {
-
 	GameObject* pOwner = GetOwner();
 	if (!pOwner)
 	{
@@ -28,10 +27,9 @@ void dae::MoveCommandOld::Execute(glm::vec3 dir)
 
 	auto deltaTime = GTime::GetInstance().GetDeltaTime();
 
-	glm::vec3 pos = pTransform->GetLocalPosition();
+	glm::vec2 pos = pTransform->GetLocalPosition();
 	pos.x += (dir.x * m_Speed) * deltaTime;
 	pos.y += (dir.y * m_Speed) * deltaTime;
-	pos.z += (dir.z * m_Speed) * deltaTime;
 
 	pTransform->SetLocalPosition(pos);
 }
@@ -55,7 +53,6 @@ void dae::DieCommand::Execute()
 
 void dae::MoveCommand::Execute()
 {
-
 	PlayerComponent* myPlayer = GetOwner()->GetComponent<PlayerComponent>();
 
 	if (!myPlayer)

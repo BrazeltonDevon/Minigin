@@ -24,6 +24,7 @@
     <ProjectGuid>{b8ba440b-8571-4086-889e-d5f1e58ff53f}</ProjectGuid>
     <RootNamespace>Pacman</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>BubbleBobble</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -155,8 +156,7 @@
     <ClCompile Include="HelperStructs.h" />
     <ClCompile Include="LevelCreator.cpp" />
     <ClCompile Include="LivesDisplayComponent.cpp" />
-    <ClCompile Include="PacDotComponent.cpp" />
-    <ClCompile Include="Pacman.cpp" />
+    <ClCompile Include="BubbleBobble.cpp" />
     <ClCompile Include="PlayerComponent.cpp" />
     <ClCompile Include="ScoreDisplayComponent.cpp" />
   </ItemGroup>
@@ -166,7 +166,6 @@
     <ClInclude Include="json.hpp" />
     <ClInclude Include="LevelCreator.h" />
     <ClInclude Include="LivesDisplayComponent.h" />
-    <ClInclude Include="PacDotComponent.h" />
     <ClInclude Include="PlayerComponent.h" />
     <ClInclude Include="ScoreDisplayComponent.h" />
   </ItemGroup>

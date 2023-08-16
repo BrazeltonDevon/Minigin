@@ -5,6 +5,15 @@ using namespace dae;
 
 Scene::Scene(const std::string& name) : m_Name(name) {}
 
+void dae::Scene::CleanUpObjects()
+{
+	// Remove game objects marked for delete
+	m_Objects.erase(std::remove_if(begin(m_Objects), end(m_Objects), [](const auto& pGameObject)
+		{
+			return pGameObject->IsMarkedForDelete();
+		}), end(m_Objects));
+}
+
 Scene::~Scene() = default;
 
 void Scene::Add(std::shared_ptr<GameObject> object)
@@ -30,13 +39,13 @@ void Scene::Update()
 	}
 }
 
-//void dae::Scene::FixedUpdate()
-//{
-//	for (auto& object : m_objects)
-//	{
-//		object->FixedUpdate();
-//	}
-//}
+void dae::Scene::FixedUpdate()
+{
+	for (auto& object : m_Objects)
+	{
+		object->FixedUpdate();
+	}
+}
 
 void Scene::Render() const
 {

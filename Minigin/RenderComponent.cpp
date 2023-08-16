@@ -7,12 +7,12 @@
 #include "GameObject.h"
 
 
-dae::RenderComponent::RenderComponent(GameObject* pOwner, const std::string& filename) : Component(pOwner)
+dae::RenderComponent::RenderComponent(const std::string& filename) : Component()
 {
 	SetTexture(filename);
 }
 
-dae::RenderComponent::RenderComponent(GameObject* pOwner, std::shared_ptr<Texture2D> texture) : Component{ pOwner }
+dae::RenderComponent::RenderComponent(std::shared_ptr<Texture2D> texture) : Component{}
 {
 	m_Texture = texture;
 }
@@ -45,7 +45,7 @@ void dae::RenderComponent::SetPosition(float x, float y)
 		return;
 	}
 
-	glm::vec3 pos{ x,y,0.f };
+	glm::vec2 pos{ x,y };
 	transform->SetLocalPosition(pos);
 }
 
@@ -67,7 +67,7 @@ void dae::RenderComponent::Render() const
 	{
 		return;
 	}
-	glm::vec3 pos = transform->GetWorldPosition();
+	glm::vec2 pos = transform->GetWorldPosition();
 	dae::Renderer::GetInstance().RenderTexture(*m_Texture,pos.x,pos.y,m_Width,m_Height);
 }
 

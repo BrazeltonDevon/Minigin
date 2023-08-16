@@ -93,11 +93,11 @@ bool dae::LevelCreator::CreateLevel(const std::wstring& filePath, Scene* scene)
 void dae::LevelCreator::CreateWall(Scene* scene, float xPos, float yPos)
 {
 	auto wall = std::make_shared<GameObject>();
-	auto wallTransform = wall->AddComponent<Transform>();
-	wallTransform->SetLocalPosition(xPos, yPos, 0.f);
+	auto wallTransform = wall->GetTransform();
+	wallTransform->SetLocalPosition(xPos, yPos);
 	auto wallRenderer = wall->AddComponent<RenderComponent>();
 	wallRenderer->SetTexture("wall.png");
-	auto wallCollider = wall->AddComponent<ColliderComponent>("WALL");
+	auto wallCollider = wall->AddComponent<ColliderComponent>();
 	wallCollider->SetDimensions(xPos, yPos, 16.f, 16.f);
 
 	scene->Add(wall);

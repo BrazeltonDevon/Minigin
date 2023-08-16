@@ -8,7 +8,7 @@
 #include "Texture2D.h"
 #include "GTime.h"
 
-dae::FPSComponent::FPSComponent(GameObject* object) : Component{ object }, m_NeedsUpdate{ true }
+dae::FPSComponent::FPSComponent() : Component{}, m_NeedsUpdate{ true }
 {
 }
 

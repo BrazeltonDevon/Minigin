@@ -10,9 +10,9 @@ namespace dae
 	class RenderComponent : public Component
 	{
 	public:
-		RenderComponent(GameObject* pOwner) : Component(pOwner) {};
-		RenderComponent(GameObject* pOwner, std::shared_ptr<Texture2D>texture);
-		RenderComponent(GameObject* pOwner, const std::string& filename);
+		RenderComponent() : Component() {};
+		RenderComponent(std::shared_ptr<Texture2D>texture);
+		RenderComponent(const std::string& filename);
 
 		~RenderComponent() override;
 

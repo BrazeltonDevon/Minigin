@@ -8,6 +8,7 @@ namespace dae
 	class Component
 	{
 	public:
+		Component() = default;
 		virtual ~Component() = default;
 
 		Component(const Component& other) = delete;
@@ -15,12 +16,17 @@ namespace dae
 		Component& operator=(const Component& other) = delete;
 		Component& operator=(Component&& other) = delete;
 
+		virtual void Initialize() {}
 		virtual void Update() = 0;
 		virtual void Render() const {};
-		GameObject* GetOwner() const { return m_pOwner; }
+		virtual void FixedUpdate() {}
+		GameObject* GetOwner() const;
+
+		void SetOwner(GameObject* pParent);
 	protected:
-		explicit Component(GameObject* owner) : m_pOwner{ owner } {};
-	private:
+		// (depreciated, setting of owner is handled in AddComponent now)
+		//explicit Component(GameObject* owner) : m_pOwner{ owner } {};
+
 		GameObject* m_pOwner = nullptr;
 	};
 }

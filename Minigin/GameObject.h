@@ -3,10 +3,11 @@
 #include <vector>
 #include <string>
 #include "Transform.h"
-#include <typeinfo>
-#include <typeindex>
+
 #include <unordered_map>
 #include <memory>
+
+#include <iostream>
 
 namespace dae
 {
@@ -24,69 +25,111 @@ namespace dae
 		GameObject& operator=(const GameObject& other) = delete;
 		GameObject& operator=(GameObject&& other) = delete;
 
-		void SetParent(GameObject* parent, bool keepWorldPosition);
+		void SetParent(GameObject* parent);
 
 		GameObject* GetParent() const { return m_pParent; };
-		void RemoveChild(GameObject* child);
-		void AddChild(GameObject* child);
+		Transform* GetTransform() const { return m_pTransform; }
+		//void RemoveChild(GameObject* child);
+		//void AddChild(GameObject* child);
 
+		const std::vector<std::unique_ptr<GameObject>>& GetChildren() const { return m_pChildren; }
+
+		void MarkForDelete();
+
+		bool IsMarkedForDelete() const 
+		{
+			return m_IsMarkedForDelete;
+		};
+
+		void Init();
 		void Update();
-		//void FixedUpdate();
+		void FixedUpdate();
 		void Render() const;
 
 		// Template component functions
 
-		template <typename T, typename... Args> T* AddComponent(Args&&... args) {
-			if (IsComponentAdded<T>()) {
-				return GetComponent<T>();
-			}
-
-			const std::type_index typeIndex = std::type_index(typeid(T));
-			auto component = std::make_unique<T>(this, std::forward<Args>(args)...);
-			auto pointer = component.get();
-
-			m_pComponents.emplace(typeIndex, std::move(component));
-
-			return pointer;
-		};
-
-		template<typename T>
-		T* GetComponent() const
+		template <class T>
+		inline bool HasComponent() const
 		{
-			const std::type_index typeIndex = std::type_index(typeid(T));
-			if (!IsComponentAdded<T>())
+			static_assert(std::is_base_of<Component, T>());
+
+			for (const auto& component : m_pComponents)
 			{
+				if (dynamic_cast<T*>(component.get()))
+					return true;
+			}
+			return false;
+		}
+
+		template <typename T, typename... Args>
+		inline T* AddComponent(Args&&... args)
+		{
+			static_assert(std::is_base_of<Component, T>(), "T needs to be derived from the Component class");
+
+			if (HasComponent<T>())
+			{
+				std::cout << "Trying to add an already existing component\n";
 				return nullptr;
 			}
-			auto component = dynamic_cast<T*>(m_pComponents.at(typeIndex).get());
-			return component;
+
+			std::unique_ptr<T> pComponent = std::make_unique<T>();
+			pComponent->SetOwner(this);
+
+			pComponent->Initialize();
+
+			T* rawPtr = pComponent.get();
+			m_pComponents.emplace_back(std::move(pComponent));
+
+			return rawPtr;
 		}
 
-		template<typename T>
-		inline void RemoveComponent(T* pComp)
+
+
+		template<class T>
+		inline T* GetComponent() const
 		{
-			auto t = m_pComponents.erase(std::remove(m_pComponents.begin(), m_pComponents.end(), pComp));
+			static_assert(std::is_base_of<Component, T>(), "T needs to be derived from the Component class");
 
-			delete pComp;
-			pComp = nullptr;
+			for (const auto& component : m_pComponents)
+			{
+				if (dynamic_cast<T*>(component.get()))
+					return dynamic_cast<T*>(component.get());
+			}
+
+			return nullptr;
 		}
 
-		template<typename Component>
-		bool IsComponentAdded() const
+		template <typename T>
+		inline bool RemoveComponent()
 		{
-			const std::type_index typeIndex = std::type_index(typeid(Component));
+			static_assert(std::is_base_of<Component, T>());
 
-			return m_pComponents.contains(typeIndex);
+			for (auto it = m_pComponents.begin(); it != m_pComponents.end(); ++it)
+			{
+				if (dynamic_cast<T*>(it->get()) != nullptr)
+				{
+					m_pComponents.erase(it);
+					return true;
+				}
+			}
+			return false;
 		}
+
+		
+
 	private:
 		// Parent-child variables
 		GameObject* m_pParent{ nullptr };
-		std::vector<GameObject*> m_pChildren{};
+		//std::vector<GameObject*> m_pChildren{};
 
-		// Components
+		std::vector<std::unique_ptr<GameObject>> m_pChildren{};
 		
-		//std::vector<std::unique_ptr<Component>> m_pComponents{};
-		std::unordered_map<std::type_index, std::unique_ptr<Component>> m_pComponents{};
+		// Components
+		std::vector<std::unique_ptr<Component>> m_pComponents{};
+
+		Transform* m_pTransform{};
+
+		bool m_IsMarkedForDelete{false};
 	};
 
 
