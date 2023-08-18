@@ -1,6 +1,5 @@
 #pragma once
 #include <string>
-
 namespace dae
 {
 	class SoundSystem
@@ -8,20 +7,14 @@ namespace dae
 	public:
 		SoundSystem() = default;
 		virtual ~SoundSystem() = default;
-
-		virtual void Update() = 0;
-		virtual void PlaySound(int soundID) = 0;
-		virtual void PauseSound() = 0;
-		virtual void UnpauseSound() = 0;
-		virtual void IncreaseVolume() = 0;
-		virtual void DecreaseVolume() = 0;
-		virtual void AddSound(const std::string& filename) = 0;
-
 		SoundSystem(const SoundSystem&) = delete;
 		SoundSystem(SoundSystem&&) = delete;
-		SoundSystem& operator= (const SoundSystem&) = delete;
-		SoundSystem& operator= (const SoundSystem&&) = delete;
+		SoundSystem& operator=(const SoundSystem&) = delete;
+		SoundSystem& operator=(SoundSystem&&) = delete;
+
+		virtual void PlaySound(const std::string& fileName, int volume, int loops) = 0;
+		virtual void PlayMusic(const std::string& fileName, int volume, int loops) = 0;
+		virtual void ToggleMusic(bool val) = 0;
 	};
 }
-
 

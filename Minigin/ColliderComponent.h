@@ -80,7 +80,9 @@ namespace dae
 	private:
 		void CheckForOverlaps();
 
+		// Position of the collider box
 		glm::vec2 m_Pos{};
+		// Dimensions of the collider box
 		glm::vec2 m_Size{};
 
 		bool m_DrawDebug{ false };

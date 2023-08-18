@@ -18,7 +18,7 @@
 // IF NEEDED FOR PHYSICS &|| NETWORKING
 //**************************************
 
-//#define USE_FIXED_UPDATE
+#define USE_FIXED_UPDATE
 
 SDL_Window* g_window{};
 

@@ -40,16 +40,16 @@ namespace dae
 
 class AvatarComponent;
 
-class HealthDisplay final : public dae::Component, public dae::Observer<int>
+class LivesDisplayComponent final : public dae::Component, public dae::Observer<int>
 {
 public:
-	HealthDisplay() = default;
-	~HealthDisplay() override;
+	LivesDisplayComponent() = default;
+	~LivesDisplayComponent() override;
 
-	HealthDisplay(const HealthDisplay& other) = delete;
-	HealthDisplay(HealthDisplay&& other) = delete;
-	HealthDisplay& operator=(const HealthDisplay& other) = delete;
-	HealthDisplay& operator=(HealthDisplay&& other) = delete;
+	LivesDisplayComponent(const LivesDisplayComponent& other) = delete;
+	LivesDisplayComponent(LivesDisplayComponent&& other) = delete;
+	LivesDisplayComponent& operator=(const LivesDisplayComponent& other) = delete;
+	LivesDisplayComponent& operator=(LivesDisplayComponent&& other) = delete;
 
 	void Initialize() override;
 	void SetSubject(dae::Subject<int>* healthSubj);
@@ -58,7 +58,7 @@ public:
 
 private:
 
-	void HandleEvent(int healthDelta) override;
+	void OnNotify(int healthDelta) override;
 	void OnSubjectDestroy() override;
 	void UpdateText();
 

@@ -31,7 +31,7 @@ void FoodComponent::Initialize()
 				if (m_CurrState == State::Points)
 					return;
 
-				//if its a player
+				// if its a player
 				AvatarComponent* avatarComp = overlappingActor->GetComponent<AvatarComponent>();
 				dae::SpriteComponent* spriteComp = m_pOwner->GetComponent<dae::SpriteComponent>();
 				dae::PhysicsComponent* physComp = m_pOwner->GetComponent<dae::PhysicsComponent>();
@@ -39,8 +39,9 @@ void FoodComponent::Initialize()
 				{
 					avatarComp->PickedUpFood(m_MyType);
 					m_CurrState = State::Points;
-					dae::ServiceLocator::GetSoundSystem().PlaySound("../Data/Sound/PickupFood.wav", 100, 0);
-					//Set sprite variables
+					dae::ServiceLocator::GetSoundSystem()->PlaySound("../Data/Sound/PickupFood.wav", 100, 0);
+
+					// Set sprite variables
 					switch (m_MyType)
 					{
 					case FoodType::Fries:

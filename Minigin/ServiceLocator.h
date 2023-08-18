@@ -7,8 +7,6 @@ namespace dae
 {
 	class ServiceLocator final
 	{
-		static std::unique_ptr<SoundSystem> m_SoundSysmService;
-		static std::unique_ptr<NullSoundSystem> m_NullSoundSysmService;
 	public:
 		static std::unique_ptr<SoundSystem>& GetSoundSystem() { return m_SoundSysmService; }
 		static void RegisterSoundSystem(std::unique_ptr<SoundSystem>&& system)
@@ -17,5 +15,8 @@ namespace dae
 			if (m_SoundSysmService == nullptr)
 				m_SoundSysmService = std::move(m_NullSoundSysmService);
 		}
+	private:
+		static std::unique_ptr<SoundSystem> m_SoundSysmService;
+		static std::unique_ptr<NullSoundSystem> m_NullSoundSysmService;
 	};
 }

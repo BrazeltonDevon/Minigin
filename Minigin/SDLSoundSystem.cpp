@@ -1,92 +1,187 @@
 #include "SDLSoundSystem.h"
 #include <iostream>
+#include <map>
+#include <SDL_mixer.h>
+#include <SDL.h>
+#include <thread>
+#include <queue>
+#include <mutex>
+#include <condition_variable>
 
+using namespace dae;
 
-dae::SDLSoundSystem::SDLSoundSystem() :m_SoundList{}, m_EventQueue{}
+class SDLSoundSystem::SDL_MixerImpl final
 {
-	Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, MIX_CHANNELS);
+public:
+    SDL_MixerImpl()
+    {
+        Mix_Init(MIX_INIT_MP3);
+        SDL_Init(SDL_INIT_AUDIO);
+        if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0)
+            printf("SDL_Mixer couldnt init. Err: %s\n", Mix_GetError());
+    }
+    ~SDL_MixerImpl()
+    {
+        for (auto& file : m_MusicMap)
+        {
+            Mix_FreeMusic(file.second);
+        }
+        for (auto& file : m_SoundsMap)
+        {
+            Mix_FreeChunk(file.second);
+        }
+        Mix_Quit();
+    }
+    SDL_MixerImpl(const SDL_MixerImpl& other) = delete;
+    SDL_MixerImpl operator=(const SDL_MixerImpl& rhs) = delete;
+    SDL_MixerImpl(SDL_MixerImpl&& other) = delete;
+    SDL_MixerImpl operator=(SDL_MixerImpl&& rhs) = delete;
 
-	m_Thread = std::jthread(&SDLSoundSystem::Update, this);
-	std::cout << "Sound system initialized.\n";
+    void PlayMusic(const std::string& fileName, int volume, int loops)
+    {
+        // Load music if not loaded already
+        if (m_MusicMap.contains(fileName) == false)
+            // Error, cannot load music
+            if (LoadMusic(fileName) == false)
+                return;
+
+        // Volume == percent
+        volume = (MIX_MAX_VOLUME * volume) / 100;
+
+        // If not playing anything, play this
+        if (Mix_PlayingMusic() == 0)
+        {
+            Mix_VolumeMusic(volume);
+            Mix_PlayMusic(m_MusicMap[fileName], loops);
+        }
+    }
+
+    void PlaySound(const std::string& fileName, int volume, int loops)
+    {
+        // Load file if not loaded already
+        if (m_SoundsMap.contains(fileName) == false)
+            // Error, can't load file
+            if (LoadSound(fileName) == false)
+                return;
+
+        // Volume == percentage
+        volume = (MIX_MAX_VOLUME * volume) / 100;
+
+        // Play the sound
+        Mix_VolumeChunk(m_SoundsMap[fileName], volume);
+        Mix_PlayChannel(1, m_SoundsMap[fileName], loops);
+    }
+
+    void ToggleMusic(bool val)
+    {
+        if (bool(Mix_PausedMusic()) == val)
+        {
+            if (val)
+                Mix_ResumeMusic();
+            else
+                Mix_PauseMusic();
+        }
+    }
+
+private:
+    bool LoadMusic(const std::string& fileName)
+    {
+        Mix_Music* m = Mix_LoadMUS(fileName.c_str());
+        if (m == nullptr)
+        {
+            printf("Failed to load music. SDL_Mixer error: %s\n", Mix_GetError());
+            return false;
+        }
+        m_MusicMap.insert(std::make_pair(fileName, m));
+        return true;
+    }
+    bool LoadSound(const std::string& fileName)
+    {
+        Mix_Chunk* m = Mix_LoadWAV(fileName.c_str());
+        if (m == nullptr)
+        {
+            printf("Failed to load music. SDL_Mixer error: %s\n", Mix_GetError());
+            return false;
+        }
+        m_SoundsMap.insert(std::make_pair(fileName, m));
+        return true;
+    }
+
+    std::map<std::string, Mix_Chunk*> m_SoundsMap;
+    std::map<std::string, Mix_Music*> m_MusicMap;
+};
+
+SDLSoundSystem::SDLSoundSystem()
+    : SoundSystem()
+{
+    m_pSDL_MixerImpl = new SDL_MixerImpl();
+    m_Thread = std::thread(&SDLSoundSystem::SoundLoaderThread, this);
 }
 
-dae::SDLSoundSystem::~SDLSoundSystem()
+SDLSoundSystem::~SDLSoundSystem()
 {
-	m_Quit = true;
-	m_ConditionVariable.notify_one();
+    {
+        std::lock_guard lock(m_QueueMutex);
+        m_Quit = true;
+    }
+    m_ConditionVariable.notify_all();
 
-	for (auto& sound : m_SoundList) {
-		Mix_FreeChunk(sound.second);
-		sound.second = nullptr;
-	}
+    m_Thread.join();
 
-	Mix_CloseAudio();
-	Mix_Quit();
-
+    delete m_pSDL_MixerImpl;
 }
 
-
-void dae::SDLSoundSystem::Update()
+void SDLSoundSystem::PlaySound(const std::string& fileName, int volume, int loops)
 {
-	while (!m_Quit) {
-
-		std::unique_lock<std::mutex> lock(m_Mutex);
-		m_ConditionVariable.wait(lock, [this]() { return !m_EventQueue.empty() || m_Quit; });
-		if (m_Quit) {
-			break;
-		}
-
-		auto event = m_EventQueue.front();
-		m_EventQueue.pop();
-
-
-		switch (event.type) {
-		case SoundType::Sound:
-			if (m_SoundList.count(event.soundId)) {
-				auto chunk = m_SoundList[event.soundId];
-				Mix_PlayChannel(-1, chunk, 0);
-				m_SoundsToPlay.push_back(chunk);
-			}
-			break;
-		default:
-			break;
-		}
-	}
-
+    {
+        std::lock_guard lock(m_QueueMutex);
+        m_EventQueue.push({ EventType::Sound, fileName, volume, loops });
+        //make sure the lock gets unlocked before notifying
+    }
+    m_ConditionVariable.notify_all();
 }
 
-void dae::SDLSoundSystem::PlaySound(int soundId)
+void SDLSoundSystem::PlayMusic(const std::string& fileName, int volume, int loops)
 {
-	std::unique_lock<std::mutex> lock(m_Mutex);
-	m_EventQueue.push(Event{ SoundType::Sound, soundId });
-	m_ConditionVariable.notify_one();
+    {
+        std::lock_guard lock(m_QueueMutex);
+        m_EventQueue.push({ EventType::Music, fileName, volume, loops });
+        //make sure the lock gets unlocked before notifying
+    }
+    m_ConditionVariable.notify_all();
 }
 
-
-void dae::SDLSoundSystem::PauseSound()
+void SDLSoundSystem::ToggleMusic(bool val)
 {
-
+    m_pSDL_MixerImpl->ToggleMusic(val);
 }
 
-void dae::SDLSoundSystem::UnpauseSound()
+void SDLSoundSystem::SoundLoaderThread()
 {
-}
+    while (true)
+    {
+        //Acquire a lock
+        std::unique_lock lock(m_QueueMutex);
 
-void dae::SDLSoundSystem::IncreaseVolume()
-{
-}
+        //This unlocks the lock and makes the thread sleep untill it gets notified
+        //If notified, it checks the lambda to see if it can continue
+        //If it can continue it locks the lock again
+        m_ConditionVariable.wait(lock, [this] { return !m_EventQueue.empty() || m_Quit; });
 
-void dae::SDLSoundSystem::DecreaseVolume()
-{
+        if (m_Quit)
+            break;
 
-}
+        Event event = m_EventQueue.front();
+        m_EventQueue.pop();
+        lock.unlock();
 
-void dae::SDLSoundSystem::AddSound(const std::string& filename)
-{
-	std::lock_guard<std::mutex> lock(m_Mutex);
-	Mix_Chunk* sound = Mix_LoadWAV(filename.c_str());
-	if (sound != nullptr) {
-		int soundId = static_cast<int>(m_SoundList.size());
-		m_SoundList[soundId] = sound;
-	}
+        if (event.type == EventType::Sound)
+        {
+            m_pSDL_MixerImpl->PlaySound(event.fileName, event.volume, event.loops);
+        }
+        else if (event.type == EventType::Music)
+        {
+            m_pSDL_MixerImpl->PlayMusic(event.fileName, event.volume, event.loops);
+        }
+    }
 }

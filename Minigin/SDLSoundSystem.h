@@ -1,59 +1,51 @@
 #pragma once
+#include <queue>
+#include <mutex>
+#include <condition_variable>
+#include <thread>
 
 #include "SoundSystem.h"
-#include <queue>
-#include <memory>
-#include <thread>
-#include <condition_variable>
-#include <map>
-#include <SDL_mixer.h>
-#include <unordered_map>
 
 namespace dae
 {
 	class SDLSoundSystem final : public SoundSystem
 	{
-
 	public:
 		SDLSoundSystem();
-		virtual ~SDLSoundSystem() override;
-		void Update() override;
-		void PlaySound(int soundID) override;
-		void PauseSound() override;
-		void UnpauseSound() override;
-		void IncreaseVolume() override;
-		void DecreaseVolume() override;
-
+		~SDLSoundSystem() override;
 		SDLSoundSystem(const SDLSoundSystem&) = delete;
 		SDLSoundSystem(SDLSoundSystem&&) = delete;
-		SDLSoundSystem& operator= (const SDLSoundSystem&) = delete;
-		SDLSoundSystem& operator= (const SDLSoundSystem&&) = delete;
-		void AddSound(const std::string& filename) override;
+		SDLSoundSystem& operator=(const SDLSoundSystem&) = delete;
+		SDLSoundSystem& operator=(SDLSoundSystem&&) = delete;
+
+
+		void PlaySound(const std::string& fileName, int volume, int loops) override;
+		void PlayMusic(const std::string& fileName, int volume, int loops) override;
+		void ToggleMusic(bool val) override;
 
 	private:
-		enum class SoundType {
+		enum class EventType
+		{
 			Sound,
 			Music
-
 		};
 
-		struct Event {
-			SoundType type;
-			int soundId;
+		struct Event
+		{
+			EventType type;
+			std::string fileName;
+			int volume;
+			int loops;
 		};
 
-		std::unordered_map<int, Mix_Chunk*> m_SoundList;
-		std::vector<Mix_Chunk*> m_SoundsToPlay;
-		std::mutex m_Mutex;
-		std::condition_variable m_ConditionVariable;
+		class SDL_MixerImpl;
+		SDL_MixerImpl* m_pSDL_MixerImpl;
+		std::thread m_Thread;
 		std::queue<Event> m_EventQueue;
+		std::mutex m_QueueMutex;
+		std::condition_variable m_ConditionVariable;
 		bool m_Quit = false;
-		std::jthread m_Thread;
-		int m_Volume;
 
-		
+		void SoundLoaderThread();
 	};
 }
-
-
-

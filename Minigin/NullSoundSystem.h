@@ -3,24 +3,14 @@
 
 namespace dae
 {
-	class NullSoundSystem : public SoundSystem
+	class NullSoundSystem final : public SoundSystem
 	{
 	public:
-		NullSoundSystem();
-		~NullSoundSystem() = default;
+		NullSoundSystem() = default;
 
-		void Update() override;
-		void PlaySound(int soundId) override;
-		void PauseSound() override;
-		void UnpauseSound() override;
-		void IncreaseVolume() override;
-		void DecreaseVolume() override;
+		void PlaySound(const std::string&, int, int) override {}
+		void PlayMusic(const std::string&, int, int) override {}
+		void ToggleMusic(bool) override {}
 
-		NullSoundSystem(const NullSoundSystem&) = delete;
-		NullSoundSystem(NullSoundSystem&&) = delete;
-		NullSoundSystem& operator= (const NullSoundSystem&) = delete;
-		NullSoundSystem& operator= (const NullSoundSystem&&) = delete;
 	};
 }
-
-
