@@ -1,5 +1,4 @@
 #pragma once
-#include <XInput.h>
 #include "Controller.h"
 
 namespace dae
@@ -8,23 +7,26 @@ namespace dae
 	{
 		class Xbox360ControllerImpl;
 		Xbox360ControllerImpl* m_pImpl = nullptr;
+
+		unsigned int m_ControllerNr{};
 	public:
 		enum class Button
 		{
-			DPADUp = XINPUT_GAMEPAD_DPAD_UP,
-			DPADDown = XINPUT_GAMEPAD_DPAD_DOWN,
-			DPADLeft = XINPUT_GAMEPAD_DPAD_LEFT,
-			DPADRight = XINPUT_GAMEPAD_DPAD_RIGHT,
-			Start = XINPUT_GAMEPAD_START,
-			Back = XINPUT_GAMEPAD_BACK,
-			LeftThumb = XINPUT_GAMEPAD_LEFT_THUMB,
-			RightThumb = XINPUT_GAMEPAD_RIGHT_THUMB,
-			LeftShoulder = XINPUT_GAMEPAD_LEFT_SHOULDER,
-			RightShoulder = XINPUT_GAMEPAD_RIGHT_SHOULDER,
-			ButtonA = XINPUT_GAMEPAD_A,
-			ButtonB = XINPUT_GAMEPAD_B,
-			ButtonX = XINPUT_GAMEPAD_X,
-			ButtonY = XINPUT_GAMEPAD_Y,
+			DPadUp = 0x0001,
+			DPadDown = 0x0002,
+			DPadLeft = 0x0004,
+			DPadRight = 0x0008,
+			Start = 0x0010,
+			Back = 0x0020,
+			LeftThumbPress = 0x0040,
+			RightThumbPress = 0x0080,
+			LeftShoulder = 0x0100,
+			RightShoulder = 0x0200,
+			ButtonA = 0x1000,
+			ButtonB = 0x2000,
+			ButtonX = 0x4000,
+			ButtonY = 0x8000,
+			LeftThumbStick
 		};
 		void Update() const override;
 
@@ -32,7 +34,9 @@ namespace dae
 		bool IsUpThisFrame(Button button) const;
 		bool IsPressedThisFrame(Button button) const;
 
-		Xbox360Controller(int controllerNr);
+		unsigned int GetControllerNr() const { return m_ControllerNr; }
+
+		explicit Xbox360Controller(int controllerNr);
 		~Xbox360Controller() override;
 
 	};

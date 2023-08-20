@@ -1,5 +1,6 @@
 #pragma once
 #include "Component.h"
+#include "Transform.h"
 
 class EnemyComponent final : public dae::Component
 {

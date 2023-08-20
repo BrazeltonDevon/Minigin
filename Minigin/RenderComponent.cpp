@@ -1,75 +1,27 @@
 #include "RenderComponent.h"
-#include "Renderer.h"
-#include "Texture2D.h"
-#include "ResourceManager.h"
-#include <string>
-#include "Texture2D.h"
+
 #include "GameObject.h"
+#include "Texture2D.h"
+#include "Renderer.h"
+#include "Transform.h"
 
+using namespace dae;
 
-dae::RenderComponent::RenderComponent(const std::string& filename) : Component()
+void RenderComponent::SetTexture(const std::shared_ptr<Texture2D>& pTexture)
 {
-	SetTexture(filename);
+	m_pTexture = pTexture;
 }
 
-dae::RenderComponent::RenderComponent(std::shared_ptr<Texture2D> texture) : Component{}
+void RenderComponent::Render() const
 {
-	m_Texture = texture;
+	if (!m_pTexture) return;
+
+	// Render at position from transform
+	const glm::vec2 pos = m_pOwner->GetTransform()->GetWorldPosition();
+	Renderer::GetInstance().RenderTexture(*m_pTexture, pos.x, pos.y);
 }
 
-dae::RenderComponent::~RenderComponent() = default;
-
-void dae::RenderComponent::SetTexture(const std::string& filename)
+glm::vec2 RenderComponent::GetTextureSize() const
 {
-	auto pTexture = ResourceManager::GetInstance().LoadTexture(filename);
-	SetTexture(pTexture);
+	return m_pTexture->GetSize();
 }
-
-void dae::RenderComponent::SetTexture(const std::shared_ptr<Texture2D> tex)
-{
-	m_Texture = tex;
-	glm::ivec2 size = m_Texture->GetSize();
-	SetWidthHeight(static_cast<float>(size.x), static_cast<float>(size.y));
-}
-
-void dae::RenderComponent::SetPosition(float x, float y)
-{
-	const auto owner = GetOwner();
-	if (owner == nullptr)
-	{
-		return;
-	}
-	auto transform = owner->GetComponent<Transform>();
-	if (transform == nullptr)
-	{
-		return;
-	}
-
-	glm::vec2 pos{ x,y };
-	transform->SetLocalPosition(pos);
-}
-
-void dae::RenderComponent::SetWidthHeight(float w, float h)
-{
-	m_Width = w;
-	m_Height = h;
-}
-
-void dae::RenderComponent::Render() const
-{
-	auto owner = GetOwner();
-	if (owner == nullptr)
-	{
-		return;
-	}
-	auto transform = owner->GetComponent<Transform>();
-	if (transform == nullptr)
-	{
-		return;
-	}
-	glm::vec2 pos = transform->GetWorldPosition();
-	dae::Renderer::GetInstance().RenderTexture(*m_Texture,pos.x,pos.y,m_Width,m_Height);
-}
-
-
-

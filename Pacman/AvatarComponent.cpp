@@ -43,7 +43,7 @@ void AvatarComponent::Initialize()
 						}
 
 						m_CurrentState = AvatarState::Hit;
-						dae::ServiceLocator::GetSoundSystem()->PlaySound("../Data/Sound/Damaged.wav", 100, 0);
+						dae::ServiceLocator::GetSoundSystem().PlaySound("../Data/Sound/Damaged.wav", 100, 0);
 
 						dae::SpriteComponent* spriteComp = m_pOwner->GetComponent<dae::SpriteComponent>();
 						if (spriteComp)

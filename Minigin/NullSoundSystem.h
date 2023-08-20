@@ -10,7 +10,7 @@ namespace dae
 
 		void PlaySound(const std::string&, int, int) override {}
 		void PlayMusic(const std::string&, int, int) override {}
-		void ToggleMusic(bool) override {}
+		void ToggleMusic(bool /*val*/) override {}
 
 	};
 }

@@ -1,38 +1,32 @@
 #pragma once
+#include <memory>
+#include <glm/vec2.hpp>
+
 #include "Component.h"
-#include "Transform.h"
-#include <string>
 
 namespace dae
 {
 	class Texture2D;
 
-	class RenderComponent : public Component
+	class RenderComponent final : public Component
 	{
 	public:
-		RenderComponent() : Component() {};
-		RenderComponent(std::shared_ptr<Texture2D>texture);
-		RenderComponent(const std::string& filename);
-
-		~RenderComponent() override;
+		RenderComponent() = default;
+		~RenderComponent() override = default;
 
 		RenderComponent(const RenderComponent& other) = delete;
 		RenderComponent(RenderComponent&& other) = delete;
 		RenderComponent& operator=(const RenderComponent& other) = delete;
 		RenderComponent& operator=(RenderComponent&& other) = delete;
 
-		virtual void SetTexture(const std::string& filename);
-		virtual void SetTexture(const std::shared_ptr<Texture2D> tex);
-
-		void SetPosition(float x, float y);
-		void SetWidthHeight(float w, float h);
-		std::shared_ptr<Texture2D> GetTexture() const { return m_Texture; }
+		void SetTexture(const std::shared_ptr<Texture2D>& pTexture);
 
 		void Render() const override;
-		void Update() override {};
+
+		glm::vec2 GetTextureSize() const;
+
 	private:
-		std::shared_ptr<Texture2D> m_Texture{};
-		float m_Width{};
-		float m_Height{};
+		std::shared_ptr<Texture2D> m_pTexture{};
+
 	};
 }

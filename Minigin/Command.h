@@ -1,19 +1,21 @@
 #pragma once
-#include <glm/glm.hpp>
 
-// Base class for commands
-
-namespace dae {
-	class GameObject;
-	class Command {
-		GameObject* m_pOwner;
-	protected:
-		GameObject* GetOwner() const { return m_pOwner; }
+namespace dae
+{
+	class Command
+	{
 	public:
-		Command(GameObject* actor);
-		virtual void Execute() {};
-		virtual void Execute(glm::vec3) {};
+		explicit Command() = default;
+		virtual ~Command() = default;
+		Command(const Command& other) = delete;
+		Command& operator=(const Command& rhs) = delete;
+		Command(Command&& other) = delete;
+		Command& operator=(Command&& rhs) = delete;
+
+
+		virtual void Execute() = 0;
 	};
-
-
 }
+
+
+

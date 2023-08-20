@@ -81,7 +81,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)Minigin;$(SolutionDir)3rdParty\rapidjson-master\include\rapidjson;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Minigin;$(SolutionDir)3rdParty\rapidjson-master\include\rapidjson;$(SolutionDir)3rdParty\SDL2_mixer\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <LanguageStandard_C>Default</LanguageStandard_C>
     </ClCompile>
@@ -100,7 +100,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)Minigin;$(SolutionDir)3rdParty\rapidjson-master\include\rapidjson;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Minigin;$(SolutionDir)3rdParty\rapidjson-master\include\rapidjson;$(SolutionDir)3rdParty\SDL2_mixer\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <LanguageStandard_C>Default</LanguageStandard_C>
     </ClCompile>
@@ -119,7 +119,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)Minigin;$(SolutionDir)3rdParty\rapidjson-master\include\rapidjson;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Minigin;$(SolutionDir)3rdParty\rapidjson-master\include\rapidjson;$(SolutionDir)3rdParty\SDL2_mixer\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <LanguageStandard_C>Default</LanguageStandard_C>
     </ClCompile>
@@ -138,7 +138,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)Minigin;$(SolutionDir)3rdParty\rapidjson-master\include\rapidjson;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Minigin;$(SolutionDir)3rdParty\rapidjson-master\include\rapidjson;$(SolutionDir)3rdParty\SDL2_mixer\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <LanguageStandard_C>Default</LanguageStandard_C>
     </ClCompile>
@@ -152,22 +152,72 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Avatar.cpp" />
+    <ClCompile Include="AvatarComponent.cpp" />
+    <ClCompile Include="Block.cpp" />
+    <ClCompile Include="Bubble.cpp" />
+    <ClCompile Include="BubbleComponent.cpp" />
+    <ClCompile Include="DisplayHUD.cpp" />
+    <ClCompile Include="EnemyComponent.cpp" />
+    <ClCompile Include="EnemyPlayer.cpp" />
+    <ClCompile Include="EnemyPlayerComponent.cpp" />
+    <ClCompile Include="Food.cpp" />
+    <ClCompile Include="FoodComponent.cpp" />
     <ClCompile Include="GameCommands.cpp" />
     <ClCompile Include="HelperStructs.h" />
+    <ClCompile Include="HighScoreLoader.cpp" />
+    <ClCompile Include="HighScoreScene.cpp" />
     <ClCompile Include="LevelCreator.cpp" />
     <ClCompile Include="LivesDisplayComponent.cpp" />
     <ClCompile Include="BubbleBobble.cpp" />
+    <ClCompile Include="MainMenuScene.cpp" />
+    <ClCompile Include="Maita.cpp" />
+    <ClCompile Include="MaitaComponent.cpp" />
+    <ClCompile Include="Platform.cpp" />
     <ClCompile Include="PlayerComponent.cpp" />
+    <ClCompile Include="Rock.cpp" />
+    <ClCompile Include="RockComponent.cpp" />
+    <ClCompile Include="SceneCommands.cpp" />
+    <ClCompile Include="SceneSwapper.cpp" />
     <ClCompile Include="ScoreDisplayComponent.cpp" />
+    <ClCompile Include="ToggleSoundSysCommand.cpp" />
+    <ClCompile Include="TypingKeyboardComponent.cpp" />
+    <ClCompile Include="ZenChan.cpp" />
+    <ClCompile Include="ZenChanComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Avatar.h" />
+    <ClInclude Include="AvatarComponent.h" />
+    <ClInclude Include="Block.h" />
+    <ClInclude Include="Bubble.h" />
+    <ClInclude Include="BubbleComponent.h" />
+    <ClInclude Include="DisplayHUD.h" />
+    <ClInclude Include="EnemyComponent.h" />
+    <ClInclude Include="EnemyPlayer.h" />
+    <ClInclude Include="EnemyPlayerComponent.h" />
     <ClInclude Include="Enums.h" />
+    <ClInclude Include="Food.h" />
+    <ClInclude Include="FoodComponent.h" />
     <ClInclude Include="GameCommands.h" />
+    <ClInclude Include="HighScoreLoader.h" />
+    <ClInclude Include="HighScoreScene.h" />
     <ClInclude Include="json.hpp" />
     <ClInclude Include="LevelCreator.h" />
     <ClInclude Include="LivesDisplayComponent.h" />
+    <ClInclude Include="MainMenuScene.h" />
+    <ClInclude Include="Maita.h" />
+    <ClInclude Include="MaitaComponent.h" />
+    <ClInclude Include="Platform.h" />
     <ClInclude Include="PlayerComponent.h" />
+    <ClInclude Include="Rock.h" />
+    <ClInclude Include="RockComponent.h" />
+    <ClInclude Include="SceneCommands.h" />
+    <ClInclude Include="SceneSwapper.h" />
     <ClInclude Include="ScoreDisplayComponent.h" />
+    <ClInclude Include="ToggleSoundSysCommand.h" />
+    <ClInclude Include="TypingKeyboardComponent.h" />
+    <ClInclude Include="ZenChan.h" />
+    <ClInclude Include="ZenChanComponent.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

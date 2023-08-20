@@ -1,37 +1,78 @@
 #pragma once
 #include "Command.h"
-#include "Enums.h"
+#include "GameObject.h"
+#include "GTime.h"
 
-namespace dae
+class JumpCommand final : public dae::Command
 {
-	class MoveCommandOld : public Command {
-		glm::vec3 m_Dir{};
-		float m_Speed{};
-	public:
-		MoveCommandOld(GameObject* pOwner, float speed) : Command(pOwner), m_Dir{}, m_Speed{ speed } {};
-		MoveCommandOld(GameObject* pOwner, glm::vec3 dir, float speed) : Command(pOwner), m_Dir{ dir }, m_Speed{ speed } {};
-		virtual void Execute() override;
-		virtual void Execute(glm::vec3 dir) override;
-	};
+public:
+	explicit JumpCommand(dae::GameObject* go, float speed)
+		:m_pGo{ go }
+		, m_Speed{ speed }
+	{}
 
-	class DieCommand : public Command {
-	
-	private:
+	void Execute() override;
+private:
+	dae::GameObject* m_pGo{};
+	float m_Speed{};
+};
 
-	public:
-		DieCommand(GameObject* pOwner) : Command(pOwner) {};
-		virtual void Execute() override;
-	};
+class MoveLeftCommand final : public dae::Command
+{
+public:
+	explicit MoveLeftCommand(dae::GameObject* go, float speed)
+		:m_pGo{ go }
+		, m_Speed{ speed }
+	{}
 
-	class MoveCommand : public Command {
-		Direction m_Dir{};
-	public:
-		MoveCommand(GameObject* pOwner, Direction dir) : Command(pOwner), m_Dir{ dir } {};
-		virtual void Execute() override;
+	void Execute() override;
+private:
+	void Move();
 
-	};
+	dae::GameObject* m_pGo{};
+	float m_Speed{};
+};
 
+class MoveRightCommand final : public dae::Command
+{
+public:
+	explicit MoveRightCommand(dae::GameObject* go, float speed)
+		:m_pGo{ go }
+		, m_Speed{ speed }
+	{}
 
-}
+	void Execute() override;
+private:
+	void Move();
 
+	dae::GameObject* m_pGo{};
+	float m_Speed{};
+};
 
+class ShootBubbleCommand final : public dae::Command
+{
+public:
+	explicit ShootBubbleCommand(dae::GameObject* go)
+		: m_pGo{ go }
+	{}
+
+	void Execute() override;
+private:
+	dae::GameObject* m_pGo{};
+};
+
+class ThrowRockCommand final : public dae::Command
+{
+public:
+	explicit ThrowRockCommand(dae::GameObject* go)
+		: m_pGo{ go }
+	{
+		m_LastTimeThrew = dae::GTime::GetInstance().GetTotal();
+	}
+
+	void Execute() override;
+private:
+	dae::GameObject* m_pGo{};
+
+	float m_LastTimeThrew;
+};

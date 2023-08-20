@@ -1,104 +1,106 @@
 #include "LevelCreator.h"
 
-#include <rapidjson.h>
-#include <document.h>
-#include <stream.h>
-#include <filereadstream.h>
+#include <string>
+#include <fstream>
+#include <SDL_keycode.h>
 
-#include <iostream>
-#include "HelperStructs.h"
-#include "Scene.h"
-#include "ColliderComponent.h"
-#include "Transform.h"
-#include "RenderComponent.h"
-#include "GameObject.h"
+#include "Avatar.h"
+#include "AvatarComponent.h"
+#include "Block.h"
+#include "FPSComponent.h"
+#include "InputManager.h"
+#include "Maita.h"
+#include "TextComponent.h"
+#include "Platform.h"
+#include "EnemyPlayerComponent.h"
+#include "ResourceManager.h"
+#include "SceneCommands.h"
+#include "ZenChan.h"
 
-using namespace std;
-using namespace rapidjson;
+using namespace dae;
 
-// Resources for rapidjson
-//https://rapidjson.org/md_doc_tutorial.html#QueryArray
-
-bool dae::LevelCreator::CreateLevel(const std::wstring& filePath, Scene* scene)
+void LevelCreator::LoadLevel(Scene* pScene, int number)
 {
-	std::wstring fileName = filePath;
-	rapidjson::Document jsonFile;
-	FILE* pFile = nullptr;
-
-	_wfopen_s(&pFile, fileName.c_str(), L"rb");
-
-	if (pFile != nullptr)
+	//set avatar pos
+	for (auto& go : pScene->GetAllObjects())
 	{
-		fseek(pFile, 0, SEEK_END);
-		const size_t size = ftell(pFile);
-		fseek(pFile, 0, SEEK_SET);
-		char* readBuffer = new char[size];
-		rapidjson::FileReadStream inputStream(pFile, readBuffer, sizeof(readBuffer));
-		jsonFile.ParseStream(inputStream);
-		delete[] readBuffer;
-		fclose(pFile);
-	}
-
-	const rapidjson::Value& tileSizeVal = jsonFile["tileSize"];
-	const rapidjson::Value& nrRowsVal = jsonFile["nrRows"];
-	const rapidjson::Value& nrColsVal = jsonFile["nrCols"];
-	const rapidjson::Value& levelLayoutVal = jsonFile["levelLayout"];
-
-	int tileSize = tileSizeVal.GetInt();
-	int nrRows = nrRowsVal.GetInt();
-	int nrCols = nrColsVal.GetInt();
-
-	std::vector<int>levelLayOut;
-
-	for (SizeType i = 0; i < levelLayoutVal.Size(); ++i)
-	{
-		// get values in the array
-		levelLayOut.push_back(levelLayoutVal[i].GetInt());
-	}
-
-	// starting position of the grid for the level
-	glm::vec3 startPos{90.f, 40.f, 0.f};
-	auto levelSize = levelLayOut.size();
-
-	int mapSize = nrRows * nrCols;
-
-	for (int i = 0; i < nrRows; ++i)
-	{
-		float posY = startPos.y + (i * tileSize); //* tileSize;
-		//std::cout << "col = " << i << "\n";
-
-		for (int j = 0; j < nrCols; ++j)
+		const auto avatarComp = go->GetComponent<AvatarComponent>();
+		const auto maitaComp = go->GetComponent<EnemyPlayerComponent>();
+		if (avatarComp)
 		{
-			float posX = startPos.x + (j * tileSize); //* tileSize;
-			
-
-			//std::cout << "row = " << j << "\n";
-
-			switch (levelLayOut[i * nrCols + j])
-			{
-			case 1:
-				LevelCreator::GetInstance().CreateWall(scene, posX, posY);
-				break;
-			default:
-				break;
-			}
+			if (avatarComp->GetColor() == AvatarComponent::AvatarColor::green)
+				go->GetTransform()->SetWorldPosition(100, 700);
+			else
+				go->GetTransform()->SetWorldPosition(850, 700);
 		}
-
+		else if (maitaComp)
+		{
+			go->GetTransform()->SetWorldPosition(850, 700);
+		}
 	}
 
+	// load level from file
+	std::string line;
+	std::string fileName{ "../Data/Level" };
+	fileName += std::to_string(number);
+	fileName += ".txt";
+	std::ifstream myfile(fileName);
 
-	return true;
-}
+	int posX{};
+	int posY{};
 
-void dae::LevelCreator::CreateWall(Scene* scene, float xPos, float yPos)
-{
-	auto wall = std::make_shared<GameObject>();
-	auto wallTransform = wall->GetTransform();
-	wallTransform->SetLocalPosition(xPos, yPos);
-	auto wallRenderer = wall->AddComponent<RenderComponent>();
-	wallRenderer->SetTexture("wall.png");
-	auto wallCollider = wall->AddComponent<ColliderComponent>();
-	wallCollider->SetDimensions(xPos, yPos, 16.f, 16.f);
+	constexpr int blockSize{ 32 };
 
-	scene->Add(wall);
+	if (myfile.is_open())
+	{
+		while (std::getline(myfile, line))
+		{
+			for (char letter : line)
+			{
+				glm::vec2 spawnPos{ blockSize* posX, blockSize* posY };
+
+				switch (letter)
+				{
+				case '1':
+				{
+					Block::CreateBlock(pScene, spawnPos, number);
+					break;
+				}
+				case '2':
+				{
+					Platform::CreatePlatform(pScene, spawnPos, number);
+					break;
+				}
+				case '3':
+				{
+					Maita::CreateMaita(pScene, spawnPos);
+					break;
+				}
+				case '4':
+				{
+					ZenChan::CreateZenChan(pScene, spawnPos);
+					break;
+				}
+				default:
+					break;
+				}
+
+				++posX;
+			}
+			++posY;
+			posX = 0;
+		}
+		myfile.close();
+	}
+
+	// FPS COUNTER
+	const auto pFont{ ResourceManager::GetInstance().LoadFont("Retro.otf", 36) };
+	const auto pFPSCounter = pScene->CreateGameObject();
+	pFPSCounter->AddComponent<RenderComponent>();
+	pFPSCounter->AddComponent<FPSComponent>();
+	pFPSCounter->AddComponent<TextComponent>()->SetFont(pFont);
+
+	//F1
+	InputManager::GetInstance().AddKeyboardCommand(SDLK_F1, InputManager::InputType::OnDown, std::make_unique<SkipLevelCommand>());
+
 }

@@ -1,39 +1,70 @@
 #include "ScoreDisplayComponent.h"
+#include "AvatarComponent.h"
+#include "GameObject.h"
 #include "TextComponent.h"
-#include "PlayerComponent.h"
+#include <sstream>
 
-dae::ScoreDisplayComponent::ScoreDisplayComponent(dae::GameObject* go)
-	: Component(go), pTextComponent{ GetOwner()->GetComponent<dae::TextComponent>() }, m_Text{ "HIGH SCORE: " }
+void ScoreDisplayComponent::Initialize()
 {
+	UpdateScoreText();
 }
 
-dae::ScoreDisplayComponent::~ScoreDisplayComponent()
+void ScoreDisplayComponent::SetPlayer(AvatarComponent* player)
 {
-
-}
-
-
-void dae::ScoreDisplayComponent::Update()
-{
-}
-
-void dae::ScoreDisplayComponent::Render() const
-{
-}
-
-
-void dae::ScoreDisplayComponent::OnNotify(Event event, GameObject* go)
-{
-	switch (event)
+	m_Player = player;
+	if (m_Player)
 	{
-	case dae::Event::AddPoints:
-		m_Text = "HIGH SCORE: " + std::to_string(go->GetComponent<dae::PlayerComponent>()->GetScore());
-		pTextComponent->SetText(m_Text);
+		m_Player->m_FoodPickup.AddObserver(this);
+	}
+}
+
+int ScoreDisplayComponent::GetScore() const
+{
+	return m_score;
+}
+
+void ScoreDisplayComponent::OnNotify(FoodComponent::FoodType type)
+{
+	switch (type)
+	{
+	case FoodComponent::FoodType::Melon:
+		m_score += 100;
 		break;
-	case dae::Event::PlayerStart:
-		m_Text = "HIGH SCORE: " + std::to_string(go->GetComponent<dae::PlayerComponent>()->GetScore());
-		pTextComponent->SetText(m_Text);
-	default:
+	case FoodComponent::FoodType::Fries:
+		m_score += 200;
 		break;
+	}
+	UpdateScoreText();
+}
+
+void ScoreDisplayComponent::OnSubjectDestroy()
+{
+	m_Player = nullptr;
+}
+
+void ScoreDisplayComponent::UpdateScoreText()
+{
+	// Get text component if its not there
+	if (m_pText == nullptr)
+	{
+		m_pText = GetOwner()->GetComponent<dae::TextComponent>();
+
+		if (m_pText == nullptr) return;
+	}
+
+	// Update text component
+	std::stringstream scoreText{};
+
+	scoreText << "Score: ";
+	scoreText << m_score;
+
+	m_pText->SetText(scoreText.str());
+}
+
+ScoreDisplayComponent::~ScoreDisplayComponent()
+{
+	if (m_Player)
+	{
+		m_Player->m_FoodPickup.RemoveObserver(this);
 	}
 }

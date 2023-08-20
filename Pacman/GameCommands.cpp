@@ -1,65 +1,139 @@
 #include "GameCommands.h"
-#include "GameObject.h"
-#include <glm/fwd.hpp>
-#include "GTime.h"
-#include "PlayerComponent.h"
+
+#include "AvatarComponent.h"
+#include "ServiceLocator.h"
+#include "PhysicsComponent.h"
+#include "EnemyPlayerComponent.h"
+#include "SoundSystem.h"
+#include "Bubble.h"
+#include "SceneManager.h"
+#include "SpriteComponent.h"
 #include <iostream>
 
 
-void dae::MoveCommandOld::Execute()
+void JumpCommand::Execute()
 {
-	Execute(m_Dir);
+	AvatarComponent* avatarComp = m_pGo->GetComponent<AvatarComponent>();
+	EnemyPlayerComponent* maitaComp = m_pGo->GetComponent<EnemyPlayerComponent>();
+	if (avatarComp && avatarComp->GetCurrState() != AvatarComponent::AvatarState::Moving)
+		return;
+	if (maitaComp && maitaComp->GetCurrState() != EnemyPlayerComponent::EnemyPlayerState::Moving)
+		return;
+
+	auto physicsComp = m_pGo->GetComponent<dae::PhysicsComponent>();
+
+	if (physicsComp == nullptr)
+		return;
+
+	if (physicsComp->GetCollisionState().BottomCollision)
+	{
+		physicsComp->Jump(m_Speed);
+		dae::ServiceLocator::GetSoundSystem().PlaySound("../Data/Sound/JumpEffect.wav", 100, 0);
+	}
 }
 
-// set the direction of pacman instead of moving in this code
-void dae::MoveCommandOld::Execute(glm::vec3 dir)
+void MoveLeftCommand::Execute()
 {
-	GameObject* pOwner = GetOwner();
-	if (!pOwner)
+	AvatarComponent* avatarComp = m_pGo->GetComponent<AvatarComponent>();
+	EnemyPlayerComponent* maitaComp = m_pGo->GetComponent<EnemyPlayerComponent>();
+	if (avatarComp)
 	{
-		return;
+		if (avatarComp->GetCurrState() == AvatarComponent::AvatarState::Moving)
+		{
+			Move();
+		}
 	}
-	Transform* pTransform = pOwner->GetComponent<Transform>();
-	if (!pTransform)
+	else if (maitaComp)
 	{
-		return;
+		if (maitaComp->GetCurrState() == EnemyPlayerComponent::EnemyPlayerState::Moving)
+		{
+			Move();
+		}
 	}
-
-	auto deltaTime = GTime::GetInstance().GetDeltaTime();
-
-	glm::vec2 pos = pTransform->GetLocalPosition();
-	pos.x += (dir.x * m_Speed) * deltaTime;
-	pos.y += (dir.y * m_Speed) * deltaTime;
-
-	pTransform->SetLocalPosition(pos);
-}
-
-void dae::DieCommand::Execute()
-{
-	GameObject* pOwner = GetOwner();
-	if (!pOwner)
-	{
-		return;
-	}
-	PlayerComponent* pPlayer = pOwner->GetComponent<PlayerComponent>();
-	if (!pPlayer)
-	{
-		return;
-	}
-
-	pPlayer->Die();
 
 }
 
-void dae::MoveCommand::Execute()
+void MoveLeftCommand::Move()
 {
-	PlayerComponent* myPlayer = GetOwner()->GetComponent<PlayerComponent>();
+	//Add movespeed and make frame independent movement
+	float horMovement = dae::GTime::GetInstance().GetDeltaTime() * m_Speed;
 
-	if (!myPlayer)
+	//Invert x-axis
+	horMovement *= -1;
+
+	//Transform GO
+	auto transform = m_pGo->GetComponent<dae::Transform>();
+	if (transform)
+		transform->Translate(horMovement, 0);
+}
+
+void MoveRightCommand::Execute()
+{
+	AvatarComponent* avatarComp = m_pGo->GetComponent<AvatarComponent>();
+	EnemyPlayerComponent* maitaComp = m_pGo->GetComponent<EnemyPlayerComponent>();
+	if (avatarComp)
 	{
-		return;
+		if (avatarComp->GetCurrState() == AvatarComponent::AvatarState::Moving)
+		{
+			Move();
+		}
 	}
+	else if (maitaComp)
+	{
+		if (maitaComp->GetCurrState() == EnemyPlayerComponent::EnemyPlayerState::Moving)
+		{
+			Move();
+		}
+	}
+}
 
-	myPlayer->SetDirection(m_Dir);
+void MoveRightCommand::Move()
+{
+	//Add movespeed and make frame independent movement
+	float horMovement = dae::GTime::GetInstance().GetDeltaTime() * m_Speed;
 
+	//Transform GO
+	auto transform = m_pGo->GetComponent<dae::Transform>();
+	if (transform)
+		transform->Translate(horMovement, 0);
+}
+
+void ShootBubbleCommand::Execute()
+{
+	AvatarComponent* avatarComp = m_pGo->GetComponent<AvatarComponent>();
+	dae::SpriteComponent* spriteComp = m_pGo->GetComponent<dae::SpriteComponent>();
+
+	if (avatarComp && spriteComp)
+	{
+		//Dont shoot if he is already shooting / doing something else
+		if (spriteComp->IsDoingOnce())
+			return;
+
+		if (avatarComp->GetCurrState() == AvatarComponent::AvatarState::Moving)
+		{
+			dae::Scene* scene = dae::SceneManager::GetInstance().GetCurrentScene();
+			Bubble::CreateBubble(scene, m_pGo);
+			dae::ServiceLocator::GetSoundSystem().PlaySound("../Data/Sound/ShootBubbleEffect.wav", 100, 0);
+
+
+			if (avatarComp->GetColor() == AvatarComponent::AvatarColor::green)
+				spriteComp->DoOnceAnim(0.1f, 7, 12);
+			else
+				spriteComp->DoOnceAnim(0.1f, 28, 33);
+		}
+	}
+}
+
+void ThrowRockCommand::Execute()
+{
+	EnemyPlayerComponent* maitaComp = m_pGo->GetComponent<EnemyPlayerComponent>();
+
+	float totalGameTime = dae::GTime::GetInstance().GetTotal();
+
+	//Attack cooldonw
+	if (maitaComp && totalGameTime - m_LastTimeThrew > 1.5f)
+	{
+		maitaComp->ThrowRock();
+		m_LastTimeThrew = totalGameTime;
+	}
 }

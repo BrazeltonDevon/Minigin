@@ -19,13 +19,28 @@
     <Filter Include="Commands">
       <UniqueIdentifier>{2a59608f-a441-464f-9960-57d09964f6e3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Player">
+      <UniqueIdentifier>{909a745b-305e-4611-8066-086e2ed476c2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Enemies">
+      <UniqueIdentifier>{fe51fb82-a07e-471d-a65b-beaf75fc17ce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Objects">
+      <UniqueIdentifier>{d6a200a9-514f-4f45-9b30-4f64f5534465}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Objects\Prefabs">
+      <UniqueIdentifier>{156a529f-0a34-42b1-9e88-3197213e9c8c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scenes">
+      <UniqueIdentifier>{f42350ca-2aa8-46d4-89fd-2f2e78b755c1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Display">
+      <UniqueIdentifier>{04d83e85-3464-4594-a496-538778b56f81}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BubbleBobble.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="LivesDisplayComponent.cpp">
-      <Filter>Components</Filter>
     </ClCompile>
     <ClCompile Include="PlayerComponent.cpp">
       <Filter>Components</Filter>
@@ -36,17 +51,92 @@
     <ClCompile Include="HelperStructs.h">
       <Filter>Header Files</Filter>
     </ClCompile>
+    <ClCompile Include="FoodComponent.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="AvatarComponent.cpp">
+      <Filter>Player</Filter>
+    </ClCompile>
+    <ClCompile Include="RockComponent.cpp">
+      <Filter>Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyComponent.cpp">
+      <Filter>Enemies</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyPlayerComponent.cpp">
+      <Filter>Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Rock.cpp">
+      <Filter>Objects\Prefabs</Filter>
+    </ClCompile>
+    <ClCompile Include="BubbleComponent.cpp">
+      <Filter>Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="Food.cpp">
+      <Filter>Objects\Prefabs</Filter>
+    </ClCompile>
+    <ClCompile Include="MaitaComponent.cpp">
+      <Filter>Enemies</Filter>
+    </ClCompile>
+    <ClCompile Include="ZenChanComponent.cpp">
+      <Filter>Enemies</Filter>
+    </ClCompile>
+    <ClCompile Include="Maita.cpp">
+      <Filter>Enemies</Filter>
+    </ClCompile>
+    <ClCompile Include="ZenChan.cpp">
+      <Filter>Enemies</Filter>
+    </ClCompile>
+    <ClCompile Include="Bubble.cpp">
+      <Filter>Objects\Prefabs</Filter>
+    </ClCompile>
     <ClCompile Include="LevelCreator.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="Platform.cpp">
+      <Filter>Objects\Prefabs</Filter>
+    </ClCompile>
+    <ClCompile Include="Avatar.cpp">
+      <Filter>Objects\Prefabs</Filter>
+    </ClCompile>
+    <ClCompile Include="Block.cpp">
+      <Filter>Objects\Prefabs</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneCommands.cpp">
+      <Filter>Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="ToggleSoundSysCommand.cpp">
+      <Filter>Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyPlayer.cpp">
+      <Filter>Objects\Prefabs</Filter>
+    </ClCompile>
+    <ClCompile Include="DisplayHUD.cpp">
+      <Filter>Display</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneSwapper.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="HighScoreScene.cpp">
+      <Filter>Scenes</Filter>
     </ClCompile>
     <ClCompile Include="ScoreDisplayComponent.cpp">
-      <Filter>Components</Filter>
+      <Filter>Display</Filter>
+    </ClCompile>
+    <ClCompile Include="LivesDisplayComponent.cpp">
+      <Filter>Display</Filter>
+    </ClCompile>
+    <ClCompile Include="TypingKeyboardComponent.cpp">
+      <Filter>Display</Filter>
+    </ClCompile>
+    <ClCompile Include="MainMenuScene.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="HighScoreLoader.cpp">
+      <Filter>Scenes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="LivesDisplayComponent.h">
-      <Filter>Components</Filter>
-    </ClInclude>
     <ClInclude Include="PlayerComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
@@ -59,11 +149,89 @@
     <ClInclude Include="json.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="FoodComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="AvatarComponent.h">
+      <Filter>Player</Filter>
+    </ClInclude>
+    <ClInclude Include="RockComponent.h">
+      <Filter>Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyComponent.h">
+      <Filter>Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyPlayerComponent.h">
+      <Filter>Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Rock.h">
+      <Filter>Objects\Prefabs</Filter>
+    </ClInclude>
+    <ClInclude Include="BubbleComponent.h">
+      <Filter>Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Food.h">
+      <Filter>Objects\Prefabs</Filter>
+    </ClInclude>
+    <ClInclude Include="MaitaComponent.h">
+      <Filter>Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="ZenChanComponent.h">
+      <Filter>Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="Maita.h">
+      <Filter>Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="ZenChan.h">
+      <Filter>Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="Bubble.h">
+      <Filter>Objects\Prefabs</Filter>
+    </ClInclude>
     <ClInclude Include="LevelCreator.h">
-      <Filter>Header Files</Filter>
+      <Filter>Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="Platform.h">
+      <Filter>Objects\Prefabs</Filter>
+    </ClInclude>
+    <ClInclude Include="Avatar.h">
+      <Filter>Objects\Prefabs</Filter>
+    </ClInclude>
+    <ClInclude Include="Block.h">
+      <Filter>Objects\Prefabs</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneCommands.h">
+      <Filter>Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="ToggleSoundSysCommand.h">
+      <Filter>Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyPlayer.h">
+      <Filter>Objects\Prefabs</Filter>
+    </ClInclude>
+    <ClInclude Include="DisplayHUD.h">
+      <Filter>Display</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneSwapper.h">
+      <Filter>Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="HighScoreScene.h">
+      <Filter>Scenes</Filter>
     </ClInclude>
     <ClInclude Include="ScoreDisplayComponent.h">
-      <Filter>Components</Filter>
+      <Filter>Display</Filter>
+    </ClInclude>
+    <ClInclude Include="LivesDisplayComponent.h">
+      <Filter>Display</Filter>
+    </ClInclude>
+    <ClInclude Include="TypingKeyboardComponent.h">
+      <Filter>Display</Filter>
+    </ClInclude>
+    <ClInclude Include="MainMenuScene.h">
+      <Filter>Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="HighScoreLoader.h">
+      <Filter>Scenes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

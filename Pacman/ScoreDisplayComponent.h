@@ -1,30 +1,39 @@
 #pragma once
-#include "Component.h"
-#include "Observer.h"
+#include "FoodComponent.h"
+#include "Subject.h"
 
-namespace dae {
-	class GameObject;
+namespace dae
+{
 	class TextComponent;
-
-	class ScoreDisplayComponent final : public  Component, public Observer
-	{
-	public:
-		ScoreDisplayComponent(dae::GameObject* go);
-
-		~ScoreDisplayComponent();
-
-		ScoreDisplayComponent(const ScoreDisplayComponent& other) = delete;
-		ScoreDisplayComponent(ScoreDisplayComponent&& other) noexcept = delete;
-		ScoreDisplayComponent& operator=(const ScoreDisplayComponent& other) = delete;
-		ScoreDisplayComponent& operator=(ScoreDisplayComponent&& other) noexcept = delete;
-
-		void Update() override;
-		void Render() const override;
-		void OnNotify(Event event, GameObject* go) override;
-
-	private:
-		TextComponent* pTextComponent;
-		std::string m_Text;
-	};
-
 }
+
+class AvatarComponent;
+
+class ScoreDisplayComponent final : public dae::Component, public dae::Observer<FoodComponent::FoodType>
+{
+public:
+	ScoreDisplayComponent() = default;
+	~ScoreDisplayComponent() override;
+
+	ScoreDisplayComponent(const ScoreDisplayComponent& other) = delete;
+	ScoreDisplayComponent(ScoreDisplayComponent&& other) = delete;
+	ScoreDisplayComponent& operator=(const ScoreDisplayComponent& other) = delete;
+	ScoreDisplayComponent& operator=(ScoreDisplayComponent&& other) = delete;
+
+	void Initialize() override;
+	void SetPlayer(AvatarComponent* player);
+
+	int GetScore() const;
+
+private:
+
+	void OnNotify(FoodComponent::FoodType type) override;
+	void OnSubjectDestroy() override;
+	void UpdateScoreText();
+
+	int m_score{};
+	AvatarComponent* m_Player{};
+
+	dae::TextComponent* m_pText{};
+};
+

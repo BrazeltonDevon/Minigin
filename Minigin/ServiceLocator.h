@@ -8,7 +8,7 @@ namespace dae
 	class ServiceLocator final
 	{
 	public:
-		static std::unique_ptr<SoundSystem>& GetSoundSystem() { return m_SoundSysmService; }
+		static SoundSystem& GetSoundSystem() { return *m_SoundSysmService; }
 		static void RegisterSoundSystem(std::unique_ptr<SoundSystem>&& system)
 		{
 			m_SoundSysmService = std::move(system);
