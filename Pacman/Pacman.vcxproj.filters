@@ -135,6 +135,9 @@
     <ClCompile Include="HighScoreLoader.cpp">
       <Filter>Scenes</Filter>
     </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="PlayerComponent.h">
@@ -232,6 +235,9 @@
     </ClInclude>
     <ClInclude Include="HighScoreLoader.h">
       <Filter>Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="BubbleBobble.h">
+      <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

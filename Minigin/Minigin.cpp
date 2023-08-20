@@ -63,8 +63,8 @@ dae::Minigin::Minigin(const std::string &dataPath)
 		"Programming 4 assignment",
 		SDL_WINDOWPOS_CENTERED,
 		SDL_WINDOWPOS_CENTERED,
-		640,
-		480,
+		1280,
+		800,
 		SDL_WINDOW_OPENGL
 	);
 	if (g_window == nullptr) 
@@ -86,9 +86,9 @@ dae::Minigin::~Minigin()
 }
 
 using namespace std;
-void dae::Minigin::Run(const std::function<void()>& load)
+void dae::Minigin::Run()
 {
-	load();
+	//load();
 
 	auto& renderer = Renderer::GetInstance();
 	auto& sceneManager = SceneManager::GetInstance();

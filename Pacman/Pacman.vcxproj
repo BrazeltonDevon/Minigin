@@ -170,6 +170,7 @@
     <ClCompile Include="LevelCreator.cpp" />
     <ClCompile Include="LivesDisplayComponent.cpp" />
     <ClCompile Include="BubbleBobble.cpp" />
+    <ClCompile Include="main.cpp" />
     <ClCompile Include="MainMenuScene.cpp" />
     <ClCompile Include="Maita.cpp" />
     <ClCompile Include="MaitaComponent.cpp" />
@@ -190,6 +191,7 @@
     <ClInclude Include="AvatarComponent.h" />
     <ClInclude Include="Block.h" />
     <ClInclude Include="Bubble.h" />
+    <ClInclude Include="BubbleBobble.h" />
     <ClInclude Include="BubbleComponent.h" />
     <ClInclude Include="DisplayHUD.h" />
     <ClInclude Include="EnemyComponent.h" />
