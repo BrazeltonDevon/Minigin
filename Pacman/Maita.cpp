@@ -1,7 +1,6 @@
 #include "Maita.h"
 
 #include "ZenChan.h"
-
 #include "ColliderComponent.h"
 #include "EnemyComponent.h"
 #include "PhysicsComponent.h"
@@ -27,7 +26,6 @@ GameObject* Maita::CreateMaita(Scene* pScene, const glm::vec2& spawnPos)
 	physicsComp->SetPhysicsSettings(true, false, false);
 
 	pMiata->AddComponent<EnemyComponent>();
-
 	pMiata->AddComponent<MaitaComponent>();
 
 	return pMiata;

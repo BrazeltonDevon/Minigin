@@ -38,10 +38,8 @@ void BubbleComponent::Initialize()
 				{
 				case BubbleState::Shooting:
 				{
-					//if it can pick up an enemy
 					if (m_HasEnemyInside == false)
 					{
-						//if its an enemy
 						EnemyComponent* enemyComp = overlappingActor->GetComponent<EnemyComponent>();
 						if (enemyComp)
 						{
@@ -53,17 +51,14 @@ void BubbleComponent::Initialize()
 				case BubbleState::Hovering:
 				case BubbleState::ReachedTop:
 				{
-					//if its a player
 					AvatarComponent* avatarComp = overlappingActor->GetComponent<AvatarComponent>();
 					dae::ColliderComponent* playerColl = overlappingActor->GetComponent<dae::ColliderComponent>();
 					dae::ColliderComponent* myColl = m_pOwner->GetComponent<dae::ColliderComponent>();
 					if (avatarComp && playerColl && myColl)
 					{
-						//if the player hits it from the top && the player is holding down spacebar
 						if (myColl->IsOverlappingWithDirectional(playerColl).first == dae::ColliderComponent::OverlapData::Top
 							&& dae::InputManager::GetInstance().IsKeyboardKeyDown('w'))
 						{
-							//set the physics to grounded so that the player can jump
 							dae::PhysicsComponent* playerPhysics = overlappingActor->GetComponent<dae::PhysicsComponent>(); \
 								playerPhysics->SetGrounded(true);
 						}
@@ -81,33 +76,27 @@ void BubbleComponent::Initialize()
 
 void BubbleComponent::Update()
 {
-	//increment timer
 	float deltaTime = dae::GTime::GetInstance().GetDeltaTime();
 	m_Timer += deltaTime;
 
-	//Get transform and position
 	dae::Transform* pTransform{ m_pOwner->GetTransform() };
 	const glm::vec2 currPos = pTransform->GetWorldPosition();
 
-	//Move object
 	glm::vec2 posDelta{};
 
 	switch (m_CurrentState)
 	{
 	case BubbleState::Shooting:
 	{
-		//Move horizontally
 		constexpr float horMoveSpeed{ 450 };
 		posDelta.x = (m_DirectionRight ? horMoveSpeed * deltaTime : -horMoveSpeed * deltaTime);
 
-		//Check if it goes out of bounds
 		if (currPos.x <= 70 || currPos.x >= 890)
 		{
 			posDelta.x = 0;
 			m_Timer = 1.f;
 		}
 
-		//Check if it was shooting for long enough
 		if (m_Timer >= 0.5f)
 		{
 			m_CurrentState = BubbleState::Hovering;
@@ -117,11 +106,9 @@ void BubbleComponent::Update()
 	}
 	case BubbleState::Hovering:
 	{
-		//Move vertically
 		constexpr float vertMoveSpeed{ 100 };
 		posDelta.y = -vertMoveSpeed * deltaTime;
 
-		//Check if it reached the top
 		if (currPos.y <= 70)
 		{
 			m_CurrentState = BubbleState::ReachedTop;
@@ -153,16 +140,14 @@ void BubbleComponent::Update()
 	{
 		auto spriteComp = m_pOwner->GetComponent<dae::SpriteComponent>();
 		if (spriteComp)
-			if (spriteComp->IsDoingOnce() == false) //the do once explosion ended
+			if (spriteComp->IsDoingOnce() == false)
 				m_pOwner->MarkForDelete();
 		break;
 	}
 	case BubbleState::EnemyDying:
 	{
-		// By calculating the dotproduct with itself it basically returns the squaredMagnitude
 		if (abs(currPos.x - m_RandomGoToPos.x) <= 1.f && abs(currPos.y - m_RandomGoToPos.y) <= 1.f)
 		{
-			//spawn a food
 			auto scene = dae::SceneManager::GetInstance().GetCurrentScene();
 			if (m_ZenChan)
 				Food::CreateFood(scene, m_pOwner, FoodComponent::FoodType::Melon);
@@ -182,7 +167,6 @@ void BubbleComponent::Update()
 	}
 	}
 
-	//Set transform
 	pTransform->Translate(posDelta);
 
 }
@@ -238,7 +222,6 @@ void BubbleComponent::Pop(bool byPlayer)
 		m_CurrentState = BubbleState::EnemyDying;
 		dae::ServiceLocator::GetSoundSystem().PlaySound("../Data/Sound/PopBubbleWithEnemy.wav", 100, 0);
 
-		//Make death sprite animation
 		if (spriteComp)
 		{
 			if (m_ZenChan)

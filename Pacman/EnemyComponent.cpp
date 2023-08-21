@@ -16,7 +16,6 @@ void EnemyComponent::Initialize()
 	m_JumpSpeed = -450;
 	m_ChangeWalkDirTimer = static_cast<float>(rand() % 2 + 3);
 
-	// init avatar transform
 	auto& allObjects = dae::SceneManager::GetInstance().GetCurrentScene()->GetAllObjects();
 	for (auto& obj : allObjects)
 	{
@@ -34,7 +33,6 @@ void EnemyComponent::Update()
 		Initialize();
 	}
 
-	//get data variables
 	dae::Transform* transform = m_pOwner->GetTransform();
 	glm::vec2 myPos = transform->GetWorldPosition();
 	glm::vec2 avatarPos = m_pAvatarTransform->GetWorldPosition();
@@ -50,7 +48,7 @@ void EnemyComponent::Update()
 	{
 	case BehaviorState::Wander:
 	{
-		//Do jumping cooldown logic
+
 		if (m_JumpingCooldown > 0.f)
 		{
 			m_JumpingCooldown -= deltaTime;
@@ -59,7 +57,7 @@ void EnemyComponent::Update()
 		{
 			if (releativeAvatarPos.y < -1.f)
 			{
-				//making some random stuff for the jump timings
+
 				switch (rand() % 3)
 				{
 				case 0:
@@ -89,14 +87,14 @@ void EnemyComponent::Update()
 		}
 
 		auto collisionState = physComp->GetCollisionState();
-		//if it is falling, change behavior
+
 		if (collisionState.BottomCollision == false)
 		{
 			m_CurrBehavior = BehaviorState::Jumping; //(falling)
 			break;
 		}
 
-		//Swap walkingDirection if it hits a wall
+		
 		if (collisionState.LeftCollision || collisionState.RightCollision)
 		{
 			m_WalkingRight = !m_WalkingRight;
@@ -111,10 +109,10 @@ void EnemyComponent::Update()
 	case BehaviorState::Jumping:
 	{
 		auto collisionState = physComp->GetCollisionState();
-		//if it hits a floor
+
 		if (collisionState.BottomCollision)
 		{
-			//50% chance of jumping again if player is above them
+
 			if (rand() % 3 == 0 && releativeAvatarPos.y < -10)
 				physComp->Jump(m_JumpSpeed);
 			else

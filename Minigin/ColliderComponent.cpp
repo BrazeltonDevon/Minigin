@@ -99,10 +99,11 @@ void ColliderComponent::FixedUpdate()
 
 void ColliderComponent::Render() const
 {
-    if (m_DrawDebug == false)
+    if (m_DrawDebug)
         return;
 
-    const auto renderer = Renderer::GetInstance().GetSDLRenderer();
+
+    /*const auto renderer = Renderer::GetInstance().GetSDLRenderer();
 
     SDL_Rect rect;
     rect.x = static_cast<int>(m_Pos.x);
@@ -111,7 +112,7 @@ void ColliderComponent::Render() const
     rect.h = static_cast<int>(m_Size.y);
 
     SDL_SetRenderDrawColor(renderer, static_cast<Uint8>(m_Color.r), static_cast<Uint8>(m_Color.g), static_cast<Uint8>(m_Color.b), static_cast<Uint8>(m_Color.a));
-    SDL_RenderDrawRect(renderer, &rect);
+    SDL_RenderDrawRect(renderer, &rect);*/
 }
 
 bool ColliderComponent::IsOverlappingWith(const ColliderComponent* other)

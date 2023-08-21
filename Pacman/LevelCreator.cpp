@@ -31,9 +31,9 @@ void LevelCreator::LoadLevel(Scene* pScene, int number)
 			if (avatarComp->GetColor() == AvatarComponent::AvatarColor::green)
 			{
 
-				go->GetTransform()->SetWorldPosition(300, 703);
-				std::cout << "set player pos\n";
-				std::cout << "player pos is " << go->GetTransform()->GetLocalPosition().x << " , " << go->GetTransform()->GetLocalPosition().y << std::endl;
+				go->GetTransform()->SetWorldPosition(100, 703);
+				//std::cout << "set player pos\n";
+				//std::cout << "player pos is " << go->GetTransform()->GetLocalPosition().x << " , " << go->GetTransform()->GetLocalPosition().y << std::endl;
 			}
 			else
 				go->GetTransform()->SetWorldPosition(850, 703);

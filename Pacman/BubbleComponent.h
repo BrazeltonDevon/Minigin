@@ -43,10 +43,6 @@ private:
 
 	float m_Timer{};
 	bool m_DirectionRight{};
-
-	//This is a bool and not a state
-	//It still has to finish shooting, hovering and reach top
-	//with an enemy inside
 	bool m_HasEnemyInside{};
 	bool m_ZenChan{ true };
 
