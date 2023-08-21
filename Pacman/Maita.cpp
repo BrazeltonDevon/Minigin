@@ -17,12 +17,11 @@ GameObject* Maita::CreateMaita(Scene* pScene, const glm::vec2& spawnPos)
 
 	auto spriteComp = pMiata->AddComponent<SpriteComponent>();
 	spriteComp->SetTexture("Enemies.png");
-	spriteComp->SetAnimVariables(4, 8, 0.f); // Just rows and columns are important here, its used for hit box size calc
+	spriteComp->SetAnimVariables(4, 8, 0.f);
 	spriteComp->Scale(4);
 
 	auto colliderComp = pMiata->AddComponent<ColliderComponent>();
 	colliderComp->SetSize(spriteComp->GetSize());
-	//colliderComp->SetRendering(true);
 
 	auto physicsComp = pMiata->AddComponent<PhysicsComponent>();
 	physicsComp->SetPhysicsSettings(true, false, false);

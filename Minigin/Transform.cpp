@@ -74,18 +74,14 @@ void dae::Transform::SetPositionDirty()
 
 	const auto pParent{ GetOwner() };
 
-	// if has no parent, no need to enable dirty flag for children
 	if (!pParent) return;
 
-	// enable dirty flag of all children if has parent
 	const auto& pChildren{ pParent->GetChildren() };
 	for (const auto& pChild : pChildren)
 	{
-		// make sure child has a transform
 		const auto pTransform{ pChild->GetTransform() };
 		if (!pTransform) continue;
 
-		// if has transform, set dirty flag
 		pTransform->SetPositionDirty();
 	}
 	
@@ -94,8 +90,6 @@ void dae::Transform::SetPositionDirty()
 void dae::Transform::UpdateWorldPosition()
 {
 	m_IsPosDirty = false;
-
-	// if has no parent or parent has no transform, use local pos for world pos
 
 	auto parent{ GetOwner()->GetParent()};
 	if (parent == nullptr)
@@ -111,9 +105,6 @@ void dae::Transform::UpdateWorldPosition()
 		m_WorldPos = m_LocalPos;
 		return;
 	}
-	
-	// otherwise use world pos of the parent transform to calculate world position of this object
-	// aka world pos of parent transform + this local pos
 
 	m_WorldPos = transform->GetWorldPosition() + m_LocalPos;
 }

@@ -34,16 +34,12 @@ void SceneSwapper::SkipLevel()
 		auto* pGameScene = sceneManager.GetCurrentScene();
 		auto& name = pGameScene->GetName();
 
-		//Remove everything that doesnt have the avatar component
 		auto& objVec = pGameScene->GetAllObjects();
 		objVec.erase(std::remove_if(objVec.begin(), objVec.end(), [](std::unique_ptr<dae::GameObject>& go) {
 			return (go->GetComponent<AvatarComponent>() == nullptr &&
 				go->GetComponent<ScoreDisplayComponent>() == nullptr &&
 				go->GetComponent<LivesDisplayComponent>() == nullptr);
 			}), objVec.end());
-
-		//keep inputs since the avatar doesnt get deleted
-		//dae::InputManager::GetInstance().RemoveAllInputs();
 
 		if (std::isdigit(name[0]))
 		{
@@ -52,8 +48,10 @@ void SceneSwapper::SkipLevel()
 			if (levelNr < 3)
 			{
 				pGameScene->SetName(std::to_string(levelNr + 1));
-				LevelCreator::LoadLevel(pGameScene, levelNr + 1);
+
 				sceneManager.SetCurrentScene(pGameScene);
+
+				LevelCreator::LoadLevel(pGameScene, levelNr + 1);
 			}
 			else
 			{

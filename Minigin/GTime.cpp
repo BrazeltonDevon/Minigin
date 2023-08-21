@@ -69,6 +69,11 @@ void dae::GTime::Update()
 	}
 }
 
+void dae::GTime::SetFixedTimeStep(float fixedTimeStep)
+{
+	m_FixedTimeStep = fixedTimeStep;
+}
+
 void dae::GTime::Start()
 {
 	if (m_IsStopped)

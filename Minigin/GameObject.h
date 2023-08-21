@@ -29,15 +29,13 @@ namespace dae
 
 		GameObject* GetParent() const { return m_pParent; };
 		Transform* GetTransform() const { return m_pTransform; }
-		//void RemoveChild(GameObject* child);
-		//void AddChild(GameObject* child);
 
 		const std::vector<std::unique_ptr<GameObject>>& GetChildren() const { return m_pChildren; }
 
 		void MarkForDelete();
-
 		bool IsMarkedForDelete() const 
 		{
+			if (m_IsMarkedForDelete) std::cout << "object marked for delete\n";
 			return m_IsMarkedForDelete;
 		};
 

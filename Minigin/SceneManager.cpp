@@ -62,6 +62,7 @@ dae::Scene* dae::SceneManager::GetCurrentScene() const
 
 void dae::SceneManager::CleanUpObjects()
 {
+	//std::cout << "cleaning up objects\n";
 	if (m_ActiveSceneId >= 0)
 	{
 		m_Scenes[m_ActiveSceneId]->CleanUpObjects();

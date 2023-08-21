@@ -21,7 +21,7 @@ using namespace dae;
 
 void LevelCreator::LoadLevel(Scene* pScene, int number)
 {
-	//set avatar pos
+	//set player avatar positions
 	for (auto& go : pScene->GetAllObjects())
 	{
 		const auto avatarComp = go->GetComponent<AvatarComponent>();
@@ -29,13 +29,18 @@ void LevelCreator::LoadLevel(Scene* pScene, int number)
 		if (avatarComp)
 		{
 			if (avatarComp->GetColor() == AvatarComponent::AvatarColor::green)
-				go->GetTransform()->SetWorldPosition(100, 700);
+			{
+
+				go->GetTransform()->SetWorldPosition(300, 703);
+				std::cout << "set player pos\n";
+				std::cout << "player pos is " << go->GetTransform()->GetLocalPosition().x << " , " << go->GetTransform()->GetLocalPosition().y << std::endl;
+			}
 			else
-				go->GetTransform()->SetWorldPosition(850, 700);
+				go->GetTransform()->SetWorldPosition(850, 703);
 		}
 		else if (maitaComp)
 		{
-			go->GetTransform()->SetWorldPosition(850, 700);
+			go->GetTransform()->SetWorldPosition(850, 703);
 		}
 	}
 
@@ -51,13 +56,16 @@ void LevelCreator::LoadLevel(Scene* pScene, int number)
 
 	constexpr int blockSize{ 32 };
 
+	// offset so collision doesn't occur immediately upon spawning
+	constexpr float offset{ 1.f };
+
 	if (myfile.is_open())
 	{
 		while (std::getline(myfile, line))
 		{
 			for (char letter : line)
 			{
-				glm::vec2 spawnPos{ blockSize* posX, blockSize* posY };
+				glm::vec2 spawnPos{ blockSize * posX, blockSize * posY };
 
 				switch (letter)
 				{
@@ -73,12 +81,16 @@ void LevelCreator::LoadLevel(Scene* pScene, int number)
 				}
 				case '3':
 				{
+					spawnPos.y += offset;
 					Maita::CreateMaita(pScene, spawnPos);
+					//std::cout << "created maita " << spawnPos.x << " , " << spawnPos.y << " \n";
 					break;
 				}
 				case '4':
 				{
+					spawnPos.y += offset;
 					ZenChan::CreateZenChan(pScene, spawnPos);
+					//std::cout << "created zenchan at " << spawnPos.x << " , " << spawnPos.y << " \n";
 					break;
 				}
 				default:

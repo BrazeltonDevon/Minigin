@@ -40,7 +40,6 @@
     <ClCompile Include="SDLSoundSystem.cpp" />
     <ClCompile Include="ServiceLocator.cpp" />
     <ClCompile Include="SpriteComponent.cpp" />
-    <ClCompile Include="StateMachine.cpp" />
     <ClCompile Include="Subject.cpp" />
     <ClCompile Include="TextComponent.cpp" />
     <ClCompile Include="Texture2D.cpp" />
@@ -77,8 +76,6 @@
     <ClInclude Include="SoundSystem.h" />
     <ClInclude Include="SpriteComponent.h" />
     <ClInclude Include="SpritePreset.h" />
-    <ClInclude Include="State.h" />
-    <ClInclude Include="StateMachine.h" />
     <ClInclude Include="Subject.h" />
     <ClInclude Include="TextComponent.h" />
     <ClInclude Include="Texture2D.h" />

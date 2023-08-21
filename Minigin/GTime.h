@@ -30,6 +30,9 @@ namespace dae
 		void ForceElapsedUpperbound(bool force, float upperBound = 0.03f) { m_ForceElapsedUpperBound = force; m_ElapsedUpperBound = upperBound; }
 		bool IsRunning() const { return !m_IsStopped; }
 
+		void SetFixedTimeStep(float fixedTimeStep);
+		float GetFixedTimeStep() const { return m_FixedTimeStep; }
+
 		void Start();
 		void Stop();
 	protected:
@@ -49,6 +52,7 @@ namespace dae
 		int m_FPS{};
 		float m_FpsTimer{};
 		int m_FpsCount{};
+		float m_FixedTimeStep{};
 	};
 
 }

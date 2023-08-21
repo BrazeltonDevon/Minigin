@@ -12,13 +12,15 @@
 #include <ctime>
 #include <thread>
 #include "GTime.h"
+#include <chrono>
+#include "EventQueue.h"
 
 //**************************************
 // DEFINE FIXED UPDATE USE
 // IF NEEDED FOR PHYSICS &|| NETWORKING
 //**************************************
 
-#define USE_FIXED_UPDATE
+//#define USE_FIXED_UPDATE
 
 SDL_Window* g_window{};
 
@@ -88,40 +90,46 @@ dae::Minigin::~Minigin()
 using namespace std;
 void dae::Minigin::Run()
 {
-	//load();
-
 	auto& renderer = Renderer::GetInstance();
 	auto& sceneManager = SceneManager::GetInstance();
 	auto& input = InputManager::GetInstance();
 	auto& time = GTime::GetInstance();
+	auto& events = EventQueue::GetInstance();
 
 	bool doContinue = true;
-
-#ifdef USE_FIXED_UPDATE
-	float lag = 0.0f;
-#endif //USE_FIXED_UPDATE
+	constexpr float fixedTimeStep{ 0.005f }; // 0.005f
+	constexpr float maxFrameTime{ 0.01f };
+	float lag{};
+	time.SetFixedTimeStep(fixedTimeStep);
 
 	while (doContinue)
 	{
+		const auto frameStart{ std::chrono::high_resolution_clock::now() };
+
 		time.Update();
-
-		const auto currentTime = std::chrono::high_resolution_clock::now();
-		doContinue = input.ProcessInput();
-
-#ifdef USE_FIXED_UPDATE
 		lag += time.GetDeltaTime();
 
-		while (lag >= Minigin::MsPerFrame)
+		doContinue = input.ProcessInput();
+
+		while (lag >= fixedTimeStep)
 		{
 			sceneManager.FixedUpdate();
-			lag -= Minigin::MsPerFrame;
+			sceneManager.CleanUpObjects();
+			lag -= fixedTimeStep;
 		}
-#endif //USE_FIXED_UPDATE
 
 		sceneManager.Update();
+		events.NotifyListeners();
+		sceneManager.CleanUpObjects();
+
 		renderer.Render();
 
-		const auto sleepTime = currentTime + std::chrono::milliseconds(Minigin::MsPerFrame) - std::chrono::high_resolution_clock::now();
-		this_thread::sleep_for(sleepTime);
+		const float frameTime{ std::chrono::duration<float>(std::chrono::high_resolution_clock::now() - frameStart).count() };
+		const float sleepTime{ maxFrameTime - frameTime };
+
+		if (sleepTime > 0.f)
+		{
+			std::this_thread::sleep_for(std::chrono::milliseconds(static_cast<LONGLONG>(sleepTime * 1000)));
+		}
 	}
 }

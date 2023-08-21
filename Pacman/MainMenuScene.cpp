@@ -60,14 +60,6 @@ void MainMenuScene::Create()
 	pLogo->AddComponent<FPSComponent>();
 	pLogo->GetTransform()->SetWorldPosition(1280.f / 2 - pLogoTexture->GetSize().x / 2, 680);
 
-	// made by text
-	const auto pName = pGameScene->CreateGameObject();
-	pName->AddComponent<RenderComponent>();
-	pName->AddComponent<TextComponent>()->SetFont(pFont);
-	pName->GetComponent<TextComponent>()->SetText("Made by Mendel Debrabandere");
-	pName->GetComponent<TextComponent>()->Update();
-	pName->GetTransform()->SetWorldPosition(1280.f / 2 - pName->GetComponent<RenderComponent>()->GetTextureSize().x / 2, 750);
-
 	// FPS COUNTER
 	const auto pFPSCounter = pGameScene->CreateGameObject();
 	pFPSCounter->AddComponent<RenderComponent>();
@@ -127,35 +119,35 @@ void MainMenuScene::Create()
 
 	//==============================
 	//CONTROLS
-	const auto pKeyboard = pGameScene->CreateGameObject();
-	pKeyboard->AddComponent<RenderComponent>();
-	pKeyboard->AddComponent<TextComponent>()->SetFont(pFont);
-	pKeyboard->GetComponent<TextComponent>()->SetText("Keyboard controls:");
-	pKeyboard->GetComponent<TextComponent>()->SetColor(200, 200, 200);
-	pKeyboard->GetComponent<TextComponent>()->Update();
-	pKeyboard->GetTransform()->SetWorldPosition(890, 30);
+	//const auto pKeyboard = pGameScene->CreateGameObject();
+	//pKeyboard->AddComponent<RenderComponent>();
+	//pKeyboard->AddComponent<TextComponent>()->SetFont(pFont);
+	//pKeyboard->GetComponent<TextComponent>()->SetText("Keyboard controls:");
+	//pKeyboard->GetComponent<TextComponent>()->SetColor(200, 200, 200);
+	//pKeyboard->GetComponent<TextComponent>()->Update();
+	//pKeyboard->GetTransform()->SetWorldPosition(890, 30);
 
-	const auto pWASD = pGameScene->CreateGameObject();
-	pWASD->AddComponent<RenderComponent>();
-	pWASD->AddComponent<TextComponent>()->SetFont(pFont);
-	pWASD->GetComponent<TextComponent>()->SetText("WASD and spacebar");
-	pWASD->GetComponent<TextComponent>()->SetColor(200, 200, 200);
-	pWASD->GetComponent<TextComponent>()->Update();
-	pWASD->GetTransform()->SetWorldPosition(890, 70);
+	//const auto pWASD = pGameScene->CreateGameObject();
+	//pWASD->AddComponent<RenderComponent>();
+	//pWASD->AddComponent<TextComponent>()->SetFont(pFont);
+	//pWASD->GetComponent<TextComponent>()->SetText("WASD and spacebar");
+	//pWASD->GetComponent<TextComponent>()->SetColor(200, 200, 200);
+	//pWASD->GetComponent<TextComponent>()->Update();
+	//pWASD->GetTransform()->SetWorldPosition(890, 70);
 
-	const auto pController = pGameScene->CreateGameObject();
-	pController->AddComponent<RenderComponent>();
-	pController->AddComponent<TextComponent>()->SetFont(pFont);
-	pController->GetComponent<TextComponent>()->SetText("Controller controls:");
-	pController->GetComponent<TextComponent>()->SetColor(200, 200, 200);
-	pController->GetComponent<TextComponent>()->Update();
-	pController->GetTransform()->SetWorldPosition(890, 150);
+	//const auto pController = pGameScene->CreateGameObject();
+	//pController->AddComponent<RenderComponent>();
+	//pController->AddComponent<TextComponent>()->SetFont(pFont);
+	//pController->GetComponent<TextComponent>()->SetText("Controller controls:");
+	//pController->GetComponent<TextComponent>()->SetColor(200, 200, 200);
+	//pController->GetComponent<TextComponent>()->Update();
+	//pController->GetTransform()->SetWorldPosition(890, 150);
 
-	const auto pDPAD = pGameScene->CreateGameObject();
-	pDPAD->AddComponent<RenderComponent>();
-	pDPAD->AddComponent<TextComponent>()->SetFont(pFont);
-	pDPAD->GetComponent<TextComponent>()->SetText("DPAD, A and B");
-	pDPAD->GetComponent<TextComponent>()->SetColor(200, 200, 200);
-	pDPAD->GetComponent<TextComponent>()->Update();
-	pDPAD->GetTransform()->SetWorldPosition(890, 190);
+	//const auto pDPAD = pGameScene->CreateGameObject();
+	//pDPAD->AddComponent<RenderComponent>();
+	//pDPAD->AddComponent<TextComponent>()->SetFont(pFont);
+	//pDPAD->GetComponent<TextComponent>()->SetText("DPAD, A and B");
+	//pDPAD->GetComponent<TextComponent>()->SetColor(200, 200, 200);
+	//pDPAD->GetComponent<TextComponent>()->Update();
+	//pDPAD->GetTransform()->SetWorldPosition(890, 190);
 }

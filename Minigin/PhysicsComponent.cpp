@@ -123,8 +123,8 @@ void PhysicsComponent::DoGravityLogic()
 	m_VerticalSpeed += m_GravityAccel * deltaT;
 	m_VerticalSpeed = std::min(m_MaxFallSpeed, m_VerticalSpeed);
 
-	//If the player or anything with a collider reaches outside of the screen in Y direction
-	//TP back to the top
+	// put player at top of level if out of bounds below
+	// and put them at bottom if out of bounds top
 	auto myCollider = m_pOwner->GetComponent<ColliderComponent>();
 	if (myCollider)
 	{
