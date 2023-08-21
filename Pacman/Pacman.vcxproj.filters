@@ -48,9 +48,6 @@
     <ClCompile Include="GameCommands.cpp">
       <Filter>Commands</Filter>
     </ClCompile>
-    <ClCompile Include="HelperStructs.h">
-      <Filter>Header Files</Filter>
-    </ClCompile>
     <ClCompile Include="FoodComponent.cpp">
       <Filter>Components</Filter>
     </ClCompile>
@@ -142,9 +139,6 @@
   <ItemGroup>
     <ClInclude Include="PlayerComponent.h">
       <Filter>Components</Filter>
-    </ClInclude>
-    <ClInclude Include="Enums.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="GameCommands.h">
       <Filter>Commands</Filter>

@@ -164,7 +164,6 @@
     <ClCompile Include="Food.cpp" />
     <ClCompile Include="FoodComponent.cpp" />
     <ClCompile Include="GameCommands.cpp" />
-    <ClCompile Include="HelperStructs.h" />
     <ClCompile Include="HighScoreLoader.cpp" />
     <ClCompile Include="HighScoreScene.cpp" />
     <ClCompile Include="LevelCreator.cpp" />
@@ -197,7 +196,6 @@
     <ClInclude Include="EnemyComponent.h" />
     <ClInclude Include="EnemyPlayer.h" />
     <ClInclude Include="EnemyPlayerComponent.h" />
-    <ClInclude Include="Enums.h" />
     <ClInclude Include="Food.h" />
     <ClInclude Include="FoodComponent.h" />
     <ClInclude Include="GameCommands.h" />
